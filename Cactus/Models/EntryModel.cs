@@ -22,6 +22,7 @@ namespace Cactus.Models
     {
         private bool _wasLastRan;
         private string _platform;
+        private string _label;
         private string _path;
         private string _flags;
         private bool _isExpansion;
@@ -40,7 +41,21 @@ namespace Cactus.Models
             }
         }
 
-        [JsonProperty("Path", Order = 2)]
+        [JsonProperty("Label", Order = 2)]
+        public string Label
+        {
+            get
+            {
+                return _label;
+            }
+            set
+            {
+                _label = value;
+                RaisePropertyChanged("Label");
+            }
+        }
+
+        [JsonProperty("Path", Order = 3)]
         public string Path
         {
             get
@@ -54,7 +69,7 @@ namespace Cactus.Models
             }
         }
 
-        [JsonProperty("Flags", Order = 3)]
+        [JsonProperty("Flags", Order = 4)]
         public string Flags
         {
             get
@@ -68,7 +83,7 @@ namespace Cactus.Models
             }
         }
 
-        [JsonProperty("IsExpansion", Order = 4)]
+        [JsonProperty("IsExpansion", Order = 5)]
         public bool IsExpansion
         {
             get
@@ -82,7 +97,7 @@ namespace Cactus.Models
             }
         }
 
-        [JsonProperty("WasLastRan", Order = 5)]
+        [JsonProperty("WasLastRan", Order = 6)]
         public bool WasLastRan
         {
             get

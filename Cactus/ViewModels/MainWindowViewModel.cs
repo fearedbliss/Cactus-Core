@@ -38,10 +38,11 @@ namespace Cactus.ViewModels
         public RelayCommand CopyCommand { get; private set; }
         public RelayCommand UpCommand { get; private set; }
         public RelayCommand DownCommand { get; private set; }
+        public RelayCommand ResetCommand { get; private set; }
         public RelayCommand LaunchCommand { get; private set; }
 
         private readonly string _appName = "Cactus";
-        private readonly string _version = "1.2.4";
+        private readonly string _version = "2.0.0";
 
         public MainWindowViewModel(IEntryManager entryManager, IFileSwitcher fileSwitcher, IAddWindowViewModel addWindowViewModel, IEditWindowViewModel editWindowViewModel)
         {
@@ -56,6 +57,7 @@ namespace Cactus.ViewModels
             CopyCommand = new RelayCommand(Copy);
             UpCommand = new RelayCommand(Up);
             DownCommand = new RelayCommand(Down);
+            ResetCommand = new RelayCommand(Reset);
             LaunchCommand = new RelayCommand(Launch);
 
             RefreshEntriesList();
@@ -196,6 +198,13 @@ namespace Cactus.ViewModels
 
             _entryManager.MoveDown(SelectedEntry);
             _entryManager.SaveEntries();
+
+            RefreshEntriesList();
+        }
+
+        public void Reset()
+        {
+            _fileSwitcher.ResetDirectory();
 
             RefreshEntriesList();
         }

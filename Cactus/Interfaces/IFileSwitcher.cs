@@ -18,6 +18,7 @@ namespace Cactus.Interfaces
 {
     public interface IFileSwitcher
     {
+        void ResetDirectory();
         void Run(EntryModel entry);
     }
 }

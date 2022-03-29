@@ -40,15 +40,26 @@ namespace Cactus
             return Path.Combine(GetPlatformsDirectory(entry), entry.Platform);
         }
 
-        public string GetSaveDirectory(EntryModel entry)
+        /// <summary>
+        /// Gets the Save Root Directory for the particular entry.
+        /// </summary>
+        public string GetSaveDirectory(EntryModel entry, bool excludeLabel = false)
         {
             string savesDirectory = GetSavesDirectory(entry);
             string saveDirectory = Path.Combine(savesDirectory, entry.Platform);
+
+            if (!excludeLabel && !string.IsNullOrWhiteSpace(entry.Label))
+            {
+                saveDirectory = Path.Combine(saveDirectory, entry.Label);
+            }
+
             return saveDirectory;
         }
 
         public bool ContainsInvalidCharacters(string word)
         {
+            if (word == null) return false;
+
             char[] invalidChars = Path.GetInvalidFileNameChars();
             foreach (char invalidChar in invalidChars)
             {
@@ -64,6 +75,9 @@ namespace Cactus
             return Path.Combine(rootDirectory, _platformDirectoryName);
         }
 
+        /// <summary>
+        /// Gets the path to where all of our Saves are stored.
+        /// </summary>
         private string GetSavesDirectory(EntryModel entry)
         {
             string rootDirectory = GetRootDirectory(entry);

@@ -29,6 +29,7 @@ namespace Cactus.ViewModels
 
         // Properties for new entry
         public string Platform { get; set; }
+        public string Label { get; set; }
         public string Path { get; set; }
         public string Flags { get; set; }
         public bool IsExpansion { get; set; } = true;
@@ -56,15 +57,15 @@ namespace Cactus.ViewModels
             var entry = new EntryModel
             {
                 Platform = Platform,
+                Label = Label,
                 Path = Path,
                 Flags = Flags,
                 IsExpansion = IsExpansion
             };
 
-            if (string.IsNullOrWhiteSpace(Platform) || string.IsNullOrWhiteSpace(Path) ||
-                !_entryManager.IsRootDirectoryEqualToOthers(entry) || _pathBuilder.ContainsInvalidCharacters(entry.Platform))
+            if (_entryManager.IsInvalid(entry))
             {
-                MessageBox.Show("Please make sure all fields are populated, root path should match the rest of your entries (.exe can vary), and no invalid characters.");
+                MessageBox.Show("Please make sure the required fields are populated, root path should match the rest of your entries (.exe can vary), and no invalid characters.");
             }
             else
             {
@@ -85,6 +86,7 @@ namespace Cactus.ViewModels
         private void ResetUI()
         {
             Platform = null;
+            Label = null;
             Path = null;
             Flags = null;
             IsExpansion = true;

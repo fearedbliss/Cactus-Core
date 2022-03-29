@@ -104,6 +104,7 @@ namespace Cactus
         {
             var newEntry = new EntryModel
             {
+                Label = entry.Label,
                 Path = entry.Path,
                 Flags = entry.Flags,
                 IsExpansion = entry.IsExpansion
@@ -201,6 +202,22 @@ namespace Cactus
         }
 
         /// <summary>
+        /// Renames all label references with a particular name, to a new name for a specific platform.
+        /// </summary>
+        public void RenameLabel(string platformName, string oldLabelName, string newLabelName)
+        {
+            foreach (var entry in _entries)
+            {
+                if (!entry.Platform.EqualsIgnoreCase(platformName)) continue;
+
+                if (entry.Label.EqualsIgnoreCase(oldLabelName))
+                {
+                    entry.Label = newLabelName;
+                }
+            }
+        }
+
+        /// <summary>
         /// Checks to see if the platform name given matches the platform name of the last ran platform.
         /// </summary>
         public bool DoesPlatformNameMatchLastRan(string platformName)
@@ -210,6 +227,18 @@ namespace Cactus
             if (lastRanEntry == null) return false;
 
             return lastRanEntry.Platform.EqualsIgnoreCase(platformName);
+        }
+
+        /// <summary>
+        /// Validates the given information to see if it's correct.
+        /// </summary>
+        public bool IsInvalid(EntryModel entry)
+        {
+            return string.IsNullOrWhiteSpace(entry.Platform) ||
+                   string.IsNullOrWhiteSpace(entry.Path) ||
+                   !IsRootDirectoryEqualToOthers(entry) ||
+                   _pathBuilder.ContainsInvalidCharacters(entry.Platform) ||
+                   _pathBuilder.ContainsInvalidCharacters(entry.Label);
         }
     }
 }

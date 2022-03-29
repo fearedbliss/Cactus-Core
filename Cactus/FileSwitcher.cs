@@ -61,6 +61,16 @@ namespace Cactus
 
         public void Run(EntryModel entry)
         {
+            // Before we do anything, make sure that this platform exists in the first place.
+            var proposedPlatformDirectory = _pathBuilder.GetPlatformDirectory(entry);
+
+            if (!Directory.Exists(proposedPlatformDirectory))
+            {
+                MessageBox.Show("This platform doesn't exist in your Platforms folder.");
+                return;
+            }
+
+            // Let the games begin (pun intended).
             _currentEntry = entry;
             _lastRanEntry = _entries.GetLastRan();
 
@@ -81,11 +91,24 @@ namespace Cactus
                      _lastRanEntry.Path.EqualsIgnoreCase(_currentEntry.Path) &&
                      _lastRanEntry.IsExpansion == _currentEntry.IsExpansion)
             {
-                _logger.LogInfo("Running the same version, no change needed.");
+                _logger.LogInfo("Running the same platform.");
 
-                // Will be using the CurrentEntry in this situation since even though the
-                // current entry is equal to the last ran entry, the launch flags may differ
-                _lastRanEntry = _currentEntry;
+                // Update the registry if we are launching the same platform but with a different label.
+                if (!_lastRanEntry.Label.EqualsIgnoreCase(_currentEntry.Label))
+                {
+                    _logger.LogInfo("Same platform but different labels. Updating.");
+                    UpdateEntryAndRegistry();
+                }
+                else
+                {
+                    _logger.LogInfo("Same platform and same label.");
+
+                    // We will be setting the _lastRanEntry to the CurrentEntry since
+                    // even though the platforms are the same, the flags may differ.
+                    _entries.SwapLastRan(_lastRanEntry, _currentEntry);
+                    _lastRanEntry = _currentEntry;
+                    _entries.SaveEntries();
+                }
 
                 // The user can launch two different entries that are identical (Except for flags since
                 // you may have different flags for the same platform) without switching files completely.
@@ -99,17 +122,12 @@ namespace Cactus
                 // Only identical versions can be launched.
                 if (_processManager.AreProcessesRunning)
                 {
-                    MessageBox.Show("Another process related to another game mode/version is running.");
+                    MessageBox.Show("Diablo II is still running. Please close the game before attempting to switch to a different Platform.");
                     return;
                 }
 
                 SwitchFiles();
-
-                _entries.SwapLastRan(_lastRanEntry, _currentEntry);
-                _lastRanEntry = _currentEntry;
-                _registryService.Update(_currentEntry);
-                _entries.SaveEntries();
-
+                UpdateEntryAndRegistry();
                 LaunchGame();
             }
         }
@@ -137,9 +155,6 @@ namespace Cactus
 
                 DeleteRequiredFiles(rootDirectory, lastRequiredFiles);
                 InstallRequiredFiles(platformDirectory, rootDirectory, targetVersionRequiredFiles);
-
-                // Make sure save directory exists
-                CreateSaveDirectoryIfNeeded(_currentEntry);
 
                 // Move the MPQ files away if it's Classic, but make sure they are in the root if it's expansion.
                 if (_lastRanEntry.IsExpansion)
@@ -198,6 +213,12 @@ namespace Cactus
 
         private void LaunchGame()
         {
+            // Make sure save directory exists before we launch the game or else
+            // the saves will be in the wrong location. Diablo II automatically
+            // creates a 'Save' folder at the D2 root directory if it can't get
+            // to the location specified in the 'Save Path'.
+            CreateSaveDirectoryIfNeeded(_lastRanEntry);
+
             WindowsIdentity user = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(user);
             bool isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
@@ -230,6 +251,50 @@ namespace Cactus
                     FileSystem.CopyDirectory(sourceDirectory, targetDirectory, true);
                 }
             }
+        }
+
+        /// <summary>
+        /// Resets the directory.
+        /// </summary>
+        public void ResetDirectory()
+        {
+            _logger.LogWarning("Resetting Directory ...");
+
+            if (_processManager.AreProcessesRunning)
+            {
+                MessageBox.Show("Diablo II is currently running. Please close the game before attempting to reset your directory.");
+                return;
+            }
+
+            _lastRanEntry = _entries.GetLastRan();
+            if (_lastRanEntry == null)
+            {
+                _logger.LogWarning("No last ran entry detected. Aborting.");
+                return;
+            }
+
+            var rootDirectory = _pathBuilder.GetRootDirectory(_lastRanEntry);
+            var lastRequiredFiles = _jsonManager.GetLastRequiredFiles();
+
+            if (lastRequiredFiles == null)
+            {
+                _logger.LogWarning("The last required files file doesn't exist or the collections are empty. Using current version as a bases.");
+                lastRequiredFiles = _fileGenerator.GetRequiredFiles(_lastRanEntry);
+            }
+
+            // Delete the files in our current "LastRequiredFiles.json" if any.
+            if (lastRequiredFiles.Directories.Count != 0 || lastRequiredFiles.Files.Count != 0)
+            {
+                DeleteRequiredFiles(rootDirectory, lastRequiredFiles);
+
+                // Update our "LastRequiredFiles.json" so that it doesn't have any files.
+                _jsonManager.SaveLastRequiredFiles(_fileGenerator.GetEmptyRequiredFiles());
+            }
+
+            // Unset the last ran entry.
+            _lastRanEntry.WasLastRan = false;
+            _entries.SaveEntries();
+            _lastRanEntry = null;
         }
 
         private void DeleteRequiredFiles(string rootDirectory, RequiredFilesModel requiredFiles)
@@ -266,6 +331,14 @@ namespace Cactus
             {
                 Directory.CreateDirectory(saveDirectory);
             }
+        }
+
+        private void UpdateEntryAndRegistry()
+        {
+            _entries.SwapLastRan(_lastRanEntry, _currentEntry);
+            _lastRanEntry = _currentEntry;
+            _registryService.Update(_currentEntry);
+            _entries.SaveEntries();
         }
     }
 }

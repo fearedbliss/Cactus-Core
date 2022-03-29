@@ -53,12 +53,10 @@ namespace Cactus.ViewModels
 
         private void Ok()
         {
-            if (string.IsNullOrWhiteSpace(CurrentEntry.Platform) || string.IsNullOrWhiteSpace(CurrentEntry.Path) ||
-                !_entryManager.IsRootDirectoryEqualToOthers(CurrentEntry) ||
-                _pathBuilder.ContainsInvalidCharacters(CurrentEntry.Platform))
+            if (_entryManager.IsInvalid(CurrentEntry))
             {
                 MessageBox.Show("Unable to change your Entry! Please make sure all fields are:\n\n" +
-                    "- Populated (Flags are optional)\n" +
+                    "- Populated (Label/Flags are optional)\n" +
                     "- Path should match the rest of your Entries (.exe can vary)\n" +
                     "- No invalid characters\n\n" +
                     "If you have moved Cactus to a new machine, please manually edit the Entries.json and adjust all your paths accordingly.");
@@ -82,14 +80,39 @@ namespace Cactus.ViewModels
                     var oldSavesDirectory = _pathBuilder.GetSaveDirectory(_oldEntry);
                     var newSavesDirectory = _pathBuilder.GetSaveDirectory(CurrentEntry);
 
-                    // We can skip renaming if it's the same platform.
+                    // We can skip renaming if it's the same platform and saves directory (label change).
                     // No renaming of directories needs to happen here. Just saving.
-                    if (!oldPlatformDirectory.EqualsIgnoreCase(newPlatformDirectory))
+                    if (!oldPlatformDirectory.EqualsIgnoreCase(newPlatformDirectory) ||
+                        !oldSavesDirectory.EqualsIgnoreCase(newSavesDirectory))
                     {
-                        // If the target directory name already exists, we can't allow this rename to happen.
-                        if (Directory.Exists(newPlatformDirectory) || Directory.Exists(newSavesDirectory))
+                        // If the target platform directory name already exists, we can't allow this rename to happen.
+                        if (!oldPlatformDirectory.EqualsIgnoreCase(newPlatformDirectory) && Directory.Exists(newPlatformDirectory))
                         {
-                            MessageBox.Show($"A platform/save directory with the name \"{CurrentEntry.Platform}\" already exists.");
+                            MessageBox.Show($"A platform directory with the name \"{CurrentEntry.Platform}\" already exists.");
+                            ReverseChanges();
+                            return;
+                        }
+
+                        // We won't allow editing the Label field if it was empty because that would
+                        // mean that the user's save files would need to be moved to the target location.
+                        // This could be problematic if someone has save files with the same name in different
+                        // label directories (or if there was an existing file already in the flat save directory).
+                        // Thus, this is completely disabled at the UI level for the Edit Window. We won't check for
+                        // this (null case) here since it would prevent someone that didn't give an entry a label in
+                        // the first place, the ability to edit that entry. However, we can allow Label to Label renames.
+
+                        // Prevent renaming a label from something to nothing.
+                        if (!string.IsNullOrWhiteSpace(_oldEntry.Label) && string.IsNullOrWhiteSpace(CurrentEntry.Label))
+                        {
+                            MessageBox.Show("A label cannot be removed once created. It can only be modified.");
+                            ReverseChanges();
+                            return;
+                        }
+
+                        // If the target save directory name already exists, we can't allow this rename to happen.
+                        if (!oldSavesDirectory.EqualsIgnoreCase(newSavesDirectory) && Directory.Exists(newSavesDirectory))
+                        {
+                            MessageBox.Show($"A save directory with the same name exists at: \"{newSavesDirectory}\"");
                             ReverseChanges();
                             return;
                         }
@@ -105,18 +128,38 @@ namespace Cactus.ViewModels
                             return;
                         }
 
-                        if (Directory.Exists(oldPlatformDirectory))
+                        // No need to rename if the Platform directories are the same.
+                        if (!oldPlatformDirectory.EqualsIgnoreCase(newPlatformDirectory))
                         {
-                            Directory.Move(oldPlatformDirectory, newPlatformDirectory);
+                            if (Directory.Exists(oldPlatformDirectory))
+                            {
+                                Directory.Move(oldPlatformDirectory, newPlatformDirectory);
+                            }
+
+                            // We need to rename the Saves directory root as well (with platform name but without label).
+                            var oldSavesDirectoryWithoutLabel = _pathBuilder.GetSaveDirectory(_oldEntry, true);
+                            var newSavesDirectoryWithoutLabel = _pathBuilder.GetSaveDirectory(CurrentEntry, true);
+
+                            if (Directory.Exists(oldSavesDirectoryWithoutLabel))
+                            {
+                                Directory.Move(oldSavesDirectoryWithoutLabel, newSavesDirectoryWithoutLabel);
+                            }
+
+                            // Rename any identically named platforms
+                            _entryManager.RenamePlatform(_oldEntry.Platform, CurrentEntry.Platform);
                         }
 
-                        if (Directory.Exists(oldSavesDirectory))
+                        // No need to rename if the Saves directories are the same.
+                        else if (!oldSavesDirectory.EqualsIgnoreCase(newSavesDirectory))
                         {
-                            Directory.Move(oldSavesDirectory, newSavesDirectory);
-                        }
+                            if (Directory.Exists(oldSavesDirectory))
+                            {
+                                Directory.Move(oldSavesDirectory, newSavesDirectory);
+                            }
 
-                        // Rename any platforms with the same platform name
-                        _entryManager.RenamePlatform(_oldEntry.Platform, CurrentEntry.Platform);
+                            // Rename any identically named platforms with the same label name
+                            _entryManager.RenameLabel(CurrentEntry.Platform, _oldEntry.Label, CurrentEntry.Label);
+                        }
                     }
                 }
 
@@ -127,12 +170,17 @@ namespace Cactus.ViewModels
                     LastRanEntry.WasLastRan = false;
                 }
 
-                // If this was the last ran entry (or if the entry we are renaming matches the last ran entry),
-                // then we need to also update the registry path.
-                var x = _entryManager.DoesPlatformNameMatchLastRan(CurrentEntry.Platform);
-                if (CurrentEntry.WasLastRan || _entryManager.DoesPlatformNameMatchLastRan(CurrentEntry.Platform))
+                // If this was the last ran entry, then we need to update the registry.
+                if (CurrentEntry.WasLastRan)
                 {
                     _registryService.Update(CurrentEntry);
+                }
+                else if (_entryManager.DoesPlatformNameMatchLastRan(CurrentEntry.Platform))
+                {
+                    // If it wasn't the last ran entry but it's sharing the same platform,
+                    // then we need to update the registry for the last ran entry since the
+                    // shared platform name has changed and that affects the save location.
+                    _registryService.Update(LastRanEntry);
                 }
             }
 
@@ -150,6 +198,7 @@ namespace Cactus.ViewModels
         private void ReverseChanges()
         {
             CurrentEntry.Platform = _oldEntry.Platform;
+            CurrentEntry.Label = _oldEntry.Label;
             CurrentEntry.Path = _oldEntry.Path;
             CurrentEntry.Flags = _oldEntry.Flags;
             CurrentEntry.IsExpansion = _oldEntry.IsExpansion;
@@ -168,6 +217,7 @@ namespace Cactus.ViewModels
                     _oldEntry = new EntryModel
                     {
                         Platform = CurrentEntry.Platform,
+                        Label = CurrentEntry.Label,
                         Path = CurrentEntry.Path,
                         Flags = CurrentEntry.Flags,
                         IsExpansion = CurrentEntry.IsExpansion,

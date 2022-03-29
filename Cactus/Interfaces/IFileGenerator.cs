@@ -20,6 +20,7 @@ namespace Cactus.Interfaces
     public interface IFileGenerator
     {
         RequiredFilesModel GetRequiredFiles(EntryModel entry);
+        RequiredFilesModel GetEmptyRequiredFiles();
         List<string> ExpansionMpqs { get; }
         void ValidateRequiredFiles(RequiredFilesModel requiredFiles);
     }

@@ -89,6 +89,14 @@ namespace Cactus
         }
 
         /// <summary>
+        /// Returns an empty required files collection.
+        /// </summary>
+        public RequiredFilesModel GetEmptyRequiredFiles()
+        {
+            return new RequiredFilesModel();
+        }
+
+        /// <summary>
         /// Scans all of the files in the list and removes any files that are protected.
         /// </summary>
         public void ValidateRequiredFiles(RequiredFilesModel requiredFiles)

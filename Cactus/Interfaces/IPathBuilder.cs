@@ -20,7 +20,7 @@ namespace Cactus.Interfaces
     {
         string GetRootDirectory(EntryModel entry);
         string GetPlatformDirectory(EntryModel entry);
-        string GetSaveDirectory(EntryModel entry);
+        string GetSaveDirectory(EntryModel entry, bool excludeLabel = false);
         bool ContainsInvalidCharacters(string word);
     }
 }
