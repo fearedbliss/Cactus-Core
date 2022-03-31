@@ -13,7 +13,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
 
-        Title="Settings" Height="250" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
+        Title="Settings" Height="390" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
         DataContext="{Binding SettingsWindow, Source={StaticResource Locator}}">
 
     <Grid Margin="10">
@@ -28,6 +28,22 @@
         <StackPanel Grid.ColumnSpan="3">
             <CheckBox Name="chkMinimizeToTray" Content="  Minimize to System Tray" IsChecked="{Binding ShouldMinimizeToTray}" Grid.ColumnSpan="2" Margin="0 0 0 5"/>
             <CheckBox Name="chkShouldEnableDarkMode" Content="  Dark Mode" IsChecked="{Binding ShouldEnableDarkMode}" Grid.ColumnSpan="2"/>
+            <Separator Margin="0 15 0 15"/>
+            <GroupBox Header="Colors">
+                <ListBox Name="lstColors" Height="160" ItemsSource="{Binding Colors}" Loaded="OnColors_Loaded" SelectedItem="{Binding PreferredColor}" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="FontStyle" Value="Italic"/>
+                                    <Setter Property="Background" Value="Gray"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </GroupBox>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3">

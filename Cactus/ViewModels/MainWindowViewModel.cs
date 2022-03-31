@@ -43,7 +43,7 @@ namespace Cactus.ViewModels
         public RelayCommand LaunchCommand { get; private set; }
 
         private readonly string _appName = "Cactus";
-        private readonly string _version = "2.1.0";
+        private readonly string _version = "2.2.0";
 
         public MainWindowViewModel(IEntryManager entryManager, IFileSwitcher fileSwitcher, IAddWindowViewModel addWindowViewModel, IEditWindowViewModel editWindowViewModel)
         {
@@ -63,7 +63,6 @@ namespace Cactus.ViewModels
             LaunchCommand = new RelayCommand(Launch);
 
             RefreshEntriesList();
-            SelectLastRanEntry();
         }
 
         public string Title
@@ -264,7 +263,7 @@ namespace Cactus.ViewModels
             Entries = new ObservableCollection<EntryModel>(_entryManager.GetEntries());
         }
 
-        private void SelectLastRanEntry()
+        public void SelectLastRanEntry()
         {
             var lastRanEntry = GetLastRanEntry();
             if (lastRanEntry != null)

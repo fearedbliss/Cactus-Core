@@ -19,7 +19,7 @@
         DataContext="{Binding MainWindow, Source={StaticResource Locator}}">
 
     <StackPanel Margin="10">
-        <ListView Name="EntriesListView" Height="440" Margin="0 0 0 15" ItemsSource="{Binding Entries}" SelectedItem="{Binding SelectedEntry}" SelectedIndex="{Binding SelectedIndex}"
+        <ListView Name="EntriesListView" Height="440" Margin="0 0 0 15" ItemsSource="{Binding Entries}" Loaded="OnEntries_Loaded" SelectedItem="{Binding SelectedEntry}" SelectedIndex="{Binding SelectedIndex}"
                   SelectionMode="Single" MouseDoubleClick="EntriesListView_DoubleClick" SelectionChanged="EntriesListView_SelectionChanged">
             <ListView.View>
                 <GridView>
@@ -35,15 +35,8 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Exp">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsHitTestVisible="False" Focusable="False" IsChecked="{Binding IsExpansion}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Width="200" DisplayMemberBinding="{Binding Platform}" Header="Platform"/>
-                    <GridViewColumn Width="200" DisplayMemberBinding="{Binding Label}" Header="Label"/>
+                    <GridViewColumn Width="250" DisplayMemberBinding="{Binding Platform}" Header="Platform"/>
+                    <GridViewColumn Width="250" DisplayMemberBinding="{Binding Label}" Header="Label"/>
                     <GridViewColumn Width="150" DisplayMemberBinding="{Binding Flags}" Header="Flags"/>
                 </GridView>
             </ListView.View>

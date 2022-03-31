@@ -35,15 +35,9 @@ namespace Cactus
         private readonly ILogger _logger;
         private readonly IPathBuilder _pathBuilder;
         private readonly IJsonManager _jsonManager;
-        
+
         private EntryModel _currentEntry;
         private EntryModel _lastRanEntry;
-
-        private enum Mode
-        {
-            Classic,
-            Expansion
-        }
 
         public FileSwitcher(IEntryManager entries, IFileGenerator fileGenerator,
                             IProcessManager processManager, IRegistryService registryService,
@@ -87,8 +81,7 @@ namespace Cactus
                 LaunchGame();
             }
             else if (_lastRanEntry.Platform.EqualsIgnoreCase(_currentEntry.Platform) &&
-                     _lastRanEntry.Path.EqualsIgnoreCase(_currentEntry.Path) &&
-                     _lastRanEntry.IsExpansion == _currentEntry.IsExpansion)
+                     _lastRanEntry.Path.EqualsIgnoreCase(_currentEntry.Path))
             {
                 _logger.LogInfo("Running the same platform.");
 
@@ -155,24 +148,6 @@ namespace Cactus
                 DeleteRequiredFiles(rootDirectory, lastRequiredFiles);
                 InstallRequiredFiles(platformDirectory, rootDirectory, targetVersionRequiredFiles);
 
-                // Move the MPQ files away if it's Classic, but make sure they are in the root if it's expansion.
-                if (_lastRanEntry.IsExpansion)
-                {
-                    // If our last entry is Expansion and current entry is Classic, then move files.
-                    if (!_currentEntry.IsExpansion)
-                    {
-                        SwitchMpqs(Mode.Classic);
-                    }
-                }
-                else
-                {
-                    // If our last entry is Classic and current entry is Expansion, then move files.
-                    if (_currentEntry.IsExpansion)
-                    {
-                        SwitchMpqs(Mode.Expansion);
-                    }
-                }
-
                 // Save the required files for the target since we will use these to clean up when we switch.
                 _jsonManager.SaveLastRequiredFiles(targetVersionRequiredFiles);
             }
@@ -189,24 +164,33 @@ namespace Cactus
         }
 
         /// <summary>
-        /// Switches the Expansion MPQs in order to Enable/Disable Expansion or Classic modes.
+        /// Restores the hidden Expansion MPQs from previous Cactus behavior to their original location.
         /// </summary>
-        /// <param name="mode">Mode you want to switch to</param>
-        private void SwitchMpqs(Mode mode)
+        /// <remarks>
+        /// This function is only here for migration purposes only for existing Cactus users
+        /// who have been running Classic versions. Thus it shouldn't be used for anything other
+        /// than that purpose since we don't actually need to move any of the MPQs. The classic versions
+        /// of the game work perfectly fine with the expansion MPQs in place (Since the old versions didn't
+        /// use them). 1.07+ versions of a Classic-only installation also work perfectly fine without them
+        /// because the user didn't buy LOD so it isn't expecting them. If a person with a Classic-only
+        /// install places the four expansion MPQs in their root directory, the game automatically becomes
+        /// an LOD install and everything is unlocked.
+        /// </remarks>
+        private void RestoreMpqs()
         {
             string rootDirectory = _pathBuilder.GetRootDirectory(_lastRanEntry);
             var expansionMpqs = _fileGenerator.ExpansionMpqs;
 
-            foreach (var mpqFile in expansionMpqs)
+            foreach (string mpqFile in expansionMpqs)
             {
-                string basePath = Path.Combine(rootDirectory, mpqFile);
-                string backupMpqPath = basePath + ".bak";
+                string originalPath = Path.Combine(rootDirectory, mpqFile);
+                string hiddenPath = originalPath + ".bak";
 
-                string sourceMpqPath = mode == Mode.Classic ? basePath : backupMpqPath;
-                string targetMpqPath = mode == Mode.Classic ? backupMpqPath : basePath;
-
-                _logger.LogInfo($"Moving: {sourceMpqPath} -> {targetMpqPath}");
-                File.Move(sourceMpqPath, targetMpqPath);
+                if (File.Exists(hiddenPath) && !File.Exists(originalPath))
+                {
+                    _logger.LogInfo($"Moving: {hiddenPath} -> {originalPath}");
+                    File.Move(hiddenPath, originalPath);
+                }
             }
         }
 
@@ -216,7 +200,10 @@ namespace Cactus
             // the saves will be in the wrong location. Diablo II automatically
             // creates a 'Save' folder at the D2 root directory if it can't get
             // to the location specified in the 'Save Path'.
-            CreateSaveDirectoryIfNeeded(_lastRanEntry);
+            CreateSaveDirectory();
+
+            // [Migration Purposes Only. Read Function Comment/Remarks.]
+            RestoreMpqs();
 
             WindowsIdentity user = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(user);
@@ -290,6 +277,9 @@ namespace Cactus
                 _jsonManager.SaveLastRequiredFiles(_fileGenerator.GetEmptyRequiredFiles());
             }
 
+            // [Migration Purposes Only. Read Function Comment/Remarks.]
+            RestoreMpqs();
+
             // Unset the last ran entry.
             _lastRanEntry.WasLastRan = false;
             _entries.SaveEntries();
@@ -322,9 +312,9 @@ namespace Cactus
             }
         }
         
-        private void CreateSaveDirectoryIfNeeded(EntryModel entry)
+        private void CreateSaveDirectory()
         {
-            string saveDirectory = _pathBuilder.GetSaveDirectory(entry);
+            string saveDirectory = _pathBuilder.GetSaveDirectory(_lastRanEntry);
 
             if (!Directory.Exists(saveDirectory))
             {

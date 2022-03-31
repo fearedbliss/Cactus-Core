@@ -21,5 +21,6 @@ namespace Cactus.Interfaces
     {
         ObservableCollection<EntryModel> Entries { get; set; }
         void Launch();
+        void SelectLastRanEntry();
     }
 }

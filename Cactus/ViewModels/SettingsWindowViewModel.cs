@@ -16,6 +16,7 @@ using Cactus.Interfaces;
 using Cactus.Models;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using System.Collections.Generic;
 
 namespace Cactus.ViewModels
 {
@@ -25,6 +26,44 @@ namespace Cactus.ViewModels
 
         public bool ShouldMinimizeToTray { get; set; }
         public bool ShouldEnableDarkMode { get; set; }
+
+        public List<string> Colors => new List<string>
+        {
+            "Amber",
+            "Blue",
+            "Blue Grey",
+            "Brown",
+            "Cyan",
+            "Deep Orange",
+            "Deep Purple",
+            "Green",
+            "Grey",
+            "Indigo",
+            "Light Blue",
+            "Light Green",
+            "Lime",
+            "Orange",
+            "Pink",
+            "Purple",
+            "Red",
+            "Teal",
+            "Yellow",
+        };
+
+        private string _preferredColor;
+        public string PreferredColor
+        {
+            get
+            {
+                return _preferredColor;
+            }
+            set
+            {
+                _preferredColor = value;
+                RaisePropertyChanged("PreferredColor");
+            }
+        }
+
 
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
@@ -45,6 +84,7 @@ namespace Cactus.ViewModels
             {
                 ShouldMinimizeToTray = ShouldMinimizeToTray,
                 ShouldEnableDarkMode = ShouldEnableDarkMode,
+                PreferredColor = PreferredColor,
             };
 
             _settingsManager.SaveSettings(settings);
@@ -61,6 +101,7 @@ namespace Cactus.ViewModels
         {
             ShouldMinimizeToTray = _settingsManager.ShouldMinimizeToTray;
             ShouldEnableDarkMode = _settingsManager.ShouldEnableDarkMode;
+            PreferredColor = _settingsManager.PreferredColor;
         }
 
         private void ProcessTriggers()

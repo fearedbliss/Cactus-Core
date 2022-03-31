@@ -20,12 +20,11 @@ namespace Cactus.Models
     [JsonObject(MemberSerialization.OptIn)]
     public class EntryModel : ViewModelBase
     {
-        private bool _wasLastRan;
         private string _platform;
         private string _label;
         private string _path;
         private string _flags;
-        private bool _isExpansion;
+        private bool _wasLastRan;
 
         [JsonProperty("Platform", Order = 1)]
         public string Platform
@@ -83,21 +82,7 @@ namespace Cactus.Models
             }
         }
 
-        [JsonProperty("IsExpansion", Order = 5)]
-        public bool IsExpansion
-        {
-            get
-            {
-                return _isExpansion;
-            }
-            set
-            {
-                _isExpansion = value;
-                RaisePropertyChanged("IsExpansion");
-            }
-        }
-
-        [JsonProperty("WasLastRan", Order = 6)]
+        [JsonProperty("WasLastRan", Order = 5)]
         public bool WasLastRan
         {
             get

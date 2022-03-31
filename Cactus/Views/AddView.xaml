@@ -13,7 +13,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
 
-        Title="Add Entry" Height="320" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
+        Title="Add Entry" Height="250" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
         DataContext="{Binding AddWindow, Source={StaticResource Locator}}">
 
     <Grid Margin="10">
@@ -22,8 +22,7 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition Height="90"/>
-            <RowDefinition Height="33"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="70"/>
@@ -43,21 +42,7 @@
         <Label Content="Flags" Grid.Row="3"/>
         <TextBox Name="txtFlags" Text="{Binding Flags}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>
 
-        <GroupBox Header="Options" Grid.Row="4" Grid.ColumnSpan="3" Margin="0 10 0 10">
-            <Grid HorizontalAlignment="Center" Grid.ColumnSpan="3">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <CheckBox Name="chkIsExpansion" IsChecked="{Binding IsExpansion}" Content="Expansion"/>
-            </Grid>
-        </GroupBox>
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 15 0 0">
             <Button Name="btnOk" Content="Add" IsDefault="True" Command="{Binding OkCommand}" Click="CloseWindow_Click" Padding="10 0 10 0" Margin="0 0 10 0"/>
             <Button Name="btnCancel" Content="Cancel" IsCancel="True" Command="{Binding CancelCommand}" Click="CloseWindow_Click" Padding="10 0 10 0"/>
         </StackPanel>

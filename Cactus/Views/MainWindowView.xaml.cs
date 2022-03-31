@@ -36,7 +36,7 @@ namespace Cactus
                 _settingsManager = dependencyContainer.SettingsManager;
 
                 // Load our theme based on settings.
-                _settingsManager.LoadTheme();
+                _settingsManager.LoadTheme(true);
 
                 // Credits to the below for the original System Tray code:
                 // https://possemeeg.wordpress.com/2007/09/06/minimize-to-tray-icon-in-wpf/
@@ -48,11 +48,14 @@ namespace Cactus
                     Icon = System.Drawing.Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.FriendlyName)
                 };
                 notifyIcon.Click += new EventHandler(OnNotifyIcon_Click);
+
+                // Now that the UI is fully initialized, select the last ran entry if any.
+                dependencyContainer.MainWindow.SelectLastRanEntry();
             }
             else
             {
                 CactusMessageBox.Show("Only one instance of Cactus is allowed!");
-                Application.Current.Shutdown();
+                Environment.Exit(1);
             }
         }
 
@@ -120,6 +123,16 @@ namespace Cactus
         private void EntriesListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void OnEntries_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (EntriesListView.SelectedItem == null)
+            {
+                return;
+            }
+
+            EntriesListView.ScrollIntoView(EntriesListView.SelectedItem);
         }
     }
 }

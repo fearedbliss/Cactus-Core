@@ -24,5 +24,8 @@ namespace Cactus.Models
 
         [JsonProperty("shouldEnableDarkMode", Order = 2)]
         public bool ShouldEnableDarkMode { get; set; } = false;
+
+        [JsonProperty("preferredColor", Order = 3)]
+        public string PreferredColor { get; set; } = "Teal";
     }
 }

@@ -200,7 +200,6 @@ namespace Cactus.ViewModels
             CurrentEntry.Label = _oldEntry.Label;
             CurrentEntry.Path = _oldEntry.Path;
             CurrentEntry.Flags = _oldEntry.Flags;
-            CurrentEntry.IsExpansion = _oldEntry.IsExpansion;
             CurrentEntry.WasLastRan = _oldEntry.WasLastRan;
 
             _oldEntry = null;
@@ -219,7 +218,6 @@ namespace Cactus.ViewModels
                         Label = CurrentEntry.Label,
                         Path = CurrentEntry.Path,
                         Flags = CurrentEntry.Flags,
-                        IsExpansion = CurrentEntry.IsExpansion,
                         WasLastRan = CurrentEntry.WasLastRan
                     };
                 }

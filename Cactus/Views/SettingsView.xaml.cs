@@ -26,5 +26,15 @@ namespace Cactus.Views
         {
             this.Close();
         }
+
+        private void OnColors_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (lstColors.SelectedItem == null)
+            {
+                return;
+            }
+
+            lstColors.ScrollIntoView(lstColors.SelectedItem);
+        }
     }
 }

@@ -86,7 +86,6 @@ namespace Cactus
                 Label = entry.Label,
                 Path = entry.Path,
                 Flags = entry.Flags,
-                IsExpansion = entry.IsExpansion
             };
 
             _entries.Add(newEntry);

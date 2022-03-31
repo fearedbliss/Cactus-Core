@@ -28,7 +28,6 @@ namespace Cactus.ViewModels
         public string Label { get; set; }
         public string Path { get; set; }
         public string Flags { get; set; }
-        public bool IsExpansion { get; set; } = true;
 
         // Allow parent view model to retrieve this property.
         public EntryModel AddedEntry { get; set; }
@@ -52,7 +51,6 @@ namespace Cactus.ViewModels
                 Label = Label,
                 Path = Path,
                 Flags = Flags,
-                IsExpansion = IsExpansion
             };
 
             if (_entryManager.IsInvalid(entry))
@@ -81,7 +79,6 @@ namespace Cactus.ViewModels
             Label = null;
             Path = null;
             Flags = null;
-            IsExpansion = true;
         }
     }
 }

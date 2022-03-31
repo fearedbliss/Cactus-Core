@@ -133,6 +133,7 @@
     <Compile Include="PathBuilder.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="RegistryService.cs" />
+    <Compile Include="ResourceUtility.cs" />
     <Compile Include="SettingsManager.cs" />
     <Compile Include="ViewModels\AddWindowViewModel.cs" />
     <Compile Include="ViewModels\EditWindowViewModel.cs" />

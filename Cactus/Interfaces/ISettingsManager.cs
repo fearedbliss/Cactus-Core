@@ -19,8 +19,9 @@ namespace Cactus.Interfaces
     public interface ISettingsManager
     {
         void SaveSettings(SettingsModel settings);
-        void LoadTheme();
+        void LoadTheme(bool isStartUp = false);
         bool ShouldMinimizeToTray { get; }
         bool ShouldEnableDarkMode { get; }
+        string PreferredColor { get; }
     }
 }
