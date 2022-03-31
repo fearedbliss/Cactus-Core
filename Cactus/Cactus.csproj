@@ -72,19 +72,24 @@
     <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="MaterialDesignColors, Version=2.0.5.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.2.0.5\lib\net452\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=4.4.0.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.4.4.0\lib\net452\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationFramework.Luna">
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -117,16 +122,32 @@
     <Compile Include="Interfaces\IPathBuilder.cs" />
     <Compile Include="Interfaces\IProcessManager.cs" />
     <Compile Include="Interfaces\IRegistryService.cs" />
+    <Compile Include="Interfaces\ISettingsManager.cs" />
+    <Compile Include="Interfaces\ISettingsWindowViewModel.cs" />
     <Compile Include="JsonManager.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="CactusMessageBox.cs" />
     <Compile Include="Models\RequiredFilesModel.cs" />
     <Compile Include="FileGenerator.cs" />
+    <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="PathBuilder.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="RegistryService.cs" />
+    <Compile Include="SettingsManager.cs" />
     <Compile Include="ViewModels\AddWindowViewModel.cs" />
     <Compile Include="ViewModels\EditWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\SettingsWindowViewModel.cs" />
+    <Compile Include="Views\CactusMessageBoxView.xaml.cs">
+      <DependentUpon>CactusMessageBoxView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Styles\CommonStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\AddView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -157,7 +178,11 @@
       <DependentUpon>MainWindowView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Styles\CommonStyles.xaml">
+    <Page Include="Views\CactusMessageBoxView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -205,9 +230,17 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y "$(ProjectDir)$(OutDir)*.exe" "$(SolutionDir)\1. Files\"
 xcopy /Y "$(ProjectDir)$(OutDir)*.dll" "$(SolutionDir)\1. Files\"</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\MaterialDesignThemes.4.4.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.4.0\build\MaterialDesignThemes.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MaterialDesignThemes.4.4.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.4.4.0\build\MaterialDesignThemes.targets'))" />
+  </Target>
 </Project>

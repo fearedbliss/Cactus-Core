@@ -24,7 +24,7 @@ namespace Cactus
     /// </summary>
     public class DependencyContainer
     {
-        private IWindsorContainer _container;
+        private readonly IWindsorContainer _container;
 
         public DependencyContainer()
         {
@@ -36,12 +36,14 @@ namespace Cactus
             var container = new WindsorContainer();
             container.Register(Component.For<IFileSwitcher>().ImplementedBy<FileSwitcher>());
             container.Register(Component.For<IEntryManager>().ImplementedBy<EntryManager>());
+            container.Register(Component.For<ISettingsManager>().ImplementedBy<SettingsManager>());
             container.Register(Component.For<IProcessManager>().ImplementedBy<ProcessManager>());
             container.Register(Component.For<ILogger>().ImplementedBy<Logger>());
             container.Register(Component.For<IRegistryService>().ImplementedBy<RegistryService>());
             container.Register(Component.For<IMainWindowViewModel>().ImplementedBy<MainWindowViewModel>());
             container.Register(Component.For<IEditWindowViewModel>().ImplementedBy<EditWindowViewModel>());
             container.Register(Component.For<IAddWindowViewModel>().ImplementedBy<AddWindowViewModel>());
+            container.Register(Component.For<ISettingsWindowViewModel>().ImplementedBy<SettingsWindowViewModel>());
             container.Register(Component.For<IFileGenerator>().ImplementedBy<FileGenerator>());
             container.Register(Component.For<IPathBuilder>().ImplementedBy<PathBuilder>());
             container.Register(Component.For<IJsonManager>().ImplementedBy<JsonManager>());
@@ -69,6 +71,22 @@ namespace Cactus
             get
             {
                 return _container.Resolve<IAddWindowViewModel>();
+            }
+        }
+
+        public ISettingsWindowViewModel SettingsWindow
+        {
+            get
+            {
+                return _container.Resolve<ISettingsWindowViewModel>();
+            }
+        }
+
+        public ISettingsManager SettingsManager
+        {
+            get
+            {
+                return _container.Resolve<ISettingsManager>();
             }
         }
     }

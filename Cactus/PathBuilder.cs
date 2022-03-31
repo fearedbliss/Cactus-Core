@@ -20,15 +20,8 @@ namespace Cactus
 {
     public class PathBuilder : IPathBuilder
     {
-        private readonly ILogger _logger;
-
         private readonly string _platformDirectoryName = "Platforms";
         private readonly string _savesDirectoryName = "Saves";
-
-        public PathBuilder(ILogger logger)
-        {
-            _logger = logger;
-        }
 
         public string GetRootDirectory(EntryModel entry)
         {

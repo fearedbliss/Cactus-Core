@@ -16,16 +16,12 @@ using Cactus.Interfaces;
 using Cactus.Models;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using System.Windows;
 
 namespace Cactus.ViewModels
 {
     public class AddWindowViewModel : ViewModelBase, IAddWindowViewModel
     {
-        private IEntryManager _entryManager;
-        private readonly IRegistryService _registryService;
-        private readonly IPathBuilder _pathBuilder;
-        private readonly IProcessManager _processManager;
+        private readonly IEntryManager _entryManager;
 
         // Properties for new entry
         public string Platform { get; set; }
@@ -40,13 +36,9 @@ namespace Cactus.ViewModels
         public RelayCommand OkCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
 
-        public AddWindowViewModel(IEntryManager entryManager, IRegistryService registryService,
-                                  IPathBuilder pathBuilder, IProcessManager processManager)
+        public AddWindowViewModel(IEntryManager entryManager)
         {
             _entryManager = entryManager;
-            _registryService = registryService;
-            _pathBuilder = pathBuilder;
-            _processManager = processManager;
 
             OkCommand = new RelayCommand(Ok);
             CancelCommand = new RelayCommand(Cancel);
@@ -65,7 +57,7 @@ namespace Cactus.ViewModels
 
             if (_entryManager.IsInvalid(entry))
             {
-                MessageBox.Show("Please make sure the required fields are populated, root path should match the rest of your entries (.exe can vary), and no invalid characters.");
+                CactusMessageBox.Show("Please make sure the required fields are populated, root path should match the rest of your entries (.exe can vary), and no invalid characters.");
             }
             else
             {

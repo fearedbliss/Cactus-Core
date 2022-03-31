@@ -16,9 +16,6 @@ using System.Windows;
 
 namespace Cactus.Views
 {
-    /// <summary>
-    /// Interaction logic for EditView.xaml
-    /// </summary>
     public partial class EditView : Window
     {
         public EditView()

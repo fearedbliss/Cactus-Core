@@ -20,7 +20,7 @@ namespace Cactus
 {
     public class RegistryService : IRegistryService
     {
-        IPathBuilder _pathBuilder;
+        private readonly IPathBuilder _pathBuilder;
 
         public RegistryService(IPathBuilder pathBuilder)
         {

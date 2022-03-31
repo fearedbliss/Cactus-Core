@@ -19,7 +19,6 @@ using System;
 using System.IO;
 using System.Security.Principal;
 using System.Threading;
-using System.Windows;
 
 namespace Cactus
 {
@@ -29,13 +28,13 @@ namespace Cactus
     /// </summary>
     public class FileSwitcher : IFileSwitcher
     {
-        private IEntryManager _entries;
-        private IFileGenerator _fileGenerator;
-        private IProcessManager _processManager;
-        private IRegistryService _registryService;
-        private ILogger _logger;
-        private IPathBuilder _pathBuilder;
-        private IJsonManager _jsonManager;
+        private readonly IEntryManager _entries;
+        private readonly IFileGenerator _fileGenerator;
+        private readonly IProcessManager _processManager;
+        private readonly IRegistryService _registryService;
+        private readonly ILogger _logger;
+        private readonly IPathBuilder _pathBuilder;
+        private readonly IJsonManager _jsonManager;
         
         private EntryModel _currentEntry;
         private EntryModel _lastRanEntry;
@@ -66,7 +65,7 @@ namespace Cactus
 
             if (!Directory.Exists(proposedPlatformDirectory))
             {
-                MessageBox.Show("This platform doesn't exist in your Platforms folder.");
+                CactusMessageBox.Show("This platform doesn't exist in your Platforms folder.");
                 return;
             }
 
@@ -122,7 +121,7 @@ namespace Cactus
                 // Only identical versions can be launched.
                 if (_processManager.AreProcessesRunning)
                 {
-                    MessageBox.Show("Diablo II is still running. Please close the game before attempting to switch to a different Platform.");
+                    CactusMessageBox.Show("Diablo II is still running. Please close the game before attempting to switch to a different Platform.");
                     return;
                 }
 
@@ -179,7 +178,7 @@ namespace Cactus
             }
             catch (UnauthorizedAccessException ex)
             {
-                MessageBox.Show("A file is still being used (You are probably switching entries too fast?). " +
+                CactusMessageBox.Show("A file is still being used (You are probably switching entries too fast?). " +
                                 "Switch back to the previous version and wait a few seconds after you exit the game " +
                                $"so that Windows stops using the file.\n\nError\n--------\n{ex.Message}");
             }
@@ -262,7 +261,7 @@ namespace Cactus
 
             if (_processManager.AreProcessesRunning)
             {
-                MessageBox.Show("Diablo II is currently running. Please close the game before attempting to reset your directory.");
+                CactusMessageBox.Show("Diablo II is currently running. Please close the game before attempting to reset your directory.");
                 return;
             }
 

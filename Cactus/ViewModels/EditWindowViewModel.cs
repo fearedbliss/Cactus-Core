@@ -17,17 +17,16 @@ using Cactus.Models;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.IO;
-using System.Windows;
 
 namespace Cactus.ViewModels
 {
     public class EditWindowViewModel : ViewModelBase, IEditWindowViewModel
     {
-        private IEntryManager _entryManager;
-        private IRegistryService _registryService;
-        private IPathBuilder _pathBuilder;
-        private IProcessManager _processManager;
-        private ILogger _logger;
+        private readonly IEntryManager _entryManager;
+        private readonly IRegistryService _registryService;
+        private readonly IPathBuilder _pathBuilder;
+        private readonly IProcessManager _processManager;
+        private readonly ILogger _logger;
 
         public EntryModel CurrentEntry { get; set; }
         public EntryModel LastRanEntry { get; set; }
@@ -55,7 +54,7 @@ namespace Cactus.ViewModels
         {
             if (_entryManager.IsInvalid(CurrentEntry))
             {
-                MessageBox.Show("Unable to change your Entry! Please make sure all fields are:\n\n" +
+                CactusMessageBox.Show("Unable to change your Entry! Please make sure all fields are:\n\n" +
                     "- Populated (Label/Flags are optional)\n" +
                     "- Path should match the rest of your Entries (.exe can vary)\n" +
                     "- No invalid characters\n\n" +
@@ -88,7 +87,7 @@ namespace Cactus.ViewModels
                         // If the target platform directory name already exists, we can't allow this rename to happen.
                         if (!oldPlatformDirectory.EqualsIgnoreCase(newPlatformDirectory) && Directory.Exists(newPlatformDirectory))
                         {
-                            MessageBox.Show($"A platform directory with the name \"{CurrentEntry.Platform}\" already exists.");
+                            CactusMessageBox.Show($"A platform directory with the name \"{CurrentEntry.Platform}\" already exists.");
                             ReverseChanges();
                             return;
                         }
@@ -104,7 +103,7 @@ namespace Cactus.ViewModels
                         // Prevent renaming a label from something to nothing.
                         if (!string.IsNullOrWhiteSpace(_oldEntry.Label) && string.IsNullOrWhiteSpace(CurrentEntry.Label))
                         {
-                            MessageBox.Show("A label cannot be removed once created. It can only be modified.");
+                            CactusMessageBox.Show("A label cannot be removed once created. It can only be modified.");
                             ReverseChanges();
                             return;
                         }
@@ -112,7 +111,7 @@ namespace Cactus.ViewModels
                         // If the target save directory name already exists, we can't allow this rename to happen.
                         if (!oldSavesDirectory.EqualsIgnoreCase(newSavesDirectory) && Directory.Exists(newSavesDirectory))
                         {
-                            MessageBox.Show($"A save directory with the same name exists at: \"{newSavesDirectory}\"");
+                            CactusMessageBox.Show($"A save directory with the same name exists at: \"{newSavesDirectory}\"");
                             ReverseChanges();
                             return;
                         }

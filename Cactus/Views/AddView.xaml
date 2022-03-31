@@ -5,7 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cactus.Views"
         mc:Ignorable="d"
-        Title="Add Entry" Height="260" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
+
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        TextElement.FontWeight="Bold"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+
+        Title="Add Entry" Height="320" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
         DataContext="{Binding AddWindow, Source={StaticResource Locator}}">
 
     <Grid Margin="10">
@@ -14,8 +22,8 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="33"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="70"/>
@@ -26,8 +34,8 @@
         <Label Content="Platform*"/>
         <TextBox Name="txtPlatform" Text="{Binding Platform}" Grid.Column="1" Grid.ColumnSpan="2"/>
 
-      <Label Content="Label" Grid.Row="1"/>
-      <TextBox Name="txtLabel" Text="{Binding Label}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label Content="Label" Grid.Row="1"/>
+        <TextBox Name="txtLabel" Text="{Binding Label}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
 
         <Label Content="Path*" Grid.Row="2"/>
         <TextBox Name="txtPath" Text="{Binding Path}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"/>
@@ -35,7 +43,7 @@
         <Label Content="Flags" Grid.Row="3"/>
         <TextBox Name="txtFlags" Text="{Binding Flags}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>
 
-        <GroupBox Header="Options" Grid.Row="4" Grid.ColumnSpan="3" Margin="0 0 0 10">
+        <GroupBox Header="Options" Grid.Row="4" Grid.ColumnSpan="3" Margin="0 10 0 10">
             <Grid HorizontalAlignment="Center" Grid.ColumnSpan="3">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -50,7 +58,7 @@
         </GroupBox>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3">
-            <Button Name="btnOk" Content="Add" IsDefault="True" Command="{Binding OkCommand}" Click="CloseWindow_Click" Padding="10 0 10 0" Margin="0 0 5 0"/>
+            <Button Name="btnOk" Content="Add" IsDefault="True" Command="{Binding OkCommand}" Click="CloseWindow_Click" Padding="10 0 10 0" Margin="0 0 10 0"/>
             <Button Name="btnCancel" Content="Cancel" IsCancel="True" Command="{Binding CancelCommand}" Click="CloseWindow_Click" Padding="10 0 10 0"/>
         </StackPanel>
     </Grid>

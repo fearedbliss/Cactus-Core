@@ -22,14 +22,16 @@ namespace Cactus
 {
     public class JsonManager : IJsonManager
     {
-        private IFileGenerator _fileGenerator;
+        private readonly IFileGenerator _fileGenerator;
 
         private readonly string _jsonDirectory;
         private readonly string _entriesJsonFile = "Entries.json";
         private readonly string _lastRequiredJsonFile = "LastRequiredFiles.json";
+        private readonly string _settingsJsonFile = "Settings.json";
 
         private string EntriesJsonPath { get; }
         private string LastRequiredJsonPath { get; }
+        private string SettingsJsonPath { get; }
 
         public JsonManager(IFileGenerator fileGenerator)
         {
@@ -38,6 +40,7 @@ namespace Cactus
             _jsonDirectory = Directory.GetCurrentDirectory();
             EntriesJsonPath = Path.Combine(_jsonDirectory, _entriesJsonFile);
             LastRequiredJsonPath = Path.Combine(_jsonDirectory, _lastRequiredJsonFile);
+            SettingsJsonPath = Path.Combine(_jsonDirectory, _settingsJsonFile);
         }
 
         public void SaveEntries(List<EntryModel> entries)
@@ -73,6 +76,22 @@ namespace Cactus
                 return deserializedModel;
             }
             return null;
+        }
+
+        public void SaveSettings(SettingsModel settings)
+        {
+            string serializedSettings = JsonConvert.SerializeObject(settings, Formatting.Indented);
+            File.WriteAllText(SettingsJsonPath, serializedSettings);
+        }
+
+        public SettingsModel GetSettings()
+        {
+            if (File.Exists(SettingsJsonPath))
+            {
+                var serializedSettings = File.ReadAllText(SettingsJsonPath);
+                return JsonConvert.DeserializeObject<SettingsModel>(serializedSettings);
+            }
+            return new SettingsModel();
         }
 
         private void SaveToJsonFile(string serializedText, string outputFile)

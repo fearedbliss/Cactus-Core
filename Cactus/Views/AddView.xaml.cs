@@ -16,9 +16,6 @@ using System.Windows;
 
 namespace Cactus.Views
 {
-    /// <summary>
-    /// Interaction logic for AddView.xaml
-    /// </summary>
     public partial class AddView : Window
     {
         public AddView()

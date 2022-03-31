@@ -24,12 +24,12 @@ namespace Cactus.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
     {
-        private IEntryManager _entryManager;
-        private IFileSwitcher _fileSwitcher;
+        private readonly IEntryManager _entryManager;
+        private readonly IFileSwitcher _fileSwitcher;
 
         // Child View Models
-        private IAddWindowViewModel _addWindowViewModel;
-        private IEditWindowViewModel _editWindowViewModel;
+        private readonly IAddWindowViewModel _addWindowViewModel;
+        private readonly IEditWindowViewModel _editWindowViewModel;
 
         // Commands
         public RelayCommand AddCommand { get; private set; }
@@ -39,10 +39,11 @@ namespace Cactus.ViewModels
         public RelayCommand UpCommand { get; private set; }
         public RelayCommand DownCommand { get; private set; }
         public RelayCommand ResetCommand { get; private set; }
+        public RelayCommand SettingsCommand { get; private set; }
         public RelayCommand LaunchCommand { get; private set; }
 
         private readonly string _appName = "Cactus";
-        private readonly string _version = "2.0.0";
+        private readonly string _version = "2.1.0";
 
         public MainWindowViewModel(IEntryManager entryManager, IFileSwitcher fileSwitcher, IAddWindowViewModel addWindowViewModel, IEditWindowViewModel editWindowViewModel)
         {
@@ -58,6 +59,7 @@ namespace Cactus.ViewModels
             UpCommand = new RelayCommand(Up);
             DownCommand = new RelayCommand(Down);
             ResetCommand = new RelayCommand(Reset);
+            SettingsCommand = new RelayCommand(Settings);
             LaunchCommand = new RelayCommand(Launch);
 
             RefreshEntriesList();
@@ -100,6 +102,20 @@ namespace Cactus.ViewModels
             }
         }
 
+        private int _selectedIndex;
+        public int SelectedIndex
+        {
+            get
+            {
+                return _selectedIndex;
+            }
+            set
+            {
+                _selectedIndex = value;
+                RaisePropertyChanged("SelectedIndex");
+            }
+        }
+
         public void Add()
         {
             var addWindow = new AddView()
@@ -118,7 +134,7 @@ namespace Cactus.ViewModels
         {
             if (SelectedEntry == null)
             {
-                MessageBox.Show("No entry to edit was selected.");
+                CactusMessageBox.Show("No entry to edit was selected.");
                 return;
             }
 
@@ -137,24 +153,30 @@ namespace Cactus.ViewModels
         {
             if (SelectedEntry == null)
             {
-                MessageBox.Show("No entry to delete was selected.");
+                CactusMessageBox.Show("No entry to delete was selected.");
                 return;
             }
 
-            int deletedIndex = _entryManager.Delete(SelectedEntry);
+            // Storing this so we can reposition the cursor later since once
+            // we delete this entry, the SelectedIndex will be -1.
+            int storedSelectedIndex = SelectedIndex;
+
+            _entryManager.Delete(SelectedIndex);
             _entryManager.SaveEntries();
 
             RefreshEntriesList();
 
             if (_entries.Count != 0)
             {
-                int targetIndex = 0;
+                int targetIndex = storedSelectedIndex - 1;
 
-                // If there are still entries but it isn't the ceiling entry, then adjust one up.
-                if (deletedIndex != 0)
+                // If we are already at the top but we still have entries,
+                // then set the position to the next one on the top.
+                if (targetIndex < 0)
                 {
-                    targetIndex = deletedIndex - 1;
+                    targetIndex = 0;
                 }
+
                 SelectedEntry = _entries[targetIndex];
             }
         }
@@ -163,7 +185,7 @@ namespace Cactus.ViewModels
         {
             if (SelectedEntry == null)
             {
-                MessageBox.Show("No entry to copy was selected.");
+                CactusMessageBox.Show("No entry to copy was selected.");
                 return;
             }
 
@@ -178,7 +200,7 @@ namespace Cactus.ViewModels
         {
             if (SelectedEntry == null)
             {
-                MessageBox.Show("No entry to move up was selected.");
+                CactusMessageBox.Show("No entry to move up was selected.");
                 return;
             }
 
@@ -192,7 +214,7 @@ namespace Cactus.ViewModels
         {
             if (SelectedEntry == null)
             {
-                MessageBox.Show("No entry to move down was selected.");
+                CactusMessageBox.Show("No entry to move down was selected.");
                 return;
             }
 
@@ -209,18 +231,28 @@ namespace Cactus.ViewModels
             RefreshEntriesList();
         }
 
+        public void Settings()
+        {
+            var settingsWindow = new SettingsView()
+            {
+                Owner = Application.Current.MainWindow
+            };
+
+            settingsWindow.ShowDialog();
+        }
+
         public void Launch()
         {
             if (SelectedEntry == null)
             {
-                MessageBox.Show("No entry to launch was selected.");
+                CactusMessageBox.Show("No entry to launch was selected.");
                 return;
 
             }
 
             if (string.IsNullOrWhiteSpace(SelectedEntry.Path) || string.IsNullOrWhiteSpace(SelectedEntry.Platform))
             {
-                MessageBox.Show("This entry has no platform or path set.");
+                CactusMessageBox.Show("This entry has no platform or path set.");
                 return;
             }
 

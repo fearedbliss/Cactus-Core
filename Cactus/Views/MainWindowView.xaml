@@ -3,14 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Cactus"
         mc:Ignorable="d"
-        Title="{Binding Title, Mode=OneWay}" Width="710" Height="350" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
+
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        TextElement.FontWeight="Bold"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+
+        Title="{Binding Title, Mode=OneWay}" Height="550" Width="850" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
+        Closing="OnClose" StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged"
         DataContext="{Binding MainWindow, Source={StaticResource Locator}}">
 
     <StackPanel Margin="10">
-        <ListView Name="EntriesListView" Height="255" Margin="0 0 0 10" ItemsSource="{Binding Entries}" SelectedItem="{Binding SelectedEntry}"
-                  SelectionMode="Single" MouseDoubleClick="EntriesListView_DoubleClick">
+        <ListView Name="EntriesListView" Height="440" Margin="0 0 0 15" ItemsSource="{Binding Entries}" SelectedItem="{Binding SelectedEntry}" SelectedIndex="{Binding SelectedIndex}"
+                  SelectionMode="Single" MouseDoubleClick="EntriesListView_DoubleClick" SelectionChanged="EntriesListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridView.ColumnHeaderContainerStyle>
@@ -18,14 +28,14 @@
                             <Setter Property="IsHitTestVisible" Value="False"/>
                         </Style>
                     </GridView.ColumnHeaderContainerStyle>
-                    <GridViewColumn Width="50" Header="Last">
+                    <GridViewColumn Header="Last">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsHitTestVisible="False" Focusable="False" IsChecked="{Binding WasLastRan}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="50" Header="Exp">
+                    <GridViewColumn Header="Exp">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsHitTestVisible="False" Focusable="False" IsChecked="{Binding IsExpansion}"/>
@@ -38,14 +48,15 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Height="25">
-            <Button Name="btnAdd" Content="Add" Command="{Binding AddCommand}" Margin="0 0 5 0"/>
-            <Button Name="btnEdit" Content="Edit" Command="{Binding EditCommand}" Margin="0 0 5 0"/>
-            <Button Name="btnDelete" Content="Delete" Command="{Binding DeleteCommand}" Margin="0 0 5 0"/>
-            <Button Name="btnCopy" Content="Copy" Command="{Binding CopyCommand}" Margin="0 0 5 0"/>
-            <Button Name="btnMoveUp" Content="Up" Command="{Binding UpCommand}" Margin="0 0 5 0"/>
-            <Button Name="btnMoveDown" Content="Down" Command="{Binding DownCommand}" Margin="0 0 5 0"/>
-            <Button Name="btnReset" Content="Reset" Command="{Binding ResetCommand}" Margin="0 0 5 0"/>
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Height="35">
+            <Button Name="btnAdd" Content="Add" Command="{Binding AddCommand}" Margin="0 0 10 0"/>
+            <Button Name="btnEdit" Content="Edit" Command="{Binding EditCommand}" Margin="0 0 10 0"/>
+            <Button Name="btnDelete" Content="Delete" Command="{Binding DeleteCommand}" Margin="0 0 10 0"/>
+            <Button Name="btnCopy" Content="Copy" Command="{Binding CopyCommand}" Margin="0 0 10 0"/>
+            <Button Name="btnMoveUp" Content="Up" Command="{Binding UpCommand}" Margin="0 0 10 0"/>
+            <Button Name="btnMoveDown" Content="Down" Command="{Binding DownCommand}" Margin="0 0 10 0"/>
+            <Button Name="btnReset" Content="Reset" Command="{Binding ResetCommand}" Margin="0 0 10 0"/>
+            <Button Name="btnSettings" Content="Settings" Command="{Binding SettingsCommand}" Margin="0 0 10 0"/>
             <Button Name="btnLaunch" Content="Launch" Command="{Binding LaunchCommand}"/>
         </StackPanel>
     </StackPanel>

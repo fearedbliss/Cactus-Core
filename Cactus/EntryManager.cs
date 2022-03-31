@@ -30,9 +30,9 @@ namespace Cactus
     public class EntryManager : ViewModelBase, IEntryManager
     {
         private List<EntryModel> _entries;
-        private ILogger _logger;
-        private IPathBuilder _pathBuilder;
-        private IJsonManager _jsonManager;
+        private readonly ILogger _logger;
+        private readonly IPathBuilder _pathBuilder;
+        private readonly IJsonManager _jsonManager;
 
         public EntryManager(ILogger logger, IPathBuilder pathBuilder, IJsonManager jsonManager)
         {
@@ -74,30 +74,9 @@ namespace Cactus
             _entries.Add(entry);
         }
 
-        public int Delete(EntryModel entry)
+        public void Delete(int targetIndex)
         {
-            int removedIndex = -1;
-            EntryModel elementToRemove = null;
-
-            for (int i = 0; i < _entries.Count; i++)
-            {
-                var e = _entries[i];
-
-                if (e.Platform.EqualsIgnoreCase(entry.Platform) && e.Path.EqualsIgnoreCase(entry.Path) &&
-                    e.Flags.EqualsIgnoreCase(entry.Flags) && e.IsExpansion == entry.IsExpansion)
-                {
-                    elementToRemove = e;
-                    removedIndex = i;
-                    break;
-                }
-            }
-
-            if (elementToRemove != null)
-            {
-                _entries.Remove(elementToRemove);
-            }
-
-            return removedIndex;
+            _entries.RemoveAt(targetIndex);
         }
 
         public EntryModel Copy(EntryModel entry)

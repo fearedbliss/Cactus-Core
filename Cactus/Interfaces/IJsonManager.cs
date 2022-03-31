@@ -23,5 +23,7 @@ namespace Cactus.Interfaces
         List<EntryModel> GetEntries();
         void SaveLastRequiredFiles(RequiredFilesModel requiredFiles);
         RequiredFilesModel GetLastRequiredFiles();
+        void SaveSettings(SettingsModel requiredFiles);
+        SettingsModel GetSettings();
     }
 }
