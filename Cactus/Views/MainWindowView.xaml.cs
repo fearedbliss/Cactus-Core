@@ -122,10 +122,15 @@ namespace Cactus
 
         private void EntriesListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-
+            ScrollIntoView();
         }
 
         private void OnEntries_Loaded(object sender, RoutedEventArgs e)
+        {
+            ScrollIntoView();
+        }
+
+        private void ScrollIntoView()
         {
             if (EntriesListView.SelectedItem == null)
             {

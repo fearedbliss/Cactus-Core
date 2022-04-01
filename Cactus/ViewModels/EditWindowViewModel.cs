@@ -26,7 +26,6 @@ namespace Cactus.ViewModels
         private readonly IRegistryService _registryService;
         private readonly IPathBuilder _pathBuilder;
         private readonly IProcessManager _processManager;
-        private readonly ILogger _logger;
 
         public EntryModel CurrentEntry { get; set; }
         public EntryModel LastRanEntry { get; set; }
@@ -38,13 +37,12 @@ namespace Cactus.ViewModels
         public RelayCommand CancelCommand { get; private set; }
 
         public EditWindowViewModel(IEntryManager entryManager, IRegistryService registryService,
-                                   IPathBuilder pathBuilder, IProcessManager processManager, ILogger logger)
+                                   IPathBuilder pathBuilder, IProcessManager processManager)
         {
             _entryManager = entryManager;
             _registryService = registryService;
             _pathBuilder = pathBuilder;
             _processManager = processManager;
-            _logger = logger;
 
             OkCommand = new RelayCommand(Ok);
             CancelCommand = new RelayCommand(Cancel);
@@ -108,23 +106,66 @@ namespace Cactus.ViewModels
                             return;
                         }
 
+                        // If the label is changing from something A to something B, but another entry already
+                        // exists for that platform + label combination, then we need to prevent this change.
+                        if (!_oldEntry.Label.EqualsIgnoreCase(CurrentEntry.Label))
+                        {
+                            // If this platform/label combination already exists, we can't allow this rename to happen.
+                            if (_entryManager.DoesPlatformAndLabelExist(CurrentEntry, true))
+                            {
+                                CactusMessageBox.Show("A platform and label already exists with combination:\n\n" +
+                                    $"{CurrentEntry.Platform}\n" +
+                                    $"{CurrentEntry.Label}");
+                                ReverseChanges();
+                                return;
+                            }
+                        }
+
                         // If the target save directory name already exists, we can't allow this rename to happen.
                         if (!oldSavesDirectory.EqualsIgnoreCase(newSavesDirectory) && Directory.Exists(newSavesDirectory))
                         {
-                            CactusMessageBox.Show($"A save directory with the same name exists at: \"{newSavesDirectory}\"");
+                            CactusMessageBox.Show($"A save directory with the same name exists at: \n\n{newSavesDirectory}");
                             ReverseChanges();
                             return;
                         }
 
-                        // If this entry is currently running, then we can't complete this
-                        // operation since the game is still using that directory/save path.
-                        if (CurrentEntry.WasLastRan && _processManager.AreProcessesRunning)
+                        // If there are processes running, we need to be careful with what we allow to be edited at this time.
+                        if (_processManager.AreProcessesRunning)
                         {
-                            _logger.LogWarning("You can't edit this entry since the game is currently running and using its save directory.");
-                            _logger.LogWarning("Please close all instances of Diablo II and try again.");
+                            bool stopEdit = false;
 
-                            ReverseChanges();
-                            return;
+                            // If the current entry was the last ran, then that means we are currently running this one
+                            // and cannot allow an edit.
+                            if (CurrentEntry.WasLastRan)
+                            {
+                                stopEdit = true;
+                            }
+
+                            // If the entry we are editing is related to the same platform that is running...
+                            else if (_oldEntry.Platform.EqualsIgnoreCase(LastRanEntry.Platform))
+                            {
+                                // If we are attempting to rename the platform name, we can't allow this edit.
+                                if (!CurrentEntry.Platform.EqualsIgnoreCase(LastRanEntry.Platform))
+                                {
+                                    stopEdit = true;
+                                }
+
+                                // If we are attempting to edit the label of a platform that is identical to the
+                                // one that is currently running, we can't allow this edit.
+                                else if (_oldEntry.Label.EqualsIgnoreCase(LastRanEntry.Label))
+                                {
+                                    stopEdit = true;
+                                }
+                            }
+
+                            if (stopEdit)
+                            {
+                                CactusMessageBox.Show($"You can't edit this entry since the game is currently running " +
+                                    "and the running instance is related to this platform and/or label. " +
+                                    "Please close all instances of Diablo II and try again.");
+                                ReverseChanges();
+                                return;
+                            }
                         }
 
                         // No need to rename if the Platform directories are the same.

@@ -218,5 +218,32 @@ namespace Cactus
                    _pathBuilder.ContainsInvalidCharacters(entry.Platform) ||
                    _pathBuilder.ContainsInvalidCharacters(entry.Label);
         }
+
+        /// <summary>
+        /// Checks to see if an entry with this platform and label combination exists.
+        /// </summary>
+        /// <param name="excludeSelf">Excludes the given object from consideration.</param>
+        public bool DoesPlatformAndLabelExist(EntryModel entry, bool excludeSelf = false)
+        {
+            foreach (var currentEntry in _entries)
+            {
+                if (excludeSelf && currentEntry == entry)
+                {
+                    continue;
+                }
+
+                if (!currentEntry.Platform.EqualsIgnoreCase(entry.Platform))
+                {
+                    continue;
+                }
+
+                if (currentEntry.Label.EqualsIgnoreCase(entry.Label))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

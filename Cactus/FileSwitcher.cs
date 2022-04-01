@@ -89,6 +89,13 @@ namespace Cactus
                 if (!_lastRanEntry.Label.EqualsIgnoreCase(_currentEntry.Label))
                 {
                     _logger.LogInfo("Same platform but different labels. Updating.");
+
+                    // Do not allow the switch if the user has the game running but the labels are different.
+                    if (IsGameRunning())
+                    {
+                        return;
+                    }
+
                     UpdateEntryAndRegistry();
                 }
                 else
@@ -96,7 +103,7 @@ namespace Cactus
                     _logger.LogInfo("Same platform and same label.");
 
                     // We will be setting the _lastRanEntry to the CurrentEntry since
-                    // even though the platforms are the same, the flags may differ.
+                    // even though the platform and labels are the same, the flags may differ.
                     _entries.SwapLastRan(_lastRanEntry, _currentEntry);
                     _lastRanEntry = _currentEntry;
                     _entries.SaveEntries();
@@ -110,11 +117,9 @@ namespace Cactus
             {
                 _logger.LogInfo("A different version has been selected. Switching.");
 
-                // If there is an existing process running, do not allow a switch.
-                // Only identical versions can be launched.
-                if (_processManager.AreProcessesRunning)
+                // Do not allow the switch if the user has the game running but the platforms are different.
+                if (IsGameRunning())
                 {
-                    CactusMessageBox.Show("Diablo II is still running. Please close the game before attempting to switch to a different Platform.");
                     return;
                 }
 
@@ -122,6 +127,22 @@ namespace Cactus
                 UpdateEntryAndRegistry();
                 LaunchGame();
             }
+        }
+
+        private bool IsGameRunning()
+        {
+            if (_processManager.AreProcessesRunning)
+            {
+                CactusMessageBox.Show("Diablo II is still running!\n\n" +
+                    "Please close the game before attempting to:\n\n" +
+                    "- Switch to a different platform.\n" +
+                    "- Switch to the same platform but with a different label.\n" +
+                    "- Resetting your directory.");
+
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -246,9 +267,8 @@ namespace Cactus
         {
             _logger.LogWarning("Resetting Directory ...");
 
-            if (_processManager.AreProcessesRunning)
+            if (IsGameRunning())
             {
-                CactusMessageBox.Show("Diablo II is currently running. Please close the game before attempting to reset your directory.");
                 return;
             }
 

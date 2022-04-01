@@ -37,7 +37,7 @@ namespace Cactus.Interfaces
         void RenamePlatform(string oldPlatformName, string newPlatformName);
         void RenameLabel(string platformName, string oldLabelName, string newLabelName);
         bool DoesPlatformNameMatchLastRan(string platformName);
-
         bool IsInvalid(EntryModel entry);
+        bool DoesPlatformAndLabelExist(EntryModel entry, bool excludeSelf = false);
     }
 }
