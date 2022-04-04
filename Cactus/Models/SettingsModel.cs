@@ -19,13 +19,16 @@ namespace Cactus.Models
     [JsonObject(MemberSerialization.OptIn)]
     public class SettingsModel
     {
-        [JsonProperty("shouldMinimizeToTray", Order = 1)]
+        [JsonProperty("rootDirectory", Order = 1)]
+        public string RootDirectory { get; set; } = "";
+
+        [JsonProperty("shouldMinimizeToTray", Order = 2)]
         public bool ShouldMinimizeToTray { get; set; } = false;
 
-        [JsonProperty("shouldEnableDarkMode", Order = 2)]
+        [JsonProperty("shouldEnableDarkMode", Order = 3)]
         public bool ShouldEnableDarkMode { get; set; } = false;
 
-        [JsonProperty("preferredColor", Order = 3)]
+        [JsonProperty("preferredColor", Order = 4)]
         public string PreferredColor { get; set; } = "Teal";
     }
 }

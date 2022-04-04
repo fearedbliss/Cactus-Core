@@ -30,14 +30,15 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Label Content="Platform*"/>
+        <Label Content="Platform *"/>
+        <!-- Using "Platform" and not "CurrentEntry.Platform" is intentional. Look at the IEditWindowViewModel interface. -->
         <TextBox Name="txtPlatform" Text="{Binding Platform}" Grid.Column="1" Grid.ColumnSpan="2"/>
 
 		<Label Content="Label" Grid.Row="1"/>
-		<TextBox Name="txtLabel" IsEnabled="{Binding CurrentEntry.Label, TargetNullValue='False'}" Text="{Binding CurrentEntry.Label}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBox Name="txtLabel" IsEnabled="{Binding CurrentEntry.Label, TargetNullValue='False'}" Text="{Binding CurrentEntry.Label}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
 
-		<Label Content="Path*" Grid.Row="2"/>
-        <TextBox Name="txtPath" Text="{Binding CurrentEntry.Path}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"/>
+		<Label Content="Launcher *" Grid.Row="2"/>
+        <TextBox Name="txtLauncher" Text="{Binding CurrentEntry.Launcher}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"/>
 
         <Label Content="Flags" Grid.Row="3"/>
         <TextBox Name="txtFlags" Text="{Binding CurrentEntry.Flags}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"/>

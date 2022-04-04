@@ -32,7 +32,7 @@ namespace Cactus
             using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Blizzard Entertainment\Diablo II"))
             {
                 string saveDirectory = _pathBuilder.GetSaveDirectory(entry);
-                string rootDirectory = _pathBuilder.GetRootDirectory(entry);
+                string rootDirectory = _pathBuilder.GetRootDirectory();
 
                 key.SetValue("Save Path", saveDirectory);
                 key.SetValue("NewSavePath", saveDirectory);

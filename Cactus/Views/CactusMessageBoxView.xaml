@@ -19,7 +19,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <TextBlock TextAlignment="Center" TextWrapping="WrapWithOverflow" Text="{Binding Path=Message}" Margin="0 20 0 0"/>
-        <Button Name="btnOk" Content="Ok" IsDefault="True" Click="CloseWindow_Click" Grid.Row="2" Width="65" Padding="10 0 10 0" Margin="0 0 5 0"/>
+        <TextBlock TextAlignment="Center" TextWrapping="WrapWithOverflow" Text="{Binding Path=Message}" Margin="20 20 20 0"/>
+        <Button Name="btnOk" Content="Ok" IsDefault="True" Click="CloseWindow_Click" Grid.Row="2" Width="65" Padding="10 0 10 0"/>
     </Grid>
 </Window>

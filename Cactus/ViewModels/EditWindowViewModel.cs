@@ -50,13 +50,17 @@ namespace Cactus.ViewModels
 
         private void Ok()
         {
+            if (!_pathBuilder.IsRootDirectorySet())
+            {
+                CactusMessageBox.Show("Please set your \"Diablo II Root Directory\" by clicking the \"Settings\" button before editing an entry!");
+                ReverseChanges();
+                return;
+            }
+
             if (_entryManager.IsInvalid(CurrentEntry))
             {
-                CactusMessageBox.Show("Unable to change your Entry! Please make sure all fields are:\n\n" +
-                    "- Populated (Label/Flags are optional)\n" +
-                    "- Path should match the rest of your Entries (.exe can vary)\n" +
-                    "- No invalid characters\n\n" +
-                    "If you have moved Cactus to a new machine, please manually edit the Entries.json and adjust all your paths accordingly.");
+                CactusMessageBox.Show("Please make sure the required fields are populated and contain no invalid characters.\n\n" +
+                    "If you have moved Cactus to a new machine, please edit your \"Diablo II Root Directory\" by clicking the \"Settings\" button.");
                 ReverseChanges();
                 return;
             }
@@ -223,6 +227,16 @@ namespace Cactus.ViewModels
                     _registryService.Update(LastRanEntry);
                 }
             }
+            else
+            {
+                // If we are editing an entry that was copied (null), and we detect that the label
+                // was changed from something to nothing, then we need to set the label to null
+                // rather than letting it be an empty string.
+                if (!string.IsNullOrWhiteSpace(_oldEntry.Label) && string.IsNullOrWhiteSpace(CurrentEntry.Label))
+                {
+                    CurrentEntry.Label = null;
+                }
+            }
 
             _entryManager.SaveEntries();
 
@@ -239,7 +253,7 @@ namespace Cactus.ViewModels
         {
             CurrentEntry.Platform = _oldEntry.Platform;
             CurrentEntry.Label = _oldEntry.Label;
-            CurrentEntry.Path = _oldEntry.Path;
+            CurrentEntry.Launcher = _oldEntry.Launcher;
             CurrentEntry.Flags = _oldEntry.Flags;
             CurrentEntry.WasLastRan = _oldEntry.WasLastRan;
 
@@ -257,7 +271,7 @@ namespace Cactus.ViewModels
                     {
                         Platform = CurrentEntry.Platform,
                         Label = CurrentEntry.Label,
-                        Path = CurrentEntry.Path,
+                        Launcher = CurrentEntry.Launcher,
                         Flags = CurrentEntry.Flags,
                         WasLastRan = CurrentEntry.WasLastRan
                     };

@@ -22,7 +22,7 @@ namespace Cactus.Models
     {
         private string _platform;
         private string _label;
-        private string _path;
+        private string _launcher;
         private string _flags;
         private bool _wasLastRan;
 
@@ -54,17 +54,17 @@ namespace Cactus.Models
             }
         }
 
-        [JsonProperty("Path", Order = 3)]
-        public string Path
+        [JsonProperty("Launcher", Order = 3)]
+        public string Launcher
         {
             get
             {
-                return _path;
+                return _launcher;
             }
             set
             {
-                _path = value;
-                RaisePropertyChanged("Path");
+                _launcher = value;
+                RaisePropertyChanged("Launcher");
             }
         }
 
@@ -95,5 +95,27 @@ namespace Cactus.Models
                 RaisePropertyChanged("WasLastRan");
             }
         }
+
+        #region Migration Only
+        public bool ShouldSerializePath()
+        {
+            return false;
+        }
+
+        private string _path;
+
+        [JsonProperty("Path")]
+        public string Path
+        {
+            get
+            {
+                return _path;
+            }
+            set
+            {
+                _path = value;
+            }
+        }
+        #endregion
     }
 }

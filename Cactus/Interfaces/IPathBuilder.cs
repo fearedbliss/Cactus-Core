@@ -18,9 +18,12 @@ namespace Cactus.Interfaces
 {
     public interface IPathBuilder
     {
-        string GetRootDirectory(EntryModel entry);
+        string GetRootDirectory();
+        string GetPlatformsDirectory();
+        string GetSavesDirectory();
         string GetPlatformDirectory(EntryModel entry);
         string GetSaveDirectory(EntryModel entry, bool excludeLabel = false);
-        bool ContainsInvalidCharacters(string word);
+        string GetLauncherPath(EntryModel entry);
+        bool IsRootDirectorySet();
     }
 }

@@ -89,5 +89,29 @@ namespace Cactus
                 return _container.Resolve<ISettingsManager>();
             }
         }
+
+        public IJsonManager JsonManager
+        {
+            get
+            {
+                return _container.Resolve<IJsonManager>();
+            }
+        }
+
+        public IPathBuilder PathBuilder
+        {
+            get
+            {
+                return _container.Resolve<IPathBuilder>();
+            }
+        }
+
+        public IEntryManager EntryManager
+        {
+            get
+            {
+                return _container.Resolve<IEntryManager>();
+            }
+        }
     }
 }

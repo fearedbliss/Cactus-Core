@@ -13,11 +13,18 @@
 // limitations under the License.
 
 using Cactus.Models;
+using GalaSoft.MvvmLight.Command;
 
 namespace Cactus.Interfaces
 {
     public interface IAddWindowViewModel
     {
+        string Platform { get; set; }
+        string Label { get; set; }
+        string Launcher { get; set; }
+        string Flags { get; set; }
         EntryModel AddedEntry { get; set; }
+        RelayCommand OkCommand { get; }
+        RelayCommand CancelCommand { get; }
     }
 }

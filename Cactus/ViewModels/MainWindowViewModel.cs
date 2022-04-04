@@ -43,7 +43,7 @@ namespace Cactus.ViewModels
         public RelayCommand LaunchCommand { get; private set; }
 
         private readonly string _appName = "Cactus";
-        private readonly string _version = "2.2.1";
+        private readonly string _version = "2.3.0";
 
         public MainWindowViewModel(IEntryManager entryManager, IFileSwitcher fileSwitcher, IAddWindowViewModel addWindowViewModel, IEditWindowViewModel editWindowViewModel)
         {
@@ -123,6 +123,11 @@ namespace Cactus.ViewModels
             };
 
             addWindow.ShowDialog();
+
+            if (_addWindowViewModel.AddedEntry == null)
+            {
+                return;
+            }
 
             SelectedEntry = _addWindowViewModel.AddedEntry;
 
@@ -247,12 +252,6 @@ namespace Cactus.ViewModels
                 CactusMessageBox.Show("No entry to launch was selected.");
                 return;
 
-            }
-
-            if (string.IsNullOrWhiteSpace(SelectedEntry.Path) || string.IsNullOrWhiteSpace(SelectedEntry.Platform))
-            {
-                CactusMessageBox.Show("This entry has no platform or path set.");
-                return;
             }
 
             _fileSwitcher.Run(SelectedEntry);

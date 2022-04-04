@@ -47,7 +47,7 @@ namespace Cactus
             return currentProcesses.Length > 1;
         }
 
-        public void Launch(EntryModel entry, bool isAdmin)
+        public void Launch(string launcherPath, string launcherFlags, bool isAdmin)
         {
             try
             {
@@ -55,8 +55,8 @@ namespace Cactus
 
                 var processInfo = new ProcessStartInfo
                 {
-                    FileName = entry.Path,
-                    Arguments = entry.Flags
+                    FileName = launcherPath,
+                    Arguments = launcherFlags
                 };
 
                 if (isAdmin)
@@ -69,7 +69,7 @@ namespace Cactus
             }
             catch (Exception ex)
             {
-                CactusMessageBox.Show($"There was an error launching the application.\n\n{ex.Message}\n\nLaunch Path: {entry.Path}");
+                CactusMessageBox.Show($"There was an error launching the application.\n\n{ex.Message}\n\nLaunch Path: {launcherPath}");
             }
 
             _processCount--;

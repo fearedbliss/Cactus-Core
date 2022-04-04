@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cactus.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
 
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -13,7 +14,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
 
-        Title="Settings" Height="390" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
+        Title="Settings" Height="503" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
         DataContext="{Binding SettingsWindow, Source={StaticResource Locator}}">
 
     <Grid Margin="10">
@@ -21,16 +22,21 @@
             <RowDefinition />
             <RowDefinition Height="33"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
 
         <StackPanel Grid.ColumnSpan="3">
-            <CheckBox Name="chkMinimizeToTray" Content="  Minimize to System Tray" IsChecked="{Binding ShouldMinimizeToTray}" Grid.ColumnSpan="2" Margin="0 0 0 5"/>
-            <CheckBox Name="chkShouldEnableDarkMode" Content="  Dark Mode" IsChecked="{Binding ShouldEnableDarkMode}" Grid.ColumnSpan="2"/>
-            <Separator Margin="0 15 0 15"/>
+            <GroupBox Header="Diablo II Root Directory *" Margin="0 0 0 10">
+                <TextBox Text="{Binding RootDirectory}" materialDesign:HintAssist.Hint="C:\Games\Diablo II"/>
+            </GroupBox>
+
+            <GroupBox Header="Options" Margin="0 0 0 10">
+                <StackPanel>
+                    <CheckBox Name="chkMinimizeToTray" Content="  Minimize to System Tray" IsChecked="{Binding ShouldMinimizeToTray}" Margin="0 0 0 5"/>
+                    <CheckBox Name="chkShouldEnableDarkMode" Content="  Dark Mode" IsChecked="{Binding ShouldEnableDarkMode}" />
+                </StackPanel>
+            </GroupBox>
+
             <GroupBox Header="Colors">
-                <ListBox Name="lstColors" Height="160" ItemsSource="{Binding Colors}" Loaded="OnColors_Loaded" SelectedItem="{Binding PreferredColor}" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <ListBox Name="lstColors" Height="155" ItemsSource="{Binding Colors}" Loaded="OnColors_Loaded" SelectedItem="{Binding PreferredColor}" ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
                             <Style.Triggers>
@@ -46,7 +52,7 @@
             </GroupBox>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1">
             <Button Name="btnSave" Content="Save" IsDefault="True" Command="{Binding SaveCommand}" Click="CloseWindow_Click" Padding="10 0 10 0" Margin="0 0 10 0"/>
             <Button Name="btnCancel" Content="Cancel" IsCancel="True" Command="{Binding CancelCommand}" Click="CloseWindow_Click" Padding="10 0 10 0"/>
         </StackPanel>

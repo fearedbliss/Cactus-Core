@@ -16,5 +16,9 @@ namespace Cactus.Interfaces
 {
     public interface ISettingsWindowViewModel
     {
+        string RootDirectory { get; }
+        bool ShouldMinimizeToTray { get; }
+        bool ShouldEnableDarkMode { get; }
+        string PreferredColor { get; }
     }
 }

@@ -54,6 +54,20 @@ namespace Cactus
 
         public void Run(EntryModel entry)
         {
+            // Make sure that we have a Diablo II Root Directory set.
+            if (!_pathBuilder.IsRootDirectorySet())
+            {
+                CactusMessageBox.Show("Please set your \"Diablo II Root Directory\" by clicking the \"Settings\" button before launching Diablo II!");
+                return;
+            }
+
+            // Make sure that the entry has a platform set.
+            if (string.IsNullOrWhiteSpace(entry.Platform))
+            {
+                CactusMessageBox.Show("Please make sure your entry has a Platform set before launching Diablo II!");
+                return;
+            }
+
             // Before we do anything, make sure that this platform exists in the first place.
             var proposedPlatformDirectory = _pathBuilder.GetPlatformDirectory(entry);
 
@@ -80,8 +94,7 @@ namespace Cactus
 
                 LaunchGame();
             }
-            else if (_lastRanEntry.Platform.EqualsIgnoreCase(_currentEntry.Platform) &&
-                     _lastRanEntry.Path.EqualsIgnoreCase(_currentEntry.Path))
+            else if (_lastRanEntry.Platform.EqualsIgnoreCase(_currentEntry.Platform))
             {
                 _logger.LogInfo("Running the same platform.");
 
@@ -152,7 +165,7 @@ namespace Cactus
         {
             try
             {
-                string rootDirectory = _pathBuilder.GetRootDirectory(_lastRanEntry);
+                string rootDirectory = _pathBuilder.GetRootDirectory();
                 string platformDirectory = _pathBuilder.GetPlatformDirectory(_currentEntry);
 
                 // Retrieve the old required files so we can clean them up when we switch entries.
@@ -199,7 +212,7 @@ namespace Cactus
         /// </remarks>
         private void RestoreMpqs()
         {
-            string rootDirectory = _pathBuilder.GetRootDirectory(_lastRanEntry);
+            string rootDirectory = _pathBuilder.GetRootDirectory();
             var expansionMpqs = _fileGenerator.ExpansionMpqs;
 
             foreach (string mpqFile in expansionMpqs)
@@ -230,34 +243,18 @@ namespace Cactus
             WindowsPrincipal principal = new WindowsPrincipal(user);
             bool isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
 
-            var launchThread = new Thread(() => _processManager.Launch(_lastRanEntry, isAdmin));
+            string launcherPath = _pathBuilder.GetLauncherPath(_lastRanEntry);
+            string launcherFlags = _lastRanEntry.Flags;
+
+            // Make sure that the Launcher exists.
+            if (!File.Exists(launcherPath))
+            {
+                CactusMessageBox.Show($"The launcher doesn't exist!\n\n{launcherPath}");
+                return;
+            }
+
+            var launchThread = new Thread(() => _processManager.Launch(launcherPath, launcherFlags, isAdmin));
             launchThread.Start();
-        }
-
-        private void InstallRequiredFiles(string platformDirectory, string rootDirectory, RequiredFilesModel requiredFiles)
-        {
-            // In with the new
-            foreach (var file in requiredFiles.Files)
-            {
-                var sourceFile = Path.Combine(platformDirectory, file);
-                var targetFile = Path.Combine(rootDirectory, file);
-                if (File.Exists(sourceFile))
-                {
-                    _logger.LogInfo($"Copying: {sourceFile} -> {targetFile}");
-                    File.Copy(sourceFile, targetFile, true);
-                }
-            }
-
-            foreach (var file in requiredFiles.Directories)
-            {
-                var sourceDirectory = Path.Combine(platformDirectory, file);
-                var targetDirectory = Path.Combine(rootDirectory, file);
-                if (Directory.Exists(sourceDirectory))
-                {
-                    _logger.LogInfo($"Copying: {sourceDirectory} -> {targetDirectory}");
-                    FileSystem.CopyDirectory(sourceDirectory, targetDirectory, true);
-                }
-            }
         }
 
         /// <summary>
@@ -279,7 +276,7 @@ namespace Cactus
                 return;
             }
 
-            var rootDirectory = _pathBuilder.GetRootDirectory(_lastRanEntry);
+            var rootDirectory = _pathBuilder.GetRootDirectory();
             var lastRequiredFiles = _jsonManager.GetLastRequiredFiles();
 
             if (lastRequiredFiles == null)
@@ -306,8 +303,44 @@ namespace Cactus
             _lastRanEntry = null;
         }
 
+        private void InstallRequiredFiles(string platformDirectory, string rootDirectory, RequiredFilesModel requiredFiles)
+        {
+            // [Safety Check] Validate and strip out anything that is protected.
+            _fileGenerator.ValidateRequiredFiles(requiredFiles);
+
+            // In with the new
+            foreach (var file in requiredFiles.Files)
+            {
+                var sourceFile = Path.Combine(platformDirectory, file);
+                var targetFile = Path.Combine(rootDirectory, file);
+                if (File.Exists(sourceFile))
+                {
+                    _logger.LogInfo($"Copying: {sourceFile} -> {targetFile}");
+                    File.Copy(sourceFile, targetFile, true);
+                }
+            }
+
+            foreach (var file in requiredFiles.Directories)
+            {
+                var sourceDirectory = Path.Combine(platformDirectory, file);
+                var targetDirectory = Path.Combine(rootDirectory, file);
+                if (Directory.Exists(sourceDirectory))
+                {
+                    _logger.LogInfo($"Copying: {sourceDirectory} -> {targetDirectory}");
+                    FileSystem.CopyDirectory(sourceDirectory, targetDirectory, true);
+                }
+            }
+        }
+
         private void DeleteRequiredFiles(string rootDirectory, RequiredFilesModel requiredFiles)
         {
+            // [Safety Check] Before we attempt to delete any files, validate entries since we will
+            // not remove anything that is protected. This is more for protection if someone tries to
+            // manually insert something into their "LastRequiredFiles.json" that is protected.
+            // But I suppose it's nice to have a safety check at this location as well since
+            // safety is paramount.
+            _fileGenerator.ValidateRequiredFiles(requiredFiles);
+
             // Out with the old
             foreach (var file in requiredFiles.Files)
             {

@@ -17,6 +17,7 @@ using Cactus.Models;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Cactus.ViewModels
 {
@@ -24,6 +25,7 @@ namespace Cactus.ViewModels
     {
         private readonly ISettingsManager _settingsManager;
 
+        public string RootDirectory { get; set; }
         public bool ShouldMinimizeToTray { get; set; }
         public bool ShouldEnableDarkMode { get; set; }
 
@@ -82,10 +84,19 @@ namespace Cactus.ViewModels
         {
             var settings = new SettingsModel
             {
+                RootDirectory = RootDirectory,
                 ShouldMinimizeToTray = ShouldMinimizeToTray,
                 ShouldEnableDarkMode = ShouldEnableDarkMode,
                 PreferredColor = PreferredColor,
             };
+
+            // Verify that our Diablo II Root Directory exists.
+            if (!string.IsNullOrWhiteSpace(settings.RootDirectory) && !Directory.Exists(settings.RootDirectory))
+            {
+                CactusMessageBox.Show("The \"Diablo II Root Directory\" specified does not exist. Make sure it exists before saving your settings.");
+                LoadSettings();
+                return;
+            }
 
             _settingsManager.SaveSettings(settings);
 
@@ -99,6 +110,7 @@ namespace Cactus.ViewModels
 
         private void LoadSettings()
         {
+            RootDirectory = _settingsManager.RootDirectory;
             ShouldMinimizeToTray = _settingsManager.ShouldMinimizeToTray;
             ShouldEnableDarkMode = _settingsManager.ShouldEnableDarkMode;
             PreferredColor = _settingsManager.PreferredColor;

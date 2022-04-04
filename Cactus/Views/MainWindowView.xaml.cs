@@ -16,6 +16,7 @@ using Cactus.Interfaces;
 using System;
 using System.ComponentModel;
 using System.Windows;
+using System.IO;
 
 namespace Cactus
 {
@@ -23,17 +24,29 @@ namespace Cactus
     {
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private WindowState storedWindowState = WindowState.Normal;
+
+        private readonly DependencyContainer _dependencyContainer;
         private readonly ISettingsManager _settingsManager;
+        private readonly IJsonManager _jsonManager;
+        private readonly IEntryManager _entryManager;
 
         public MainWindowView()
         {
             if (!ProcessManager.IsMainApplicationRunning())
             {
+                // Get dependency container so we can use some of our Managers.
+                _dependencyContainer = Application.Current.Resources["Locator"] as DependencyContainer;
+
+                // Get some dependencies since we will be using it for several stuff.
+                _jsonManager = _dependencyContainer.JsonManager;
+
+                // Ensure that all of our Cactus files can load if they exist before any component initialization.
+                _jsonManager.ValidateCactusFiles();
+
                 InitializeComponent();
 
-                // Get our settings manager since we will be using it for several stuff.
-                var dependencyContainer = Application.Current.Resources["Locator"] as DependencyContainer;
-                _settingsManager = dependencyContainer.SettingsManager;
+                _entryManager = _dependencyContainer.EntryManager;
+                _settingsManager = _dependencyContainer.SettingsManager;
 
                 // Load our theme based on settings.
                 _settingsManager.LoadTheme(true);
@@ -50,13 +63,117 @@ namespace Cactus
                 notifyIcon.Click += new EventHandler(OnNotifyIcon_Click);
 
                 // Now that the UI is fully initialized, select the last ran entry if any.
-                dependencyContainer.MainWindow.SelectLastRanEntry();
+                _dependencyContainer.MainWindow.SelectLastRanEntry();
             }
             else
             {
                 CactusMessageBox.Show("Only one instance of Cactus is allowed!");
                 Environment.Exit(1);
             }
+        }
+
+        private void OnMainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            // If Settings.json doesn't exist, let's run out OOTB experience.
+            if (!_jsonManager.DoesSettingsFileExist())
+            {
+                CactusMessageBox.Show("Welcome to Cactus!\n\n" +
+                    "A Modern Diablo II Version Switcher & Character Isolator\n\n" +
+                    "Please set your \"Diablo II Root Directory\" by clicking the \"Settings\" button before launching Diablo II! " +
+                    "You can then click the \"Add\" button to add an entry.\n\n" +
+                    "Please also make sure that you are running Cactus within your Diablo II Root Directory.\n\n" +
+                    "Example: C:\\Games\\Diablo II\\Cactus.exe\n\n" +
+                    "https://github.com/fearedbliss/Cactus"
+                );
+
+                // Save a clean copy of our settings in order to "mark" this as
+                // proof that we have displayed this message.
+                _jsonManager.SaveSettings(_jsonManager.GetSettings());
+            }
+            else
+            {
+                MigratePath();
+                FixWhitespaceLabels();
+            }
+        }
+
+        /// <summary>
+        /// Migrates Pre Cactus 2.3.0 - "Path" Variable
+        /// Breaking Path To => RootDirectory + Launcher
+        /// </summary>
+        private void MigratePath()
+        {
+            // We need to migrate the user if necessary.
+            var pathBuilder = _dependencyContainer.PathBuilder;
+
+            if (!pathBuilder.IsRootDirectorySet())
+            {
+                var entries = _entryManager.GetEntries();
+
+                // No need to migrate someone that doesn't have any entries.
+                if (entries.Count == 0)
+                {
+                    return;
+                }
+
+                CactusMessageBox.Show("Welcome to Cactus!\n\n" +
+                    "A Modern Diablo II Version Switcher & Character Isolator\n\n" +
+                    "Your Cactus files will now be migrated to the new\n\"Diablo II Root Directory\" + \"Launcher\" format."
+                );
+
+                try
+                {
+                    string rootDirectory = Path.GetDirectoryName(entries[0].Path);
+
+                    foreach (var entry in entries)
+                    {
+                        entry.Launcher = Path.GetFileName(entry.Path);
+                    }
+
+                    // Save Root Directory
+                    _settingsManager.SetRootDirectory(rootDirectory);
+                    _settingsManager.SaveSettings();
+
+                    // Save all entries in their new format with their corresponding Launcher.
+                    _entryManager.SaveEntries();
+
+                    CactusMessageBox.Show("Migration Successful!\nPath => (Root Directory + Launcher)\n\n" +
+                        "Please verify the information for the following directories is correct. If anything is incorrect, edit your \"Diablo II Root Directory\" by clicking the \"Settings\" button. " +
+                        "Please also verify that the \"Launcher\" for each of your entries is correct. You can view it by editing the entry.\n\n" +
+                        $"Diablo II Root Directory\n\n{pathBuilder.GetRootDirectory()}\n\n" +
+                        $"Diablo II Platforms Directory\n\n{pathBuilder.GetPlatformsDirectory()}\n\n" +
+                        $"Diablo II Saves Directory\n\n{pathBuilder.GetSavesDirectory()}"
+                    );
+                }
+                catch (Exception)
+                {
+                    CactusMessageBox.Show("Migration Failed!\nPath => (Root Directory + Launcher)\n\n" +
+                        "Your Cactus files will not be touched but you should reconfigure Cactus and re-add your entries. " +
+                        "Sorry for the inconvenience.");
+                }
+            }
+        }
+
+        private void FixWhitespaceLabels()
+        {
+            var entries = _entryManager.GetEntries();
+
+            // No need to fix the labels if they don't have any entries.
+            if (entries.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var entry in entries)
+            {
+                if (entry.Label == "")
+                {
+                    entry.Label = null;
+                }
+            }
+
+            // Resave the entries with the fixed null label.
+            _entryManager.SaveEntries();
         }
 
         private void EntriesListView_DoubleClick(object sender, RoutedEventArgs e)

@@ -17,13 +17,12 @@ using Cactus.Interfaces;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using System;
 
 namespace Cactus
 {
     public class JsonManager : IJsonManager
     {
-        private readonly IFileGenerator _fileGenerator;
-
         private readonly string _jsonDirectory;
         private readonly string _entriesJsonFile = "Entries.json";
         private readonly string _lastRequiredJsonFile = "LastRequiredFiles.json";
@@ -33,14 +32,51 @@ namespace Cactus
         private string LastRequiredJsonPath { get; }
         private string SettingsJsonPath { get; }
 
-        public JsonManager(IFileGenerator fileGenerator)
+        public JsonManager()
         {
-            _fileGenerator = fileGenerator;
-
             _jsonDirectory = Directory.GetCurrentDirectory();
             EntriesJsonPath = Path.Combine(_jsonDirectory, _entriesJsonFile);
             LastRequiredJsonPath = Path.Combine(_jsonDirectory, _lastRequiredJsonFile);
             SettingsJsonPath = Path.Combine(_jsonDirectory, _settingsJsonFile);
+        }
+
+        public void ValidateCactusFiles()
+        {
+            // Kinda nasty right (index)? Haha.
+            int index = 0;
+
+            try
+            {
+                GetEntries(); index = 1;
+                GetLastRequiredFiles(); index = 2;
+                GetSettings(); index = 3;
+            }
+            catch (Exception ex)
+            {
+                string failedFile;
+
+                switch (index)
+                {
+                    case 0:
+                        failedFile = _entriesJsonFile;
+                        break;
+                    case 1:
+                        failedFile = _lastRequiredJsonFile;
+                        break;
+                    case 2:
+                        failedFile = _settingsJsonFile;
+                        break;
+                    default:
+                        failedFile = "Unknown";
+                        break;
+                }
+
+                CactusMessageBox.Show("At least one of your Cactus files failed to load. Moving your old files out of the way (.bak). " +
+                    "Please restart Cactus for a fresh install.\n\n" +
+                    $"Error Message ({failedFile})\n\n" + ex.Message);
+                BackupAndDeleteCactusFiles();
+                Environment.Exit(1);
+            }
         }
 
         public void SaveEntries(List<EntryModel> entries)
@@ -71,8 +107,6 @@ namespace Cactus
             {
                 var serializedFiles = File.ReadAllText(LastRequiredJsonPath);
                 var deserializedModel = JsonConvert.DeserializeObject<RequiredFilesModel>(serializedFiles);
-
-                _fileGenerator.ValidateRequiredFiles(deserializedModel);
                 return deserializedModel;
             }
             return null;
@@ -94,9 +128,31 @@ namespace Cactus
             return new SettingsModel();
         }
 
+        public bool DoesSettingsFileExist()
+        {
+            return File.Exists(SettingsJsonPath);
+        }
+
         private void SaveToJsonFile(string serializedText, string outputFile)
         {
             File.WriteAllText(outputFile, serializedText);
+        }
+
+        public void BackupAndDeleteCactusFiles()
+        {
+            BackupAndDeleteCactusFile(EntriesJsonPath);
+            BackupAndDeleteCactusFile(LastRequiredJsonPath);
+            BackupAndDeleteCactusFile(SettingsJsonPath);
+        }
+
+        private void BackupAndDeleteCactusFile(string path)
+        {
+            if (File.Exists(path))
+            {
+                string targetPath = path + ".bak";
+                File.Copy(path, targetPath, true);
+                File.Delete(path);
+            }
         }
     }
 }

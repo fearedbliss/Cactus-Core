@@ -20,17 +20,38 @@ namespace Cactus
 {
     public class PathBuilder : IPathBuilder
     {
+        private readonly ISettingsManager _settingsManager;
         private readonly string _platformDirectoryName = "Platforms";
         private readonly string _savesDirectoryName = "Saves";
 
-        public string GetRootDirectory(EntryModel entry)
+        public PathBuilder(ISettingsManager settingsManager)
         {
-            return Path.GetDirectoryName(entry.Path);
+            _settingsManager = settingsManager;
+        }
+
+        public string GetRootDirectory()
+        {
+            return _settingsManager.RootDirectory;
+        }
+
+        public bool IsRootDirectorySet()
+        {
+            return !string.IsNullOrWhiteSpace(GetRootDirectory());
         }
 
         public string GetPlatformDirectory(EntryModel entry)
         {
-            return Path.Combine(GetPlatformsDirectory(entry), entry.Platform);
+            return Path.Combine(GetPlatformsDirectory(), entry.Platform);
+        }
+
+        /// <summary>
+        /// Gets the Launcher Path.
+        ///
+        /// Example: C:\Games\Diablo II\Game.exe
+        /// </summary>
+        public string GetLauncherPath(EntryModel entry)
+        {
+            return Path.Combine(GetRootDirectory(), entry.Launcher);
         }
 
         /// <summary>
@@ -38,7 +59,7 @@ namespace Cactus
         /// </summary>
         public string GetSaveDirectory(EntryModel entry, bool excludeLabel = false)
         {
-            string savesDirectory = GetSavesDirectory(entry);
+            string savesDirectory = GetSavesDirectory();
             string saveDirectory = Path.Combine(savesDirectory, entry.Platform);
 
             if (!excludeLabel && !string.IsNullOrWhiteSpace(entry.Label))
@@ -49,32 +70,20 @@ namespace Cactus
             return saveDirectory;
         }
 
-        public bool ContainsInvalidCharacters(string word)
+        /// <summary>
+        /// Gets the path to where all of our Platforms are stored.
+        /// </summary>
+        public string GetPlatformsDirectory()
         {
-            if (word == null) return false;
-
-            char[] invalidChars = Path.GetInvalidFileNameChars();
-            foreach (char invalidChar in invalidChars)
-            {
-                if (word.Contains(invalidChar.ToString())) return true;
-            }
-
-            return false;
-        }
-
-        private string GetPlatformsDirectory(EntryModel entry)
-        {
-            string rootDirectory = GetRootDirectory(entry);
-            return Path.Combine(rootDirectory, _platformDirectoryName);
+            return Path.Combine(GetRootDirectory(), _platformDirectoryName);
         }
 
         /// <summary>
         /// Gets the path to where all of our Saves are stored.
         /// </summary>
-        private string GetSavesDirectory(EntryModel entry)
+        public string GetSavesDirectory()
         {
-            string rootDirectory = GetRootDirectory(entry);
-            return Path.Combine(rootDirectory, _savesDirectoryName);
+            return Path.Combine(GetRootDirectory(), _savesDirectoryName);
         }
     }
 }

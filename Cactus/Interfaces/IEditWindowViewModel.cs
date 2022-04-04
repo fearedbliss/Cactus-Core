@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using Cactus.Models;
+using GalaSoft.MvvmLight.Command;
 
 namespace Cactus.Interfaces
 {
@@ -20,5 +21,8 @@ namespace Cactus.Interfaces
     {
         EntryModel CurrentEntry { get; set; }
         EntryModel LastRanEntry { get; set; }
+        string Platform { get; set; }
+        RelayCommand OkCommand { get; }
+        RelayCommand CancelCommand { get; }
     }
 }

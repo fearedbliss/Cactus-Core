@@ -15,7 +15,7 @@
         TextOptions.TextRenderingMode="Auto"
 
         Title="{Binding Title, Mode=OneWay}" Height="550" Width="850" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
-        Closing="OnClose" StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged"
+        Closing="OnClose" StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged" Loaded="OnMainWindow_Loaded"
         DataContext="{Binding MainWindow, Source={StaticResource Locator}}">
 
     <StackPanel Margin="10">

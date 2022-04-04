@@ -17,6 +17,7 @@ using Cactus.Models;
 using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Cactus
 {
@@ -30,14 +31,10 @@ namespace Cactus
     public class EntryManager : ViewModelBase, IEntryManager
     {
         private List<EntryModel> _entries;
-        private readonly ILogger _logger;
-        private readonly IPathBuilder _pathBuilder;
         private readonly IJsonManager _jsonManager;
 
-        public EntryManager(ILogger logger, IPathBuilder pathBuilder, IJsonManager jsonManager)
+        public EntryManager(IJsonManager jsonManager)
         {
-            _logger = logger;
-            _pathBuilder = pathBuilder;
             _jsonManager = jsonManager;
             _entries = GetEntries();
         }
@@ -49,24 +46,6 @@ namespace Cactus
                 if (entry.WasLastRan) return entry;
             }
             return null;
-        }
-
-        /// <summary>
-        /// Lets you know if the entry in question is equal to all other root directories.
-        /// </summary>
-        public bool IsRootDirectoryEqualToOthers(EntryModel entry)
-        {
-            foreach (var currentEntry in _entries)
-            {
-                var proposedEntryRoot = _pathBuilder.GetRootDirectory(entry);
-                var currentEntryRoot = _pathBuilder.GetRootDirectory(currentEntry);
-                if (!currentEntryRoot.EqualsIgnoreCase(proposedEntryRoot))
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         public void Add(EntryModel entry)
@@ -84,7 +63,7 @@ namespace Cactus
             var newEntry = new EntryModel
             {
                 Label = entry.Label,
-                Path = entry.Path,
+                Launcher = entry.Launcher,
                 Flags = entry.Flags,
             };
 
@@ -145,18 +124,12 @@ namespace Cactus
 
         public List<EntryModel> GetEntries()
         {
-            try
+            if (_entries != null)
             {
-                if (_entries != null) return _entries;
-                _entries = _jsonManager.GetEntries();
+                return _entries;
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                _logger.LogWarning("Wiping existing json file since it's corrupted.");
-                SaveEntries();
-            }
-            
+
+            _entries = _jsonManager.GetEntries();
             return _entries;
         }
 
@@ -213,10 +186,10 @@ namespace Cactus
         public bool IsInvalid(EntryModel entry)
         {
             return string.IsNullOrWhiteSpace(entry.Platform) ||
-                   string.IsNullOrWhiteSpace(entry.Path) ||
-                   !IsRootDirectoryEqualToOthers(entry) ||
-                   _pathBuilder.ContainsInvalidCharacters(entry.Platform) ||
-                   _pathBuilder.ContainsInvalidCharacters(entry.Label);
+                   string.IsNullOrWhiteSpace(entry.Launcher) ||
+                   ContainsInvalidCharacters(entry.Platform) ||
+                   ContainsInvalidCharacters(entry.Launcher) ||
+                   ContainsInvalidCharacters(entry.Label);
         }
 
         /// <summary>
@@ -241,6 +214,19 @@ namespace Cactus
                 {
                     return true;
                 }
+            }
+
+            return false;
+        }
+
+        public bool ContainsInvalidCharacters(string word)
+        {
+            if (word == null) return false;
+
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+            foreach (char invalidChar in invalidChars)
+            {
+                if (word.Contains(invalidChar.ToString())) return true;
             }
 
             return false;

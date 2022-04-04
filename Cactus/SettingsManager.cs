@@ -34,6 +34,11 @@ namespace Cactus
             LoadSettings();
         }
 
+        public void SaveSettings()
+        {
+            SaveSettings(_settings);
+        }
+
         public void SaveSettings(SettingsModel settings)
         {
             _oldSettings = _settings;
@@ -157,6 +162,12 @@ namespace Cactus
             return shouldEnableDarkMode ? "Dark" : "Light";
         }
 
+        public void SetRootDirectory(string rootDirectory)
+        {
+            _settings.RootDirectory = rootDirectory;
+        }
+
+        public string RootDirectory => _settings.RootDirectory;
         public bool ShouldMinimizeToTray => _settings.ShouldMinimizeToTray;
         public bool ShouldEnableDarkMode => _settings.ShouldEnableDarkMode;
         public string PreferredColor => _settings.PreferredColor;

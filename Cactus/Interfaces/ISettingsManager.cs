@@ -18,8 +18,11 @@ namespace Cactus.Interfaces
 {
     public interface ISettingsManager
     {
+        void SaveSettings();
         void SaveSettings(SettingsModel settings);
         void LoadTheme(bool isStartUp = false);
+        void SetRootDirectory(string rootDirectory);
+        string RootDirectory { get; }
         bool ShouldMinimizeToTray { get; }
         bool ShouldEnableDarkMode { get; }
         string PreferredColor { get; }

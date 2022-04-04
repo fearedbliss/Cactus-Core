@@ -25,5 +25,7 @@ namespace Cactus.Interfaces
         RequiredFilesModel GetLastRequiredFiles();
         void SaveSettings(SettingsModel requiredFiles);
         SettingsModel GetSettings();
+        bool DoesSettingsFileExist();
+        void ValidateCactusFiles();
     }
 }
