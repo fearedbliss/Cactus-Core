@@ -38,5 +38,6 @@ namespace Cactus.Interfaces
         bool DoesPlatformNameMatchLastRan(string platformName);
         bool IsInvalid(EntryModel entry);
         bool DoesPlatformAndLabelExist(EntryModel entry, bool excludeSelf = false);
+        void Move(int sourceIndex, int targetIndex, EntryModel entry);
     }
 }

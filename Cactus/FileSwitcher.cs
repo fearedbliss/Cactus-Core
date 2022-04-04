@@ -69,11 +69,8 @@ namespace Cactus
             }
 
             // Before we do anything, make sure that this platform exists in the first place.
-            var proposedPlatformDirectory = _pathBuilder.GetPlatformDirectory(entry);
-
-            if (!Directory.Exists(proposedPlatformDirectory))
+            if (IsPlatformDirectoryMissingThenAlert(entry))
             {
-                CactusMessageBox.Show("This platform doesn't exist in your Platforms folder.");
                 return;
             }
 
@@ -272,7 +269,7 @@ namespace Cactus
             _lastRanEntry = _entries.GetLastRan();
             if (_lastRanEntry == null)
             {
-                _logger.LogWarning("No last ran entry detected. Aborting.");
+                CactusMessageBox.Show("You can only reset once you've ran Diablo II and have a \"Last Ran\" entry checked.");
                 return;
             }
 
@@ -381,6 +378,19 @@ namespace Cactus
             _lastRanEntry = _currentEntry;
             _registryService.Update(_currentEntry);
             _entries.SaveEntries();
+        }
+
+        public bool IsPlatformDirectoryMissingThenAlert(EntryModel entry)
+        {
+            var platformDirectory = _pathBuilder.GetPlatformDirectory(entry);
+
+            if (!Directory.Exists(platformDirectory))
+            {
+                CactusMessageBox.Show("This platform doesn't exist in your Platforms folder.");
+                return true;
+            }
+
+            return false;
         }
     }
 }

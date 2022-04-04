@@ -17,15 +17,18 @@ using Cactus.Models;
 using Cactus.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GongSolutions.Wpf.DragDrop;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace Cactus.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
+    public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel, IDragSource
     {
         private readonly IEntryManager _entryManager;
         private readonly IFileSwitcher _fileSwitcher;
+        private readonly IPathBuilder _pathBuilder;
 
         // Child View Models
         private readonly IAddWindowViewModel _addWindowViewModel;
@@ -43,14 +46,17 @@ namespace Cactus.ViewModels
         public RelayCommand LaunchCommand { get; private set; }
 
         private readonly string _appName = "Cactus";
-        private readonly string _version = "2.3.0";
+        private readonly string _version = "2.4.0";
 
-        public MainWindowViewModel(IEntryManager entryManager, IFileSwitcher fileSwitcher, IAddWindowViewModel addWindowViewModel, IEditWindowViewModel editWindowViewModel)
+        public MainWindowViewModel(IEntryManager entryManager, IFileSwitcher fileSwitcher,
+            IAddWindowViewModel addWindowViewModel, IEditWindowViewModel editWindowViewModel,
+            IPathBuilder pathBuilder)
         {
             _entryManager = entryManager;
             _fileSwitcher = fileSwitcher;
             _addWindowViewModel = addWindowViewModel;
             _editWindowViewModel = editWindowViewModel;
+            _pathBuilder = pathBuilder;
 
             AddCommand = new RelayCommand(Add);
             EditCommand = new RelayCommand(Edit);
@@ -117,6 +123,11 @@ namespace Cactus.ViewModels
 
         public void Add()
         {
+            if (!MessageIfRootDirectoryNotSet())
+            {
+                return;
+            }
+
             var addWindow = new AddView()
             {
                 Owner = Application.Current.MainWindow
@@ -136,6 +147,11 @@ namespace Cactus.ViewModels
 
         public void Edit()
         {
+            if (!MessageIfRootDirectoryNotSet())
+            {
+                return;
+            }
+
             if (SelectedEntry == null)
             {
                 CactusMessageBox.Show("No entry to edit was selected.");
@@ -282,6 +298,72 @@ namespace Cactus.ViewModels
             }
             return null;
         }
+
+        /// <summary>
+        /// Displays a messge to the user regarding setting the Diablo II Root Directory if needed.
+        /// </summary>
+        private bool MessageIfRootDirectoryNotSet()
+        {
+            if (!_pathBuilder.IsRootDirectorySet())
+            {
+                CactusMessageBox.Show("You must set your \"Diablo II Root Directory\" in \"Settings\" before adding or modifying an entry.");
+                return false;
+            }
+            return true;
+        }
+
+        #region Drag & Drop
+        public void StartDrag(IDragInfo dragInfo)
+        {
+            EntryModel entry = dragInfo.SourceItem as EntryModel;
+
+            if (entry != null)
+            {
+                // Only allow dragging if we have more than one element.
+                if (_entries.Count > 1)
+                {
+                    dragInfo.Effects = DragDropEffects.Move;
+                    dragInfo.Data = entry;
+                }
+            }
+        }
+
+        public bool CanStartDrag(IDragInfo dragInfo)
+        {
+            return true;
+        }
+
+        public void Dropped(IDropInfo dropInfo)
+        {
+            EntryModel entry = dropInfo.Data as EntryModel;
+
+            int sourceIndex = dropInfo.DragInfo.SourceIndex;
+            int targetIndex = dropInfo.InsertIndex;
+
+            _entryManager.Move(sourceIndex, targetIndex, entry);
+        }
+
+        public void DragDropOperationFinished(DragDropEffects operationResult, IDragInfo dragInfo)
+        {
+            // Save entries and refresh our UI.
+            _entryManager.SaveEntries();
+            RefreshEntriesList();
+        }
+
+        public void DragCancelled()
+        {
+            // Not Used. Nothing special.
+        }
+
+        public bool TryCatchOccurredException(Exception exception)
+        {
+            CactusMessageBox.Show("An exception has occurred. Please report this to upstream. Closing Cactus.\n\n" +
+                exception.Message);
+            Environment.Exit(1);
+
+            // An exception while re-ordering shouldn't happen :P.
+            return true;
+        }
+        #endregion
     }
 }
-

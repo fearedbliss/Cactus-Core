@@ -167,9 +167,18 @@ namespace Cactus
             _settings.RootDirectory = rootDirectory;
         }
 
+        /// <summary>
+        /// Marks that the user has migrated to the new format.
+        /// </summary>
+        public void MarkHasMigratedToNewFormat()
+        {
+            _settings.HasMigratedToNewFormat = true;
+        }
+
         public string RootDirectory => _settings.RootDirectory;
         public bool ShouldMinimizeToTray => _settings.ShouldMinimizeToTray;
         public bool ShouldEnableDarkMode => _settings.ShouldEnableDarkMode;
         public string PreferredColor => _settings.PreferredColor;
+        public bool HasMigratedToNewFormat => _settings.HasMigratedToNewFormat;
     }
 }

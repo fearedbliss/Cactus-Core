@@ -20,5 +20,6 @@ namespace Cactus.Interfaces
     {
         void ResetDirectory();
         void Run(EntryModel entry);
+        bool IsPlatformDirectoryMissingThenAlert(EntryModel entry);
     }
 }

@@ -27,5 +27,7 @@ namespace Cactus.Interfaces
         SettingsModel GetSettings();
         bool DoesSettingsFileExist();
         void ValidateCactusFiles();
+        void BackupCactusFiles();
+        void DeleteCactusBackupFiles();
     }
 }

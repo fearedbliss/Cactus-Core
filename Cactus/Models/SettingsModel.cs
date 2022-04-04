@@ -23,12 +23,15 @@ namespace Cactus.Models
         public string RootDirectory { get; set; } = "";
 
         [JsonProperty("shouldMinimizeToTray", Order = 2)]
-        public bool ShouldMinimizeToTray { get; set; } = false;
+        public bool ShouldMinimizeToTray { get; set; }
 
         [JsonProperty("shouldEnableDarkMode", Order = 3)]
-        public bool ShouldEnableDarkMode { get; set; } = false;
+        public bool ShouldEnableDarkMode { get; set; }
 
         [JsonProperty("preferredColor", Order = 4)]
         public string PreferredColor { get; set; } = "Teal";
+
+        [JsonProperty("hasMigratedToNewFormat", Order = 5)]
+        public bool HasMigratedToNewFormat { get; set; }
     }
 }

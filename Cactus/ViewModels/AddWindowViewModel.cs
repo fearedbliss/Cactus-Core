@@ -22,7 +22,7 @@ namespace Cactus.ViewModels
     public class AddWindowViewModel : ViewModelBase, IAddWindowViewModel
     {
         private readonly IEntryManager _entryManager;
-        private readonly IPathBuilder _pathBuilder;
+        private readonly IFileSwitcher _fileSwitcher;
 
         // Properties for new entry
         public string Platform { get; set; }
@@ -36,10 +36,10 @@ namespace Cactus.ViewModels
         public RelayCommand OkCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
 
-        public AddWindowViewModel(IEntryManager entryManager, IPathBuilder pathBuilder)
+        public AddWindowViewModel(IEntryManager entryManager, IFileSwitcher fileSwitcher)
         {
             _entryManager = entryManager;
-            _pathBuilder = pathBuilder;
+            _fileSwitcher = fileSwitcher;
 
             OkCommand = new RelayCommand(Ok);
             CancelCommand = new RelayCommand(Cancel);
@@ -47,31 +47,27 @@ namespace Cactus.ViewModels
 
         private void Ok()
         {
-            if (_pathBuilder.IsRootDirectorySet())
+            var entry = new EntryModel
             {
-                var entry = new EntryModel
-                {
-                    Platform = Platform,
-                    Label = Label,
-                    Launcher = Launcher,
-                    Flags = Flags,
-                };
+                Platform = Platform,
+                Label = Label,
+                Launcher = Launcher,
+                Flags = Flags,
+            };
 
-                if (_entryManager.IsInvalid(entry))
-                {
-                    CactusMessageBox.Show("Please make sure the required fields are populated and contain no invalid characters.");
-                }
-                else
+            if (_entryManager.IsInvalid(entry))
+            {
+                CactusMessageBox.Show("Please make sure the required fields are populated and contain no invalid characters.");
+            }
+            else
+            {
+                if (!_fileSwitcher.IsPlatformDirectoryMissingThenAlert(entry))
                 {
                     _entryManager.Add(entry);
                     _entryManager.SaveEntries();
 
                     AddedEntry = entry;
                 }
-            }
-            else
-            {
-                CactusMessageBox.Show("Please set your \"Diablo II Root Directory\" by clicking the \"Settings\" button before adding an entry!");
             }
 
             ResetUI();

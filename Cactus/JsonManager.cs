@@ -27,6 +27,7 @@ namespace Cactus
         private readonly string _entriesJsonFile = "Entries.json";
         private readonly string _lastRequiredJsonFile = "LastRequiredFiles.json";
         private readonly string _settingsJsonFile = "Settings.json";
+        private readonly string _backupExtension = ".bak";
 
         private string EntriesJsonPath { get; }
         private string LastRequiredJsonPath { get; }
@@ -138,6 +139,37 @@ namespace Cactus
             File.WriteAllText(outputFile, serializedText);
         }
 
+        private void BackupCactusFile(string path)
+        {
+            if (File.Exists(path))
+            {
+                string targetPath = path + _backupExtension;
+                File.Copy(path, targetPath, true);
+            }
+        }
+
+        private void DeleteCactusFile(string path)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+        }
+
+        public void BackupCactusFiles()
+        {
+            BackupCactusFile(EntriesJsonPath);
+            BackupCactusFile(LastRequiredJsonPath);
+            BackupCactusFile(SettingsJsonPath);
+        }
+
+        public void DeleteCactusBackupFiles()
+        {
+            DeleteCactusFile(EntriesJsonPath + _backupExtension);
+            DeleteCactusFile(LastRequiredJsonPath + _backupExtension);
+            DeleteCactusFile(SettingsJsonPath + _backupExtension);
+        }
+
         public void BackupAndDeleteCactusFiles()
         {
             BackupAndDeleteCactusFile(EntriesJsonPath);
@@ -147,12 +179,8 @@ namespace Cactus
 
         private void BackupAndDeleteCactusFile(string path)
         {
-            if (File.Exists(path))
-            {
-                string targetPath = path + ".bak";
-                File.Copy(path, targetPath, true);
-                File.Delete(path);
-            }
+            BackupCactusFile(path);
+            DeleteCactusFile(path);
         }
     }
 }

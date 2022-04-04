@@ -87,14 +87,17 @@ namespace Cactus
                 );
 
                 // Save a clean copy of our settings in order to "mark" this as
-                // proof that we have displayed this message.
-                _jsonManager.SaveSettings(_jsonManager.GetSettings());
+                // proof that we have displayed this message. We are also marking
+                // them as having already migrated to the new format ;D.
+                _settingsManager.MarkHasMigratedToNewFormat();
+                _settingsManager.SaveSettings();
             }
             else
             {
                 MigratePath();
-                FixWhitespaceLabels();
             }
+
+            FixWhitespaceLabels();
         }
 
         /// <summary>
@@ -103,6 +106,11 @@ namespace Cactus
         /// </summary>
         private void MigratePath()
         {
+            if (_settingsManager.HasMigratedToNewFormat)
+            {
+                return;
+            }
+
             // We need to migrate the user if necessary.
             var pathBuilder = _dependencyContainer.PathBuilder;
 
@@ -121,6 +129,9 @@ namespace Cactus
                     "Your Cactus files will now be migrated to the new\n\"Diablo II Root Directory\" + \"Launcher\" format."
                 );
 
+                // Before we begin, let's make backups just in case.
+                _jsonManager.BackupCactusFiles();
+
                 try
                 {
                     string rootDirectory = Path.GetDirectoryName(entries[0].Path);
@@ -132,10 +143,14 @@ namespace Cactus
 
                     // Save Root Directory
                     _settingsManager.SetRootDirectory(rootDirectory);
+                    _settingsManager.MarkHasMigratedToNewFormat();
                     _settingsManager.SaveSettings();
 
                     // Save all entries in their new format with their corresponding Launcher.
                     _entryManager.SaveEntries();
+
+                    // Delete the old backup files.
+                    _jsonManager.DeleteCactusBackupFiles();
 
                     CactusMessageBox.Show("Migration Successful!\nPath => (Root Directory + Launcher)\n\n" +
                         "Please verify the information for the following directories is correct. If anything is incorrect, edit your \"Diablo II Root Directory\" by clicking the \"Settings\" button. " +
@@ -148,12 +163,29 @@ namespace Cactus
                 catch (Exception)
                 {
                     CactusMessageBox.Show("Migration Failed!\nPath => (Root Directory + Launcher)\n\n" +
-                        "Your Cactus files will not be touched but you should reconfigure Cactus and re-add your entries. " +
-                        "Sorry for the inconvenience.");
+                        "Your previous Cactus files have been backed up with a \".bak\" extension. Please inspect and rename them once they are fixed."
+                    );
                 }
+            }
+            else
+            {
+                // These are users that already were on 2.3.0 (Thus they had a Diablo II Directory Set w/
+                // Settings file containing that setting). Let's just mark them as already having migrated
+                // so everything is good to go.
+                _settingsManager.MarkHasMigratedToNewFormat();
+                _settingsManager.SaveSettings();
             }
         }
 
+        /// <summary>
+        /// Fixes any labels that are set to "" to null.
+        /// </summary>
+        /// <remarks>
+        /// This is a safety check so that we can guarantee that a person
+        /// doesn't bypass the TargetNullValue in the Edit Window. There
+        /// was a bug in 2.2.1 that allowed this to happen. We are adopting
+        /// this in all cases as part of our Integrity System.
+        /// </remarks>
         private void FixWhitespaceLabels()
         {
             var entries = _entryManager.GetEntries();

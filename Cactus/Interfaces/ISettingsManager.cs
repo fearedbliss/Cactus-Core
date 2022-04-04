@@ -26,5 +26,7 @@ namespace Cactus.Interfaces
         bool ShouldMinimizeToTray { get; }
         bool ShouldEnableDarkMode { get; }
         string PreferredColor { get; }
+        void MarkHasMigratedToNewFormat();
+        bool HasMigratedToNewFormat { get; }
     }
 }

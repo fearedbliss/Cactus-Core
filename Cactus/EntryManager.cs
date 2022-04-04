@@ -104,6 +104,39 @@ namespace Cactus
             }
         }
 
+        public void Move(int sourceIndex, int targetIndex, EntryModel entry)
+        {
+            // No need to move if we are in the same position:
+            // - In place
+            // - A little after shift will result in same location.
+            if (sourceIndex == targetIndex || targetIndex == (sourceIndex + 1))
+            {
+                return;
+            }
+
+            if (_entries.Count > 1)
+            {
+                // We need to check if we should adjust now since after
+                // we start messing with the collection, the indices will
+                // be shifted.
+                bool shouldAdjustIndex = false;
+
+                if (_entries.Count == targetIndex || sourceIndex < targetIndex)
+                {
+                    shouldAdjustIndex = true;
+                }
+
+                _entries.RemoveAt(sourceIndex);
+
+                if (shouldAdjustIndex)
+                {
+                    targetIndex -= 1;
+                }
+
+                _entries.Insert(targetIndex, entry);
+            }
+        }
+
         /// <summary>
         /// This marks this specific entry as the last ran. Useful in situations where
         /// the user never ran a version before through this application.

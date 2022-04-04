@@ -1,0 +1,1830 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GongSolutions.WPF.DragDrop</name>
+    </assembly>
+    <members>
+        <member name="T:GongSolutions.Wpf.DragDrop.DefaultDragHandler">
+            <summary>
+            The default drag handler for GongSolutions.Wpf.DragDrop.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DefaultDragHandler.StartDrag(GongSolutions.Wpf.DragDrop.IDragInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DefaultDragHandler.CanStartDrag(GongSolutions.Wpf.DragDrop.IDragInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DefaultDragHandler.Dropped(GongSolutions.Wpf.DragDrop.IDropInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DefaultDragHandler.DragDropOperationFinished(System.Windows.DragDropEffects,GongSolutions.Wpf.DragDrop.IDragInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DefaultDragHandler.DragCancelled">
+            <inheritdoc />
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DefaultDragHandler.TryCatchOccurredException(System.Exception)">
+            <inheritdoc />
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.DefaultDropHandler">
+            <summary>
+            A default insertion drop handler for the most common usages
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DefaultDropHandler.CanAcceptData(GongSolutions.Wpf.DragDrop.IDropInfo)">
+            <summary>
+            Test the specified drop information for the right data.
+            </summary>
+            <param name="dropInfo">The drop information.</param>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DefaultDropHandler.SelectDroppedItems(GongSolutions.Wpf.DragDrop.IDropInfo,System.Collections.IEnumerable,System.Boolean,System.Boolean)">
+            <summary>
+            Clears the current selected items and selects the given items.
+            </summary>
+            <param name="dropInfo">The drop information.</param>
+            <param name="items">The items which should be select.</param>
+            <param name="applyTemplate">if set to <c>true</c> then for all items the ApplyTemplate will be invoked.</param>
+            <param name="focusVisualTarget">if set to <c>true</c> the visual target will be focused.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="dropInfo" /> is <see langword="null" /></exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="dropInfo" /> is <see langword="null" /></exception>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DefaultDropHandler.ShouldCopyData(GongSolutions.Wpf.DragDrop.IDropInfo)">
+            <summary>
+            Determines whether the data of the drag drop action should be copied otherwise moved.
+            </summary>
+            <param name="dropInfo">The DropInfo with a valid DragInfo.</param>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DefaultDropHandler.DragOver(GongSolutions.Wpf.DragDrop.IDropInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DefaultDropHandler.Drop(GongSolutions.Wpf.DragDrop.IDropInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.TryGetDragHandler(GongSolutions.Wpf.DragDrop.IDragInfo,System.Windows.UIElement)">
+            <summary>
+            Gets the drag handler from the drag info or from the sender, if the drag info is null
+            </summary>
+            <param name="dragInfo">the drag info object</param>
+            <param name="sender">the sender from an event, e.g. mouse down, mouse move</param>
+            <returns></returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.TryGetDropHandler(GongSolutions.Wpf.DragDrop.IDropInfo,System.Windows.UIElement)">
+            <summary>
+            Gets the drop handler from the drop info or from the sender, if the drop info is null
+            </summary>
+            <param name="dropInfo">the drop info object</param>
+            <param name="sender">the sender from an event, e.g. drag over</param>
+            <returns></returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.TryGetDragInfoBuilder(System.Windows.DependencyObject)">
+            <summary>
+            Gets the drag info builder from the sender.
+            </summary>
+            <param name="sender">the sender from an event, e.g. drag over</param>
+            <returns></returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.TryGetDropInfoBuilder(System.Windows.DependencyObject)">
+            <summary>
+            Gets the drop info builder from the sender.
+            </summary>
+            <param name="sender">the sender from an event, e.g. drag over</param>
+            <returns></returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.TryGetRootElementFinder(System.Windows.UIElement)">
+            <summary>
+            Gets the RootElementFinder from the sender or uses the default implementation, if it's null.
+            </summary>
+            <param name="sender">the sender from an event, e.g. drag over</param>
+            <returns></returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetIsDragOver(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragOverProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragOverProperty"/> on.</param>
+            <param name="value">IsDragOver property value.</param>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetIsDragOver(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragOverProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragOverProperty"/> from.</param>
+            <returns>IsDragOver property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetIsDragLeaved(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragLeavedProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragLeavedProperty"/> on.</param>
+            <param name="value">IsDragLeaved property value.</param>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetIsDragLeaved(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragLeavedProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragLeavedProperty"/> from.</param>
+            <returns>IsDragLeaved property value.</returns>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragDrop.DataFormat">
+            <summary>
+            The default data format which will be used for the drag and drop actions.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragDrop.DefaultDragHandler">
+            <summary>
+            Gets the default DragHandler.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragDrop.DefaultDropHandler">
+            <summary>
+            Gets the default DropHandler.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragDrop.DefaultRootElementFinder">
+            <summary>
+            Gets the default RootElementFinder.
+            </summary>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DataFormatProperty">
+            <summary>
+            Gets or sets the data format which will be used for the drag and drop operations.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDataFormat(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DataFormatProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DataFormatProperty"/> from.</param>
+            <remarks>Gets the data format which will be used for the drag and drop operations.</remarks>
+            <returns>DataFormat property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDataFormat(System.Windows.DependencyObject,System.Windows.DataFormat)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DataFormatProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DataFormatProperty"/> on.</param>
+            <param name="value">DataFormat property value.</param>
+            <remarks>Sets the data format which will be used for the drag and drop operations.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragSourceProperty">
+            <summary>
+            Gets or sets whether the control can be used as drag source.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetIsDragSource(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragSourceProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragSourceProperty"/> from.</param>
+            <remarks>Gets whether the control can be used as drag source.</remarks>
+            <returns>IsDragSource property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetIsDragSource(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragSourceProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragSourceProperty"/> on.</param>
+            <param name="value">IsDragSource property value.</param>
+            <remarks>Sets whether the control can be used as drag source.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDropTargetProperty">
+            <summary>
+            Gets or sets whether the control can be used as drop target.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetIsDropTarget(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDropTargetProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDropTargetProperty"/> from.</param>
+            <remarks>Gets whether the control can be used as drop target.</remarks>
+            <returns>IsDropTarget property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetIsDropTarget(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDropTargetProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDropTargetProperty"/> on.</param>
+            <param name="value">IsDropTarget property value.</param>
+            <remarks>Sets whether the control can be used as drop target.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DropEventTypeProperty">
+            <summary>
+            Gets or sets the events which are subscribed for the drag and drop events.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDropEventType(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropEventTypeProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropEventTypeProperty"/> from.</param>
+            <remarks>Gets which type of events are subscribed for the drag and drop events.</remarks>
+            <returns>DropEventType property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDropEventType(System.Windows.DependencyObject,GongSolutions.Wpf.DragDrop.EventType)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropEventTypeProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropEventTypeProperty"/> on.</param>
+            <param name="value">DropEventType property value.</param>
+            <remarks>Sets which type of events are subscribed for the drag and drop events.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.CanDragWithMouseRightButtonProperty">
+            <summary>
+            Gets or sets whether the control can be used as drag source together with the right mouse.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetCanDragWithMouseRightButton(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.CanDragWithMouseRightButtonProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.CanDragWithMouseRightButtonProperty"/> from.</param>
+            <remarks>Gets whether the control can be used as drag source together with the right mouse.</remarks>
+            <returns>CanDragWithMouseRightButton property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetCanDragWithMouseRightButton(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.CanDragWithMouseRightButtonProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.CanDragWithMouseRightButtonProperty"/> on.</param>
+            <param name="value">CanDragWithMouseRightButton property value.</param>
+            <remarks>Sets whether the control can be used as drag source together with the right mouse.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragHandlerProperty">
+            <summary>
+            Gets or sets the handler for the drag operation.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragHandler(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragHandlerProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragHandlerProperty"/> from.</param>
+            <remarks>Gets the handler for the drag operation.</remarks>
+            <returns>DragHandler property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragHandler(System.Windows.DependencyObject,GongSolutions.Wpf.DragDrop.IDragSource)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragHandlerProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragHandlerProperty"/> on.</param>
+            <param name="value">DragHandler property value.</param>
+            <remarks>Sets the handler for the drag operation.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DropHandlerProperty">
+            <summary>
+            Gets or sets the handler for the drop operation.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDropHandler(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropHandlerProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropHandlerProperty"/> from.</param>
+            <remarks>Gets the handler for the drop operation.</remarks>
+            <returns>DropHandler property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDropHandler(System.Windows.DependencyObject,GongSolutions.Wpf.DragDrop.IDropTarget)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropHandlerProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropHandlerProperty"/> on.</param>
+            <param name="value">DropHandler property value.</param>
+            <remarks>Sets the handler for the drop operation.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragInfoBuilderProperty">
+            <summary>
+            Gets or sets the drag info builder for the drag operation.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragInfoBuilder(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragInfoBuilderProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragInfoBuilderProperty"/> from.</param>
+            <remarks>Gets the drag info builder for the drag operation.</remarks>
+            <returns>DragInfoBuilder property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragInfoBuilder(System.Windows.DependencyObject,GongSolutions.Wpf.DragDrop.IDragInfoBuilder)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragInfoBuilderProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragInfoBuilderProperty"/> on.</param>
+            <param name="value">DragInfoBuilder property value.</param>
+            <remarks>Sets the drag info builder for the drag operation.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DropInfoBuilderProperty">
+            <summary>
+            Gets or sets the drop info builder for the drop operation.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDropInfoBuilder(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropInfoBuilderProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropInfoBuilderProperty"/> from.</param>
+            <remarks>Gets the drop info builder for the drop operation.</remarks>
+            <returns>DropInfoBuilder property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDropInfoBuilder(System.Windows.DependencyObject,GongSolutions.Wpf.DragDrop.IDropInfoBuilder)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropInfoBuilderProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropInfoBuilderProperty"/> on.</param>
+            <param name="value">DropInfoBuilder property value.</param>
+            <remarks>Sets the drop info builder for the drop operation.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DropScrollingModeProperty">
+            <summary>
+            Gets or sets the ScrollingMode for the drop operation.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDropScrollingMode(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropScrollingModeProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropScrollingModeProperty"/> from.</param>
+            <remarks>Gets the ScrollingMode for the drop operation.</remarks>
+            <returns>DropScrollingMode property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDropScrollingMode(System.Windows.DependencyObject,GongSolutions.Wpf.DragDrop.ScrollingMode)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropScrollingModeProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropScrollingModeProperty"/> on.</param>
+            <param name="value">DropScrollingMode property value.</param>
+            <remarks>Sets the ScrollingMode for the drop operation.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.ShowAlwaysDropTargetAdornerProperty">
+            <summary>
+            Gets or sets whether to show the DropTargetAdorner (DropTargetInsertionAdorner) on an empty target too.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetShowAlwaysDropTargetAdorner(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.ShowAlwaysDropTargetAdornerProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.ShowAlwaysDropTargetAdornerProperty"/> from.</param>
+            <remarks>Gets whether to show the DropTargetAdorner (DropTargetInsertionAdorner) on an empty target too.</remarks>
+            <returns>ShowAlwaysDropTargetAdorner property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetShowAlwaysDropTargetAdorner(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.ShowAlwaysDropTargetAdornerProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.ShowAlwaysDropTargetAdornerProperty"/> on.</param>
+            <param name="value">ShowAlwaysDropTargetAdorner property value.</param>
+            <remarks>Sets whether to show the DropTargetAdorner (DropTargetInsertionAdorner) on an empty target too.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetAdornerBrushProperty">
+            <summary>
+            Gets or sets the brush for the DropTargetAdorner.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDropTargetAdornerBrush(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetAdornerBrushProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetAdornerBrushProperty"/> from.</param>
+            <remarks>Gets the brush for the DropTargetAdorner.</remarks>
+            <returns>DropTargetAdornerBrush property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDropTargetAdornerBrush(System.Windows.DependencyObject,System.Windows.Media.Brush)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetAdornerBrushProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetAdornerBrushProperty"/> on.</param>
+            <param name="value">DropTargetAdornerBrush property value.</param>
+            <remarks>Sets the brush for the DropTargetAdorner.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetAdornerPenProperty">
+            <summary>
+            Gets or sets the pen for the DropTargetAdorner.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDropTargetAdornerPen(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetAdornerPenProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetAdornerPenProperty"/> from.</param>
+            <remarks>Gets the pen for the DropTargetAdorner.</remarks>
+            <returns>DropTargetAdornerPen property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDropTargetAdornerPen(System.Windows.DependencyObject,System.Windows.Media.Pen)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetAdornerPenProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetAdornerPenProperty"/> on.</param>
+            <param name="value">DropTargetAdornerPen property value.</param>
+            <remarks>Sets the pen for the DropTargetAdorner.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDropContextProperty">
+            <summary>
+            Gets or sets a context for a control. Only controls with the same context are allowed for drag or drop actions.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragDropContext(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDropContextProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDropContextProperty"/> from.</param>
+            <remarks>Gets a context for a control. Only controls with the same context are allowed for drag or drop actions.</remarks>
+            <returns>DragDropContext property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragDropContext(System.Windows.DependencyObject,System.String)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDropContextProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDropContextProperty"/> on.</param>
+            <param name="value">DragDropContext property value.</param>
+            <remarks>Sets a context for a control. Only controls with the same context are allowed for drag or drop actions.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragSourceIgnoreProperty">
+            <summary>
+            Gets or sets whether an element under the mouse should be ignored for the drag operation.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragSourceIgnore(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragSourceIgnoreProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragSourceIgnoreProperty"/> from.</param>
+            <remarks>Gets whether an element under the mouse should be ignored for the drag operation.</remarks>
+            <returns>DragSourceIgnore property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragSourceIgnore(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragSourceIgnoreProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragSourceIgnoreProperty"/> on.</param>
+            <param name="value">DragSourceIgnore property value.</param>
+            <remarks>Sets whether an element under the mouse should be ignored for the drag operation.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDirectlySelectedOnlyProperty">
+            <summary>
+            Gets or sets whether the drag action should be started only directly on a selected item.
+            or also on the free control space (e.g. in a ListBox).
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragDirectlySelectedOnly(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDirectlySelectedOnlyProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDirectlySelectedOnlyProperty"/> from.</param>
+            <remarks>Gets whether the drag action should be started only directly on a selected item.</remarks>
+            <returns>DragDirectlySelectedOnly property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragDirectlySelectedOnly(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDirectlySelectedOnlyProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDirectlySelectedOnlyProperty"/> on.</param>
+            <param name="value">DragDirectlySelectedOnly property value.</param>
+            <remarks>Sets whether the drag action should be started only directly on a selected item.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDropCopyKeyStateProperty">
+            <summary>
+            The drag drop copy key state property (default None).
+            So the drag drop action is
+            - Move, within the same control or from one to another, if the drag drop key state is None
+            - Copy, from one to another control with the given drag drop copy key state
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragDropCopyKeyState(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDropCopyKeyStateProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDropCopyKeyStateProperty"/> from.</param>
+            <remarks>Gets the copy key state which indicates the effect of the drag drop operation.</remarks>
+            <returns>DragDropCopyKeyState property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragDropCopyKeyState(System.Windows.DependencyObject,System.Windows.DragDropKeyStates)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDropCopyKeyStateProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDropCopyKeyStateProperty"/> on.</param>
+            <param name="value">DragDropCopyKeyState property value.</param>
+            <remarks>Sets the copy key state which indicates the effect of the drag drop operation.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.UseDefaultDragAdornerProperty">
+            <summary>
+            Gets or sets whether if the default DragAdorner should be use.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetUseDefaultDragAdorner(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.UseDefaultDragAdornerProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.UseDefaultDragAdornerProperty"/> from.</param>
+            <remarks>Gets whether if the default DragAdorner is used.</remarks>
+            <returns>UseDefaultDragAdorner property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetUseDefaultDragAdorner(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.UseDefaultDragAdornerProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.UseDefaultDragAdornerProperty"/> on.</param>
+            <param name="value">UseDefaultDragAdorner property value.</param>
+            <remarks>Sets whether if the default DragAdorner should be use.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DefaultDragAdornerOpacityProperty">
+            <summary>
+            Gets or sets the opacity of the default DragAdorner.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDefaultDragAdornerOpacity(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DefaultDragAdornerOpacityProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DefaultDragAdornerOpacityProperty"/> from.</param>
+            <remarks>Gets the opacity of the default DragAdorner.</remarks>
+            <returns>DefaultDragAdornerOpacity property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDefaultDragAdornerOpacity(System.Windows.DependencyObject,System.Double)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DefaultDragAdornerOpacityProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DefaultDragAdornerOpacityProperty"/> on.</param>
+            <param name="value">DefaultDragAdornerOpacity property value.</param>
+            <remarks>Sets the opacity of the default DragAdorner.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragMouseAnchorPointProperty">
+            <summary>
+            Gets or sets the horizontal and vertical proportion at which the pointer will anchor on the DragAdorner.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragMouseAnchorPoint(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragMouseAnchorPointProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragMouseAnchorPointProperty"/> from.</param>
+            <remarks>Gets the horizontal and vertical proportion at which the pointer will anchor on the DragAdorner.</remarks>
+            <returns>DragMouseAnchorPoint property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragMouseAnchorPoint(System.Windows.DependencyObject,System.Windows.Point)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragMouseAnchorPointProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragMouseAnchorPointProperty"/> on.</param>
+            <param name="value">DragMouseAnchorPoint property value.</param>
+            <remarks>Sets the horizontal and vertical proportion at which the pointer will anchor on the DragAdorner.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTranslationProperty">
+            <summary>
+            Gets or sets the translation transform which will be used for the DragAdorner.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragAdornerTranslation(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTranslationProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTranslationProperty"/> from.</param>
+            <remarks>Gets the translation transform which will be used for the DragAdorner.</remarks>
+            <returns>DragAdornerTranslation property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragAdornerTranslation(System.Windows.DependencyObject,System.Windows.Point)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTranslationProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTranslationProperty"/> on.</param>
+            <param name="value">DragAdornerTranslation property value.</param>
+            <remarks>Sets the translation transform which will be used for the DragAdorner.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectAdornerTranslationProperty">
+            <summary>
+            Gets or sets the translation transform which will be used for the EffectAdorner.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetEffectAdornerTranslation(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectAdornerTranslationProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectAdornerTranslationProperty"/> from.</param>
+            <remarks>Gets the translation transform which will be used for the EffectAdorner.</remarks>
+            <returns>EffectAdornerTranslation property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetEffectAdornerTranslation(System.Windows.DependencyObject,System.Windows.Point)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectAdornerTranslationProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectAdornerTranslationProperty"/> on.</param>
+            <param name="value">EffectAdornerTranslation property value.</param>
+            <remarks>Sets the translation transform which will be used for the EffectAdorner.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTemplateProperty">
+            <summary>
+            Gets or sets a DataTemplate for the DragAdorner.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragAdornerTemplate(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTemplateProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTemplateProperty"/> from.</param>
+            <remarks>Gets the DataTemplate for the DragAdorner.</remarks>
+            <returns>DragAdornerTemplate property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragAdornerTemplate(System.Windows.DependencyObject,System.Windows.DataTemplate)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTemplateProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTemplateProperty"/> on.</param>
+            <param name="value">DragAdornerTemplate property value.</param>
+            <remarks>Sets the DataTemplate for the DragAdorner.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTemplateSelectorProperty">
+            <summary>
+            Gets or sets a DataTemplateSelector for the DragAdorner.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragAdornerTemplateSelector(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTemplateSelectorProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTemplateSelectorProperty"/> from.</param>
+            <remarks>Gets the DataTemplateSelector for the DragAdorner.</remarks>
+            <returns>DragAdornerTemplateSelector property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragAdornerTemplateSelector(System.Windows.DependencyObject,System.Windows.Controls.DataTemplateSelector)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTemplateSelectorProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerTemplateSelectorProperty"/> on.</param>
+            <param name="value">DragAdornerTemplateSelector property value.</param>
+            <remarks>Sets the DataTemplateSelector for the DragAdorner.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerMultiItemTemplateProperty">
+            <summary>
+            Gets or sets a DragAdorner DataTemplate for multiple item selection.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragAdornerMultiItemTemplate(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerMultiItemTemplateProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerMultiItemTemplateProperty"/> from.</param>
+            <remarks>Gets the DragAdorner DataTemplate for multiple item selection.</remarks>
+            <returns>DragAdornerMultiItemTemplate property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragAdornerMultiItemTemplate(System.Windows.DependencyObject,System.Windows.DataTemplate)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerMultiItemTemplateProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerMultiItemTemplateProperty"/> on.</param>
+            <param name="value">DragAdornerMultiItemTemplate property value.</param>
+            <remarks>Sets the DragAdorner DataTemplate for multiple item selection.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerMultiItemTemplateSelectorProperty">
+            <summary>
+            Gets or sets a DragAdorner DataTemplateSelector for multiple item selection.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragAdornerMultiItemTemplateSelector(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerMultiItemTemplateSelectorProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerMultiItemTemplateSelectorProperty"/> from.</param>
+            <remarks>Gets the DragAdorner DataTemplateSelector for multiple item selection.</remarks>
+            <returns>DragAdornerMultiItemTemplateSelector property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragAdornerMultiItemTemplateSelector(System.Windows.DependencyObject,System.Windows.Controls.DataTemplateSelector)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerMultiItemTemplateSelectorProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerMultiItemTemplateSelectorProperty"/> on.</param>
+            <param name="value">DragAdornerMultiItemTemplateSelector property value.</param>
+            <remarks>Sets the DragAdorner DataTemplateSelector for multiple item selection.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerItemsPanelProperty">
+            <summary>
+            Gets or sets a ItemsPanel for the DragAdorner.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragAdornerItemsPanel(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerItemsPanelProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerItemsPanelProperty"/> from.</param>
+            <remarks>Gets the ItemsPanel for the DragAdorner.</remarks>
+            <returns>DragAdornerItemsPanel property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragAdornerItemsPanel(System.Windows.DependencyObject,System.Windows.Controls.ItemsPanelTemplate)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerItemsPanelProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragAdornerItemsPanelProperty"/> on.</param>
+            <param name="value">DragAdornerItemsPanel property value.</param>
+            <remarks>Sets the ItemsPanel for the DragAdorner.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerTemplateProperty">
+            <summary>
+            Gets or sets a DataTemplate for the DragAdorner based on the DropTarget.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDropAdornerTemplate(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerTemplateProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerTemplateProperty"/> from.</param>
+            <remarks>Gets the DataTemplate for the DragAdorner based on the DropTarget.</remarks>
+            <returns>DropAdornerTemplate property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDropAdornerTemplate(System.Windows.DependencyObject,System.Windows.DataTemplate)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerTemplateProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerTemplateProperty"/> on.</param>
+            <param name="value">DropAdornerTemplate property value.</param>
+            <remarks>Sets the DataTemplate for the DragAdorner based on the DropTarget.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerTemplateSelectorProperty">
+            <summary>
+            Gets or sets a DataTemplateSelector for the DragAdorner based on the DropTarget.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDropAdornerTemplateSelector(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerTemplateSelectorProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerTemplateSelectorProperty"/> from.</param>
+            <remarks>Gets the DataTemplateSelector for the DragAdorner based on the DropTarget.</remarks>
+            <returns>DropAdornerTemplateSelector property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDropAdornerTemplateSelector(System.Windows.DependencyObject,System.Windows.Controls.DataTemplateSelector)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerTemplateSelectorProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerTemplateSelectorProperty"/> on.</param>
+            <param name="value">DropAdornerTemplateSelector property value.</param>
+            <remarks>Sets the DataTemplateSelector for the DragAdorner based on the DropTarget.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerMultiItemTemplateProperty">
+            <summary>
+            Gets or sets a DropAdorner DataTemplate for multiple item selection.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDropAdornerMultiItemTemplate(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerMultiItemTemplateProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerMultiItemTemplateProperty"/> from.</param>
+            <remarks>Gets the DropAdorner DataTemplate for multiple item selection.</remarks>
+            <returns>DropAdornerMultiItemTemplate property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDropAdornerMultiItemTemplate(System.Windows.DependencyObject,System.Windows.DataTemplate)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerMultiItemTemplateProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerMultiItemTemplateProperty"/> on.</param>
+            <param name="value">DropAdornerMultiItemTemplate property value.</param>
+            <remarks>Sets the DropAdorner DataTemplate for multiple item selection.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerMultiItemTemplateSelectorProperty">
+            <summary>
+            Gets or sets a DropAdorner DataTemplateSelector for multiple item selection.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDropAdornerMultiItemTemplateSelector(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerMultiItemTemplateSelectorProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerMultiItemTemplateSelectorProperty"/> from.</param>
+            <remarks>Gets the DropAdorner DataTemplateSelector for multiple item selection.</remarks>
+            <returns>DropAdornerMultiItemTemplateSelector property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDropAdornerMultiItemTemplateSelector(System.Windows.DependencyObject,System.Windows.Controls.DataTemplateSelector)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerMultiItemTemplateSelectorProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerMultiItemTemplateSelectorProperty"/> on.</param>
+            <param name="value">DropAdornerMultiItemTemplateSelector property value.</param>
+            <remarks>Sets the DropAdorner DataTemplateSelector for multiple item selection.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerItemsPanelProperty">
+            <summary>
+            Gets or sets a ItemsPanel for the DragAdorner based on the DropTarget.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDropAdornerItemsPanel(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerItemsPanelProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerItemsPanelProperty"/> from.</param>
+            <remarks>Gets the ItemsPanel for the DragAdorner based on the DropTarget.</remarks>
+            <returns>DropAdornerItemsPanel property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDropAdornerItemsPanel(System.Windows.DependencyObject,System.Windows.Controls.ItemsPanelTemplate)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerItemsPanelProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropAdornerItemsPanelProperty"/> on.</param>
+            <param name="value">DropAdornerItemsPanel property value.</param>
+            <remarks>Sets the ItemsPanel for the DragAdorner based on the DropTarget.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.UseVisualSourceItemSizeForDragAdornerProperty">
+            <summary>
+            Use descendant bounds of the VisualSourceItem as MinWidth for the DragAdorner.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetUseVisualSourceItemSizeForDragAdorner(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.UseVisualSourceItemSizeForDragAdornerProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.UseVisualSourceItemSizeForDragAdornerProperty"/> from.</param>
+            <remarks>Gets the flag which indicates if the DragAdorner use the descendant bounds of the VisualSourceItem as MinWidth.</remarks>
+            <returns>UseVisualSourceItemSizeForDragAdorner property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetUseVisualSourceItemSizeForDragAdorner(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.UseVisualSourceItemSizeForDragAdornerProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.UseVisualSourceItemSizeForDragAdornerProperty"/> on.</param>
+            <param name="value">UseVisualSourceItemSizeForDragAdorner property value.</param>
+            <remarks>Sets the flag which indicates if the DragAdorner use the descendant bounds of the VisualSourceItem as MinWidth.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.UseDefaultEffectDataTemplateProperty">
+            <summary>
+            Gets or sets whether if the default DataTemplate for the effects should be use.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetUseDefaultEffectDataTemplate(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.UseDefaultEffectDataTemplateProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.UseDefaultEffectDataTemplateProperty"/> from.</param>
+            <remarks>Gets whether if the default DataTemplate for the effects should be use.</remarks>
+            <returns>UseDefaultEffectDataTemplate property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetUseDefaultEffectDataTemplate(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.UseDefaultEffectDataTemplateProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.UseDefaultEffectDataTemplateProperty"/> on.</param>
+            <param name="value">UseDefaultEffectDataTemplate property value.</param>
+            <remarks>Sets whether if the default DataTemplate for the effects should be use.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectNoneAdornerTemplateProperty">
+            <summary>
+            Gets or sets a EffectAdorner DataTemplate for effect type None.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetEffectNoneAdornerTemplate(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectNoneAdornerTemplateProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectNoneAdornerTemplateProperty"/> from.</param>
+            <remarks>Gets a EffectAdorner DataTemplate for effect type None.</remarks>
+            <returns>EffectNoneAdornerTemplate property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetEffectNoneAdornerTemplate(System.Windows.DependencyObject,System.Windows.DataTemplate)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectNoneAdornerTemplateProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectNoneAdornerTemplateProperty"/> on.</param>
+            <param name="value">EffectNoneAdornerTemplate property value.</param>
+            <remarks>Sets a EffectAdorner DataTemplate for effect type None.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectCopyAdornerTemplateProperty">
+            <summary>
+            Gets or sets a EffectAdorner DataTemplate for effect type Copy.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetEffectCopyAdornerTemplate(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectCopyAdornerTemplateProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectCopyAdornerTemplateProperty"/> from.</param>
+            <remarks>Gets a EffectAdorner DataTemplate for effect type Copy.</remarks>
+            <returns>EffectCopyAdornerTemplate property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetEffectCopyAdornerTemplate(System.Windows.DependencyObject,System.Windows.DataTemplate)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectCopyAdornerTemplateProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectCopyAdornerTemplateProperty"/> on.</param>
+            <param name="value">EffectCopyAdornerTemplate property value.</param>
+            <remarks>Sets a EffectAdorner DataTemplate for effect type Copy.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectMoveAdornerTemplateProperty">
+            <summary>
+            Gets or sets a EffectAdorner DataTemplate for effect type Move.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetEffectMoveAdornerTemplate(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectMoveAdornerTemplateProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectMoveAdornerTemplateProperty"/> from.</param>
+            <remarks>Gets a EffectAdorner DataTemplate for effect type Move.</remarks>
+            <returns>EffectMoveAdornerTemplate property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetEffectMoveAdornerTemplate(System.Windows.DependencyObject,System.Windows.DataTemplate)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectMoveAdornerTemplateProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectMoveAdornerTemplateProperty"/> on.</param>
+            <param name="value">EffectMoveAdornerTemplate property value.</param>
+            <remarks>Sets a EffectAdorner DataTemplate for effect type Move.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectLinkAdornerTemplateProperty">
+            <summary>
+            Gets or sets a EffectAdorner DataTemplate for effect type Link.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetEffectLinkAdornerTemplate(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectLinkAdornerTemplateProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectLinkAdornerTemplateProperty"/> from.</param>
+            <remarks>Gets a EffectAdorner DataTemplate for effect type Link.</remarks>
+            <returns>EffectLinkAdornerTemplate property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetEffectLinkAdornerTemplate(System.Windows.DependencyObject,System.Windows.DataTemplate)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectLinkAdornerTemplateProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectLinkAdornerTemplateProperty"/> on.</param>
+            <param name="value">EffectLinkAdornerTemplate property value.</param>
+            <remarks>Sets a EffectAdorner DataTemplate for effect type Link.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectAllAdornerTemplateProperty">
+            <summary>
+            Gets or sets a EffectAdorner DataTemplate for effect type All.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetEffectAllAdornerTemplate(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectAllAdornerTemplateProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectAllAdornerTemplateProperty"/> from.</param>
+            <remarks>Gets a EffectAdorner DataTemplate for effect type All.</remarks>
+            <returns>EffectAllAdornerTemplate property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetEffectAllAdornerTemplate(System.Windows.DependencyObject,System.Windows.DataTemplate)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectAllAdornerTemplateProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectAllAdornerTemplateProperty"/> on.</param>
+            <param name="value">EffectAllAdornerTemplate property value.</param>
+            <remarks>Sets a EffectAdorner DataTemplate for effect type All.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectScrollAdornerTemplateProperty">
+            <summary>
+            Gets or sets a EffectAdorner DataTemplate for effect type Scroll.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetEffectScrollAdornerTemplate(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectScrollAdornerTemplateProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectScrollAdornerTemplateProperty"/> from.</param>
+            <remarks>Gets a EffectAdorner DataTemplate for effect type Scroll.</remarks>
+            <returns>EffectScrollAdornerTemplate property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetEffectScrollAdornerTemplate(System.Windows.DependencyObject,System.Windows.DataTemplate)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectScrollAdornerTemplateProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.EffectScrollAdornerTemplateProperty"/> on.</param>
+            <param name="value">EffectScrollAdornerTemplate property value.</param>
+            <remarks>Sets a EffectAdorner DataTemplate for effect type Scroll.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.ItemsPanelOrientationProperty">
+            <summary>
+            Gets or sets the Orientation which should be used for the drag drop action (default null).
+            Normally it will be look up to find the correct orientation of the inner ItemsPanel,
+            but sometimes it's necessary to force the orientation, if the look up is wrong.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetItemsPanelOrientation(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.ItemsPanelOrientationProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.ItemsPanelOrientationProperty"/> from.</param>
+            <remarks>
+            Gets the Orientation which should be used for the drag drop action (default null).
+            Normally it will be look up to find the correct orientation of the inner ItemsPanel,
+            but sometimes it's necessary to force the orientation, if the look up is wrong.
+            </remarks>
+            <returns>ItemsPanelOrientation property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetItemsPanelOrientation(System.Windows.DependencyObject,System.Nullable{System.Windows.Controls.Orientation})">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.ItemsPanelOrientationProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.ItemsPanelOrientationProperty"/> on.</param>
+            <param name="value">ItemsPanelOrientation property value.</param>
+            <remarks>
+            Sets the Orientation which should be used for the drag drop action (default null).
+            Normally it will be look up to find the correct orientation of the inner ItemsPanel,
+            but sometimes it's necessary to force the orientation, if the look up is wrong.
+            </remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.MinimumHorizontalDragDistanceProperty">
+            <summary>
+            Gets or sets the minimum horizontal drag distance to allow for limited movement of the mouse pointer before a drag operation begins.
+            Default is SystemParameters.MinimumHorizontalDragDistance.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetMinimumHorizontalDragDistance(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.MinimumHorizontalDragDistanceProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.MinimumHorizontalDragDistanceProperty"/> from.</param>
+            <remarks>Gets the minimum horizontal drag distance.</remarks>
+            <returns>MinimumHorizontalDragDistance property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetMinimumHorizontalDragDistance(System.Windows.DependencyObject,System.Double)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.MinimumHorizontalDragDistanceProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.MinimumHorizontalDragDistanceProperty"/> on.</param>
+            <param name="value">MinimumHorizontalDragDistance property value.</param>
+            <remarks>Sets the minimum horizontal drag distance.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.MinimumVerticalDragDistanceProperty">
+            <summary>
+            Gets or sets the minimum vertical drag distance to allow for limited movement of the mouse pointer before a drag operation begins.
+            Default is SystemParameters.MinimumVerticalDragDistance.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetMinimumVerticalDragDistance(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.MinimumVerticalDragDistanceProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.MinimumVerticalDragDistanceProperty"/> from.</param>
+            <remarks>Gets the minimum vertical drag distance.</remarks>
+            <returns>MinimumVerticalDragDistance property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetMinimumVerticalDragDistance(System.Windows.DependencyObject,System.Double)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.MinimumVerticalDragDistanceProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.MinimumVerticalDragDistanceProperty"/> on.</param>
+            <param name="value">MinimumVerticalDragDistance property value.</param>
+            <remarks>Sets the minimum vertical drag distance.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.SelectDroppedItemsProperty">
+            <summary>
+            Gets or sets whether if the dropped items should be select again (should keep the selection).
+            Default is false.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetSelectDroppedItems(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.SelectDroppedItemsProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.SelectDroppedItemsProperty"/> from.</param>
+            <remarks>Gets whether if the dropped items should be select again (should keep the selection).</remarks>
+            <returns>SelectDroppedItems property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetSelectDroppedItems(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.SelectDroppedItemsProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.SelectDroppedItemsProperty"/> on.</param>
+            <param name="value">SelectDroppedItems property value.</param>
+            <remarks>Sets whether if the dropped items should be select again (should keep the selection).</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetScrollViewerProperty">
+            <summary>
+            Gets or sets the <see cref="T:System.Windows.Controls.ScrollViewer"/> that will be used as <see cref="P:GongSolutions.Wpf.DragDrop.DropInfo.TargetScrollViewer"/>.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDropTargetScrollViewer(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetScrollViewerProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetScrollViewerProperty"/> from.</param>
+            <remarks>Gets the <see cref="T:System.Windows.Controls.ScrollViewer"/> that will be used as <see cref="P:GongSolutions.Wpf.DragDrop.DropInfo.TargetScrollViewer"/>.</remarks>
+            <returns>DropTargetScrollViewer property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDropTargetScrollViewer(System.Windows.DependencyObject,System.Windows.Controls.ScrollViewer)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetScrollViewerProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetScrollViewerProperty"/> on.</param>
+            <param name="value">DropTargetScrollViewer property value.</param>
+            <remarks>Sets the <see cref="T:System.Windows.Controls.ScrollViewer"/> that will be used as <see cref="P:GongSolutions.Wpf.DragDrop.DropInfo.TargetScrollViewer"/>.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.RootElementFinderProperty">
+            <summary>
+            Gets or sets the root element finder.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetRootElementFinder(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.RootElementFinderProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.RootElementFinderProperty"/> from.</param>
+            <remarks>Gets the root element finder.</remarks>
+            <returns>RootElementFinder property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetRootElementFinder(System.Windows.DependencyObject,GongSolutions.Wpf.DragDrop.Utilities.IRootElementFinder)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.RootElementFinderProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.RootElementFinderProperty"/> on.</param>
+            <param name="value">RootElementFinder property value.</param>
+            <remarks>Sets the root element finder.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragPreviewMaxItemsCountProperty">
+            <summary>
+            Gets or sets the maximum items count which will be used for the dragged preview.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragPreviewMaxItemsCount(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragPreviewMaxItemsCountProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragPreviewMaxItemsCountProperty"/> from.</param>
+            <remarks>Gets the maximum items count which will be used for the dragged preview.</remarks>
+            <returns>DragPreviewMaxItemsCount property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragPreviewMaxItemsCount(System.Windows.DependencyObject,System.Int32)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragPreviewMaxItemsCountProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragPreviewMaxItemsCountProperty"/> on.</param>
+            <param name="value">DragPreviewMaxItemsCount property value.</param>
+            <remarks>Sets the maximum items count which will be used for the dragged preview.</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DragPreviewItemsSorterProperty">
+            <summary>
+            Gets or sets the handler for the dragged preview items sorter
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDragPreviewItemsSorter(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragPreviewItemsSorterProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragPreviewItemsSorterProperty"/> from.</param>
+            <remarks>Gets the drag preview items sorter handler</remarks>
+            <returns>DragPreviewItemsSorter property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDragPreviewItemsSorter(System.Windows.DependencyObject,GongSolutions.Wpf.DragDrop.IDragPreviewItemsSorter)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragPreviewItemsSorterProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragPreviewItemsSorterProperty"/> on.</param>
+            <param name="value">DragPreviewItemsSorter property value.</param>
+            <remarks>Sets the handler for the drag preview items sorter</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetItemsSorterProperty">
+            <summary>
+            Gets or sets the handler for the drop target items sorter
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.GetDropTargetItemsSorter(System.Windows.DependencyObject)">
+            <summary>Helper for getting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetItemsSorterProperty"/> from <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to read <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetItemsSorterProperty"/> from.</param>
+            <remarks>Gets the drop target items sorter handler</remarks>
+            <returns>DropTargetItemsSorter property value.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragDrop.SetDropTargetItemsSorter(System.Windows.DependencyObject,GongSolutions.Wpf.DragDrop.IDropTargetItemsSorter)">
+            <summary>Helper for setting <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetItemsSorterProperty"/> on <paramref name="element"/>.</summary>
+            <param name="element"><see cref="T:System.Windows.DependencyObject"/> to set <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DropTargetItemsSorterProperty"/> on.</param>
+            <param name="value">DropTargetItemsSorter property value.</param>
+            <remarks>Sets the handler for the drop target items sorter</remarks>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDropPreview.ItemTemplateProperty">
+            <summary>Identifies the <see cref="P:GongSolutions.Wpf.DragDrop.DragDropPreview.ItemTemplate"/> dependency property.</summary>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDropPreview.ItemTemplateSelectorProperty">
+            <summary>Identifies the <see cref="P:GongSolutions.Wpf.DragDrop.DragDropPreview.ItemTemplateSelector"/> dependency property.</summary>
+        </member>
+        <member name="F:GongSolutions.Wpf.DragDrop.DragDropPreview.ItemsPanelProperty">
+            <summary>Identifies the <see cref="P:GongSolutions.Wpf.DragDrop.DragDropPreview.ItemsPanel"/> dependency property.</summary>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.DragInfo">
+            <summary>
+            Holds information about a the source of a drag drop operation.
+            </summary>
+            
+            <remarks>
+            The <see cref="T:GongSolutions.Wpf.DragDrop.DragInfo"/> class holds all of the framework's information about the source
+            of a drag. It is used by <see cref="M:GongSolutions.Wpf.DragDrop.IDragSource.StartDrag(GongSolutions.Wpf.DragDrop.IDragInfo)"/> to determine whether a drag 
+            can start, and what the dragged data should be.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.DataFormat">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.Data">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.DragStartPosition">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.PositionInDraggedItem">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.Effects">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.MouseButton">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.SourceCollection">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.SourceIndex">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.SourceItem">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.SourceItems">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.SourceGroup">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.VisualSource">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.VisualSourceItem">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.VisualSourceFlowDirection">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.DataObject">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.DragDropHandler">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DragInfo.DragDropCopyKeyState">
+            <inheritdoc />
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DragInfo.#ctor(System.Object,System.Object,System.Windows.Input.MouseButton,System.Func{System.Windows.IInputElement,System.Windows.Point})">
+            <summary>
+            Initializes a new instance of the DragInfo class.
+            </summary>
+            <param name="sender">The sender of the input event that initiated the drag operation.</param>
+            <param name="originalSource">The original source of the input event.</param>
+            <param name="mouseButton">The mouse button which was used for the drag operation.</param>
+            <param name="getPosition">A function of the input event which is used to get drag position points.</param>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.DropInfo">
+            <summary>
+            Holds information about a the target of a drag drop operation.
+            </summary>
+            
+            <remarks>
+            The <see cref="T:GongSolutions.Wpf.DragDrop.DropInfo"/> class holds all of the framework's information about the current 
+            target of a drag. It is used by <see cref="M:GongSolutions.Wpf.DragDrop.IDropTarget.DragOver(GongSolutions.Wpf.DragDrop.IDropInfo)"/> method to determine whether 
+            the current drop target is valid, and by <see cref="M:GongSolutions.Wpf.DragDrop.IDropTarget.Drop(GongSolutions.Wpf.DragDrop.IDropInfo)"/> to perform the drop.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.Data">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.DragInfo">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.DropPosition">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.DropTargetAdorner">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.Effects">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.InsertIndex">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.UnfilteredInsertIndex">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.TargetCollection">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.TargetItem">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.TargetGroup">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.TargetScrollViewer">
+            <summary>
+            Gets the ScrollViewer control for the visual target.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.TargetScrollingMode">
+            <summary>
+            Gets or Sets the ScrollingMode for the drop action.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.VisualTarget">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.VisualTargetItem">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.VisualTargetOrientation">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.VisualTargetFlowDirection">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.DestinationText">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.EffectText">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.InsertPosition">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.KeyStates">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.NotHandled">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.IsSameDragDropContextAsSource">
+            <inheritdoc />
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropInfo.EventType">
+            <inheritdoc />
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DropInfo.#ctor(System.Object,System.Windows.DragEventArgs,GongSolutions.Wpf.DragDrop.IDragInfo,GongSolutions.Wpf.DragDrop.EventType)">
+            <summary>
+            Initializes a new instance of the DropInfo class.
+            </summary>
+            <param name="sender">The sender of the drop event.</param>
+            <param name="e">The drag event arguments.</param>
+            <param name="dragInfo">Information about the drag source, if the drag came from within the framework.</param>
+            <param name="eventType">The type of the underlying event (tunneled or bubbled).</param>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropTargetAdorner.Pen">
+            <summary>
+            Gets or Sets the pen which can be used for the render process.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropTargetAdorners.Highlight">
+            <summary>
+            Gets the type of the default highlight target adorner.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.DropTargetAdorners.Insert">
+            <summary>
+            Gets the type of the default insert target adorner.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DropTargetHighlightAdorner.OnRender(System.Windows.Media.DrawingContext)">
+            <summary>
+            When overridden in a derived class, participates in rendering operations that are directed by the layout system.
+            The rendering instructions for this element are not used directly when this method is invoked, and are instead preserved for
+            later asynchronous use by layout and drawing.
+            </summary>
+            <param name="drawingContext">The drawing instructions for a specific element. This context is provided to the layout system.</param>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.DropTargetInsertionAdorner.OnRender(System.Windows.Media.DrawingContext)">
+            <summary>
+            When overridden in a derived class, participates in rendering operations that are directed by the layout system.
+            The rendering instructions for this element are not used directly when this method is invoked, and are instead preserved for
+            later asynchronous use by layout and drawing.
+            </summary>
+            <param name="drawingContext">The drawing instructions for a specific element. This context is provided to the layout system.</param>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.Icons.IconFactory">
+            <summary>
+            Static class to provide access to standard application images
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.Icons.IconFactory.EffectNone">
+            <summary>
+            Gets the icon which can be used for the effect type None.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.Icons.IconFactory.EffectCopy">
+            <summary>
+            Gets the icon which can be used for the effect type Copy.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.Icons.IconFactory.EffectMove">
+            <summary>
+            Gets the icon which can be used for the effect type Move.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.Icons.IconFactory.EffectLink">
+            <summary>
+            Gets the icon which can be used for the effect type Link.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Icons.IconFactory.GetImage(System.String,System.Int32)">
+            <summary>
+            Loads an image based on the name and size required.
+            Images need to be marked as 'Resource' in the project for them be loaded.
+            </summary>
+            <param name="iconName">Name of the icon</param>
+            <param name="size">The size of the icon</param>
+            <returns>The image to be displayed</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Icons.IconFactory.CreateCursor(System.Double,System.Double,System.Windows.Media.SolidColorBrush,System.Windows.Media.Pen)">
+            <summary>
+            Creates a custom cursor.
+            </summary>
+            <param name="rx"></param>
+            <param name="ry"></param>
+            <param name="brush"></param>
+            <param name="pen"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.DataFormat">
+            <summary>
+            Gets or sets the data format which will be used for the drag and drop actions.
+            </summary>
+            <value>The data format.</value>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.Data">
+            <summary>
+            Gets or sets the drag data.
+            </summary>
+            <remarks>
+            This must be set by a drag handler in order for a drag to start.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.DragStartPosition">
+            <summary>
+            Gets the position of the click that initiated the drag, relative to <see cref="P:GongSolutions.Wpf.DragDrop.IDragInfo.VisualSource"/>.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.PositionInDraggedItem">
+            <summary>
+            Gets the point where the cursor was relative to the item being dragged when the drag was started.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.Effects">
+            <summary>
+            Gets or sets the allowed effects for the drag.
+            </summary>
+            <remarks>
+            This must be set to a value other than <see cref="F:System.Windows.DragDropEffects.None"/> by a drag handler in order 
+            for a drag to start.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.MouseButton">
+            <summary>
+            Gets the mouse button that initiated the drag.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.SourceCollection">
+            <summary>
+            Gets the collection that the source ItemsControl is bound to.
+            </summary>
+            <remarks>
+            If the control that initiated the drag is unbound or not an ItemsControl, this will be null.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.SourceIndex">
+            <summary>
+            Gets the position from where the item was dragged.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.SourceItem">
+            <summary>
+            Gets the object that a dragged item is bound to.
+            </summary>
+            <remarks>
+            If the control that initiated the drag is unbound or not an ItemsControl, this will be null.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.SourceItems">
+            <summary>
+            Gets a collection of objects that the selected items in an ItemsControl are bound to.
+            </summary>
+            <remarks>
+            If the control that initiated the drag is unbound or not an ItemsControl, this will be empty.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.SourceGroup">
+            <summary>
+            Gets the group from a dragged item if the drag is currently from an ItemsControl with groups.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.VisualSource">
+            <summary>
+            Gets the control that initiated the drag.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.VisualSourceItem">
+            <summary>
+            Gets the item in an ItemsControl that started the drag.
+            </summary>
+            <remarks>
+            If the control that initiated the drag is an ItemsControl, this property will hold the item
+            container of the clicked item. For example, if <see cref="P:GongSolutions.Wpf.DragDrop.IDragInfo.VisualSource"/> is a ListBox this
+            will hold a ListBoxItem.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.VisualSourceFlowDirection">
+            <summary>
+            Gets the FlowDirection of the current drag source.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.DataObject">
+            <summary>
+            Gets the <see cref="T:System.Windows.IDataObject"/> which is used by the drag and drop operation. Set it to
+            a custom instance if custom drag and drop behavior is needed.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.DragDropHandler">
+            <summary>Initiates a drag-and-drop operation.</summary>
+            <param name="dragSource">A reference to the dependency object that is the source of the data being dragged.</param>
+            <param name="data">A data object that contains the data being dragged.</param>
+            <param name="allowedEffects">One of the <see cref="T:System.Windows.DragDropEffects" /> values that specifies permitted effects of the drag-and-drop operation.</param>
+            <returns>One of the <see cref="T:System.Windows.DragDropEffects" /> values that specifies the final effect that was performed during the drag-and-drop operation.</returns>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDragInfo.DragDropCopyKeyState">
+            <summary>
+            Gets the drag drop copy key state indicating the effect of the drag drop operation.
+            </summary>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.IDragInfoBuilder">
+            <summary>
+            Interface implemented by Drag Info Builders.
+            It enables custom construction of DragInfo objects to support 3rd party controls like DevExpress, Telerik, etc.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDragInfoBuilder.CreateDragInfo(System.Object,System.Object,System.Windows.Input.MouseButton,System.Func{System.Windows.IInputElement,System.Windows.Point})">
+            <summary>
+            Initializes a new instance of the DragInfo class.
+            </summary>
+            <param name="sender">The sender of the input event that initiated the drag operation.</param>
+            <param name="originalSource">The original source of the input event.</param>
+            <param name="mouseButton">The mouse button which was used for the drag operation.</param>
+            <param name="getPosition">A function of the input event which is used to get drag position points.</param>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.IDragPreviewItemsSorter">
+            <summary>
+            Interface for objects that sort an IEnumerable of drag preview items
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDragPreviewItemsSorter.SortDragPreviewItems(System.Collections.IEnumerable)">
+            <summary>
+            Sort the IEnumerable of items that are being shown in a drag preview
+            </summary>
+            <param name="items">Enumerable of dragged items to sort</param>
+            <returns>The sorted list of dragged items</returns>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.IDragSource">
+            <summary>
+            Interface implemented by Drag Handlers.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDragSource.StartDrag(GongSolutions.Wpf.DragDrop.IDragInfo)">
+            <summary>
+            Queries whether a drag can be started.
+            </summary>
+            <param name="dragInfo">Object which contains several drag information.</param>
+            <remarks>
+            To allow a drag to be started, the <see cref="P:GongSolutions.Wpf.DragDrop.DragInfo.Effects" /> property on <paramref name="dragInfo" />
+            should be set to a value other than <see cref="F:System.Windows.DragDropEffects.None" />.
+            </remarks>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDragSource.CanStartDrag(GongSolutions.Wpf.DragDrop.IDragInfo)">
+            <summary>
+            Determines whether this instance [can start drag] the specified drag information.
+            With this action it's possible to check if the drag and drop operation is allowed to start
+            e.g. check for a UIElement inside a list view item, that should not start a drag and drop operation
+            </summary>
+            <param name="dragInfo">Object which contains several drag information.</param>
+            <returns>True if the drag and drop operation is allowed.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDragSource.Dropped(GongSolutions.Wpf.DragDrop.IDropInfo)">
+            <summary>
+            Notifies the drag handler that a drop has occurred.
+            </summary>
+            <param name="dropInfo">Object which contains several drop information.</param>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDragSource.DragDropOperationFinished(System.Windows.DragDropEffects,GongSolutions.Wpf.DragDrop.IDragInfo)">
+            <summary>
+            Notifies the drag handler that a drag and drop operation has finished.
+            </summary>
+            <param name="operationResult">The operation result.</param>
+            <param name="dragInfo">Object which contains several drag information.</param>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDragSource.DragCancelled">
+            <summary>
+            Notifies the drag handler that a drag has been aborted.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDragSource.TryCatchOccurredException(System.Exception)">
+            <summary>
+            Notifies that an exception has occurred upon dragging.
+            </summary>
+            <param name="exception">The exception that occurred.</param>
+            <returns>
+            Boolean indicating whether the exception is handled in the drag handler.
+            False will rethrow the exception.
+            </returns>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.Data">
+            <summary>
+            Gets the drag data.
+            </summary>
+            <remarks>
+            If the drag came from within the framework, this will hold:
+            
+            - The dragged data if a single item was dragged.
+            - A typed IEnumerable if multiple items were dragged.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.DragInfo">
+            <summary>
+            Gets a <see cref="P:GongSolutions.Wpf.DragDrop.IDropInfo.DragInfo"/> object holding information about the source of the drag, 
+            if the drag came from within the framework.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.DropPosition">
+            <summary>
+            Gets the mouse position relative to the VisualTarget
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.DropTargetAdorner">
+            <summary>
+            Gets or sets the class of drop target to display.
+            </summary>
+            <remarks>
+            The standard drop target Adorner classes are held in the <see cref="T:GongSolutions.Wpf.DragDrop.DropTargetAdorners"/>
+            class.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.Effects">
+            <summary>
+            Gets or sets the allowed effects for the drop.
+            </summary>
+            <remarks>
+            This must be set to a value other than <see cref="F:System.Windows.DragDropEffects.None"/> by a drop handler in order 
+            for a drop to be possible.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.InsertIndex">
+            <summary>
+            Gets the current insert position within <see cref="P:GongSolutions.Wpf.DragDrop.IDropInfo.TargetCollection"/>.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.UnfilteredInsertIndex">
+            <summary>
+            Gets the current insert position within the source (unfiltered) <see cref="P:GongSolutions.Wpf.DragDrop.IDropInfo.TargetCollection"/>.
+            </summary>
+            <remarks>
+            This should be only used in a Drop action.
+            This works only correct with different objects (string, int, etc won't work correct).
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.TargetCollection">
+            <summary>
+            Gets the collection that the target ItemsControl is bound to.
+            </summary>
+            <remarks>
+            If the current drop target is unbound or not an ItemsControl, this will be null.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.TargetItem">
+            <summary>
+            Gets the object that the current drop target is bound to.
+            </summary>
+            <remarks>
+            If the current drop target is unbound or not an ItemsControl, this will be null.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.TargetGroup">
+            <summary>
+            Gets the current group target.
+            </summary>
+            <remarks>
+            If the drag is currently over an ItemsControl with groups, describes the group that
+            the drag is currently over.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.TargetScrollViewer">
+            <summary>
+            Gets the ScrollViewer control for the visual target.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.TargetScrollingMode">
+            <summary>
+            Gets or Sets the ScrollingMode for the drop action.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.VisualTarget">
+            <summary>
+            Gets the control that is the current drop target.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.VisualTargetItem">
+            <summary>
+            Gets the item in an ItemsControl that is the current drop target.
+            </summary>
+            <remarks>
+            If the current drop target is unbound or not an ItemsControl, this will be null.
+            </remarks>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.VisualTargetOrientation">
+            <summary>
+            Gets the orientation of the current drop target.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.VisualTargetFlowDirection">
+            <summary>
+            Gets the FlowDirection of the current drop target.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.DestinationText">
+            <summary>
+            Gets and sets the text displayed in the DropDropEffects Adorner.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.EffectText">
+            <summary>
+            Gets and sets the effect text displayed in the DropDropEffects Adorner.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.InsertPosition">
+            <summary>
+            Gets the relative position the item will be inserted to compared to the TargetItem
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.KeyStates">
+            <summary>
+            Gets a flag enumeration indicating the current state of the SHIFT, CTRL, and ALT keys, as well as the state of the mouse buttons.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.NotHandled">
+            <summary>
+            Indicates if the drop info should be handled by itself (useful for child elements)
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.IsSameDragDropContextAsSource">
+            <summary>
+            Gets a value indicating whether the target is in the same context as the source, <see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragDropContextProperty" />.
+            </summary>
+        </member>
+        <member name="P:GongSolutions.Wpf.DragDrop.IDropInfo.EventType">
+            <summary>
+            Gets the current mode of the underlying routed event.
+            </summary>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.IDropInfoBuilder">
+            <summary>
+            Interface implemented by Drop Info Builders.
+            It enables custom construction of IDropInfo objects to support 3rd party controls like DevExpress, Telerik, etc.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDropInfoBuilder.CreateDropInfo(System.Object,System.Windows.DragEventArgs,GongSolutions.Wpf.DragDrop.DragInfo,GongSolutions.Wpf.DragDrop.EventType)">
+            <summary>
+            Initializes a new instance of the DropInfo class.
+            </summary>
+            <param name="sender">The sender of the drop event.</param>
+            <param name="e">The drag event arguments.</param>
+            <param name="dragInfo">Information about the drag source, if the drag came from within the framework.</param>
+            <param name="eventType">The type of the underlying event (tunneled or bubbled).</param>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.IDropTarget">
+            <summary>
+            Interface implemented by Drop Handlers.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDropTarget.DragEnter(GongSolutions.Wpf.DragDrop.IDropInfo)">
+            <summary>
+            Notifies the drop handler when dragging operation enters a potential drop target.
+            </summary>
+            <param name="dropInfo">Object which contains several drop information.</param>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDropTarget.DragOver(GongSolutions.Wpf.DragDrop.IDropInfo)">
+            <summary>
+            Notifies the drop handler about the current drag operation state.
+            </summary>
+            <param name="dropInfo">Object which contains several drop information.</param>
+            <remarks>
+            To allow a drop at the current drag position, the <see cref="P:GongSolutions.Wpf.DragDrop.DropInfo.Effects"/> property on 
+            <paramref name="dropInfo"/> should be set to a value other than <see cref="F:System.Windows.DragDropEffects.None"/>
+            and <see cref="P:GongSolutions.Wpf.DragDrop.DropInfo.Data"/> should be set to a non-null value.
+            </remarks>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDropTarget.DragLeave(GongSolutions.Wpf.DragDrop.IDropInfo)">
+            <summary>
+            Notifies the drop handler when dragging operation leaves a potential drop target.
+            </summary>
+            <param name="dropInfo">Object which contains several drop information.</param>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDropTarget.Drop(GongSolutions.Wpf.DragDrop.IDropInfo)">
+            <summary>
+            Performs a drop on the target.
+            </summary>
+            <param name="dropInfo">Object which contains several drop information.</param>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.IDropTargetItemsSorter">
+            <summary>
+            Interface for objects that sort an IEnumerable of drag drop items that are 
+            going to be dropped on some target
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.IDropTargetItemsSorter.SortDropTargetItems(System.Collections.IEnumerable)">
+            <summary>
+            Sort the IEnumerable of items that are going to be dropped on a target
+            </summary>
+            <param name="items">Enumerable of dragged items to sort</param>
+            <returns>The sorted list of dragged items</returns>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.ScrollingMode">
+            <summary>
+            Specifies how <see cref="T:System.Windows.Controls.ScrollViewer" /> reacts to drop operation.
+            </summary>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.Utilities.DpiHelper">
+            <summary>
+            A helper class for Dpi logicm cause Microsoft hides this with the internal flag.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.DpiHelper.LogicalPixelsToDevice(System.Windows.Point,System.Double,System.Double)">
+            <summary>
+            Convert a point in device independent pixels (1/96") to a point in the system coordinates.
+            </summary>
+            <param name="logicalPoint">A point in the logical coordinate system.</param>
+            <param name='dpiScaleX'>The scale factor in the x dimension</param>
+            <param name='dpiScaleY'>The scale factor in the y dimension</param>
+            <returns>Returns the parameter converted to the system's coordinates.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.DpiHelper.DevicePixelsToLogical(System.Windows.Point,System.Double,System.Double)">
+            <summary>
+            Convert a point in system coordinates to a point in device independent pixels (1/96").
+            </summary>
+            <param name="devicePoint">A point in the physical coordinate system.</param>
+            <param name='dpiScaleX'>The scale factor in the x dimension</param>
+            <param name='dpiScaleY'>The scale factor in the y dimension</param>
+            <returns>Returns the parameter converted to the device independent coordinate system.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.DragDropExtensions.IsDragSourceIgnored(System.Windows.UIElement)">
+            <summary>
+            Determines whether the given element is ignored on drag start (<see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.DragSourceIgnoreProperty"/>).
+            </summary>
+            <param name="element">The given element.</param>
+            <returns>Element is ignored or not.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.DragDropExtensions.IsDragSource(System.Windows.UIElement)">
+            <summary>
+            Determines whether the given element is ignored on drop action (<see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDragSourceProperty"/>).
+            </summary>
+            <param name="element">The given element.</param>
+            <returns>Element is ignored or not.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.DragDropExtensions.IsDropTarget(System.Windows.UIElement)">
+            <summary>
+            Determines whether the given element is ignored on drop action (<see cref="F:GongSolutions.Wpf.DragDrop.DragDrop.IsDropTargetProperty"/>).
+            </summary>
+            <param name="element">The given element.</param>
+            <returns>Element is ignored or not.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.DragDropExtensions.DirectlyOverElement(System.Windows.Point,System.Windows.UIElement,System.Windows.UIElement)">
+            <summary>
+            Gets if drop position is directly over element
+            </summary>
+            <param name="dropPosition">Drop position</param>
+            <param name="element">element to check whether or not the drop position is directly over or not</param>
+            <param name="relativeToElement">element to which the drop position is related</param>
+            <returns>drop position is directly over element or not</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.DragDropExtensions.GetCaptureScreenDataTemplate(System.Windows.UIElement,System.Windows.FlowDirection)">
+            <summary>
+            Capture screen and create data template containing the captured image
+            </summary>
+            <param name="element">visual source to capture screen of</param>
+            <param name="visualSourceFlowDirection">Flowdirection of visual source</param>
+            <returns></returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.HitTestUtilities.IsNotPartOfSender(System.Object,System.Windows.Input.MouseButtonEventArgs)">
+            <summary>
+            thx to @osicka from issue #84
+            
+            e.g. original source is part of a popup (e.g. ComboBox drop down), the hit test needs to be done on the original source.
+            Because the popup is not attached to the visual tree of the sender.
+            This function test this by looping back from the original source to the sender and if it didn't end up at the sender stopped the drag.
+            </summary>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.Utilities.IRootElementFinder">
+            <summary>
+            Interface implemented by the root element finder.
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.IRootElementFinder.FindRoot(System.Windows.DependencyObject)">
+            <summary>
+            Gets the root element.
+            </summary>
+            <param name="visual">The visual element to find the root for.</param>
+            <returns>The root element.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.ItemsControlExtensions.GetItemsPanelOrientation(System.Windows.Controls.ItemsControl)">
+            <summary>
+            Gets the Orientation which will be used for the drag drop action.
+            Normally it will be look up to find the correct orientation of the inner ItemsPanel,
+            but sometimes it's necessary to force the orientation, if the look up is wrong.
+            If so, the ItemsPanelOrientation value is taken.
+            </summary>
+            <param name="itemsControl">The ItemsControl for the look up.</param>
+            <returns>Orientation for the given ItemsControl.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.ItemsControlExtensions.GetItemsPanelFlowDirection(System.Windows.Controls.ItemsControl)">
+            <summary>
+            Gets the FlowDirection which will be used for the drag drop action.
+            </summary>
+            <param name="itemsControl">The ItemsControl for the look up.</param>
+            <returns>FlowDirection for the given ItemsControl.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.ItemsControlExtensions.SetSelectedItem(System.Windows.Controls.ItemsControl,System.Object)">
+            <summary>
+            Sets the given item as selected item at the ItemsControl.
+            </summary>
+            <param name="itemsControl">The control which contains the item.</param>
+            <param name="item2Select">The item which should be selected.</param>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.ItemsControlExtensions.ClearSelectedItems(System.Windows.Controls.ItemsControl)">
+            <summary>
+            Clears the selected items.
+            </summary>
+            <param name="itemsControl">The items control.</param>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.Utilities.TreeViewItemExtensions">
+            <summary>
+            Extension methods for TreeViewItem
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.TreeViewItemExtensions.GetHeaderSize(System.Windows.Controls.TreeViewItem)">
+            <summary>
+            Try get the height of the header part for the given TreeViewItem.
+            If there is no PART_Header it will return Size.Empty.
+            </summary>
+            <param name="item">The TreeViewItem.</param>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.TreeViewItemExtensions.GetHeaderControl(System.Windows.Controls.TreeViewItem)">
+            <summary>
+            Try get the header part of the given TreeViewItem.
+            If there is no PART_Header it will return null.
+            </summary>
+            <param name="item">The TreeViewItem.</param>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.TypeUtilities.TryGetList(System.Collections.IEnumerable)">
+            <summary>
+            Gets the enumerable as list.
+            If enumerable is an ICollectionView then it returns the SourceCollection as list.
+            </summary>
+            <param name="enumerable">The enumerable.</param>
+            <returns>Returns a list.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.TypeUtilities.IsObservableCollection(System.Collections.IList)">
+            <summary>
+            Checks if the given collection is a ObservableCollection&lt;&gt;
+            </summary>
+            <param name="collection">The collection to test.</param>
+            <returns>True if the collection is a ObservableCollection&lt;&gt;</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.TypeUtilities.IsSameObservableCollection(System.Collections.IList,System.Collections.IList)">
+            <summary>
+            Checks if both collections are the same ObservableCollection&lt;&gt;
+            </summary>
+            <param name="collection1">The first collection to test.</param>
+            <param name="collection2">The second collection to test.</param>
+            <returns>True if both collections are the same ObservableCollection&lt;&gt;</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.VisualTreeExtensions.TryGetNextAncestorDropTargetElement(System.Windows.UIElement)">
+            <summary>
+            Gets the next ancestor element which is a drop target.
+            </summary>
+            <param name="element">The start element.</param>
+            <returns>The first element which is a drop target.</returns>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.VisualTreeExtensions.GetVisualAncestor(System.Windows.DependencyObject,System.Type,System.Windows.Controls.ItemsControl,System.Type)">
+            <summary>
+            find the visual ancestor item by type
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.VisualTreeExtensions.GetVisualAncestor(System.Windows.DependencyObject,System.Type,System.Windows.Controls.ItemsControl)">
+            <summary>
+            find the visual ancestor by type and go through the visual tree until the given itemsControl will be found
+            </summary>
+        </member>
+        <member name="M:GongSolutions.Wpf.DragDrop.Utilities.VisualTreeExtensions.GetVisibleDescendantBounds(System.Windows.Media.Visual)">
+            <summary>
+            GetVisibleDescendantBounds returns the union of all of the content bounding boxes of the specified Visual's sub-graph.
+            It's a work around of VisualTreeHelper.GetDescendantBounds() including collapsed Visuals in its bounds calculations.
+            </summary>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.Utilities.WindowStyleHelper.GWL">
+            <summary>
+            GetWindowLongPtr values, GWL_*
+            </summary>
+        </member>
+        <member name="T:GongSolutions.Wpf.DragDrop.Utilities.WindowStyleHelper.WS_EX">
+            <summary>
+            Window style extended values, WS_EX_*
+            </summary>
+        </member>
+    </members>
+</doc>

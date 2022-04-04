@@ -26,6 +26,7 @@ namespace Cactus.ViewModels
         private readonly IRegistryService _registryService;
         private readonly IPathBuilder _pathBuilder;
         private readonly IProcessManager _processManager;
+        private readonly IFileSwitcher _fileSwitcher;
 
         public EntryModel CurrentEntry { get; set; }
         public EntryModel LastRanEntry { get; set; }
@@ -37,12 +38,13 @@ namespace Cactus.ViewModels
         public RelayCommand CancelCommand { get; private set; }
 
         public EditWindowViewModel(IEntryManager entryManager, IRegistryService registryService,
-                                   IPathBuilder pathBuilder, IProcessManager processManager)
+                                   IPathBuilder pathBuilder, IProcessManager processManager, IFileSwitcher fileSwitcher)
         {
             _entryManager = entryManager;
             _registryService = registryService;
             _pathBuilder = pathBuilder;
             _processManager = processManager;
+            _fileSwitcher = fileSwitcher;
 
             OkCommand = new RelayCommand(Ok);
             CancelCommand = new RelayCommand(Cancel);
@@ -50,13 +52,6 @@ namespace Cactus.ViewModels
 
         private void Ok()
         {
-            if (!_pathBuilder.IsRootDirectorySet())
-            {
-                CactusMessageBox.Show("Please set your \"Diablo II Root Directory\" by clicking the \"Settings\" button before editing an entry!");
-                ReverseChanges();
-                return;
-            }
-
             if (_entryManager.IsInvalid(CurrentEntry))
             {
                 CactusMessageBox.Show("Please make sure the required fields are populated and contain no invalid characters.\n\n" +
@@ -229,6 +224,13 @@ namespace Cactus.ViewModels
             }
             else
             {
+                // Make sure that the Platforms directory exists before we continue.
+                if (_fileSwitcher.IsPlatformDirectoryMissingThenAlert(CurrentEntry))
+                {
+                    ReverseChanges();
+                    return;
+                }
+
                 // If we are editing an entry that was copied (null), and we detect that the label
                 // was changed from something to nothing, then we need to set the label to null
                 // rather than letting it be an empty string.

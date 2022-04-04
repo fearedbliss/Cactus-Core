@@ -28,6 +28,7 @@ namespace Cactus.ViewModels
         public string RootDirectory { get; set; }
         public bool ShouldMinimizeToTray { get; set; }
         public bool ShouldEnableDarkMode { get; set; }
+        public bool HasMigratedToNewFormat { get; set; }
 
         public List<string> Colors => new List<string>
         {
@@ -88,6 +89,7 @@ namespace Cactus.ViewModels
                 ShouldMinimizeToTray = ShouldMinimizeToTray,
                 ShouldEnableDarkMode = ShouldEnableDarkMode,
                 PreferredColor = PreferredColor,
+                HasMigratedToNewFormat = HasMigratedToNewFormat,
             };
 
             // Verify that our Diablo II Root Directory exists.
@@ -114,6 +116,7 @@ namespace Cactus.ViewModels
             ShouldMinimizeToTray = _settingsManager.ShouldMinimizeToTray;
             ShouldEnableDarkMode = _settingsManager.ShouldEnableDarkMode;
             PreferredColor = _settingsManager.PreferredColor;
+            HasMigratedToNewFormat = _settingsManager.HasMigratedToNewFormat;
         }
 
         private void ProcessTriggers()
