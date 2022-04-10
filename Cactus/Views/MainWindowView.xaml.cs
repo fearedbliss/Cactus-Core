@@ -74,23 +74,34 @@ namespace Cactus
 
         private void OnMainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // If Settings.json doesn't exist, let's run out OOTB experience.
+            // If Settings.json doesn't exist, this user is either coming from Cactus 1.2.4 or earlier,
+            // or is coming from Cactus 2.0.X where we didn't yet have a Settings.json.
             if (!_jsonManager.DoesSettingsFileExist())
             {
-                CactusMessageBox.Show("Welcome to Cactus!\n\n" +
-                    "A Modern Diablo II Version Switcher & Character Isolator\n\n" +
-                    "Please set your \"Diablo II Root Directory\" by clicking the \"Settings\" button before launching Diablo II! " +
-                    "You can then click the \"Add\" button to add an entry.\n\n" +
-                    "Please also make sure that you are running Cactus within your Diablo II Root Directory.\n\n" +
-                    "Example: C:\\Games\\Diablo II\\Cactus.exe\n\n" +
-                    "https://github.com/fearedbliss/Cactus"
-                );
+                // If the Entries file exists, that means the user is coming from Cactus 2.0.X or earlier.
+                if (_jsonManager.DoesEntriesFileExist())
+                {
+                    MigratePath();
+                }
 
-                // Save a clean copy of our settings in order to "mark" this as
-                // proof that we have displayed this message. We are also marking
-                // them as having already migrated to the new format ;D.
-                _settingsManager.MarkHasMigratedToNewFormat();
-                _settingsManager.SaveSettings();
+                // This is a brand new user to Cactus. Let's run out OOTB experience.
+                else
+                {
+                    CactusMessageBox.Show("Welcome to Cactus!\n\n" +
+                        "A Modern Diablo II Version Switcher & Character Isolator\n\n" +
+                        "Please set your \"Diablo II Root Directory\" by clicking the \"Settings\" button before launching Diablo II! " +
+                        "You can then click the \"Add\" button to add an entry.\n\n" +
+                        "Please also make sure that you are running Cactus within your Diablo II Root Directory.\n\n" +
+                        "Example: C:\\Games\\Diablo II\\Cactus.exe\n\n" +
+                        "https://github.com/fearedbliss/Cactus"
+                    );
+
+                    // Save a clean copy of our settings in order to "mark" this as
+                    // proof that we have displayed this message. We are also marking
+                    // them as having already migrated to the new format ;D.
+                    _settingsManager.MarkHasMigratedToNewFormat();
+                    _settingsManager.SaveSettings();
+                }
             }
             else
             {

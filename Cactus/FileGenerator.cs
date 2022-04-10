@@ -26,33 +26,57 @@ namespace Cactus
     public class FileGenerator : IFileGenerator
     {
         private readonly IPathBuilder _pathBuilder;
+        private readonly IJsonManager _jsonManager;
         private readonly ILogger _logger;
 
-        public FileGenerator(IPathBuilder pathBuilder, ILogger logger)
+        public FileGenerator(IPathBuilder pathBuilder, IJsonManager jsonManager, ILogger logger)
         {
             _pathBuilder = pathBuilder;
+            _jsonManager = jsonManager;
             _logger = logger;
         }
 
-        private readonly List<string> _protectedDocuments = new List<string>()
+        private List<string> ProtectedDocuments
         {
-            "Platforms",
-            "Saves",
-            "save",
-            "d2char.mpq",
-            "d2data.mpq",
-            "d2exp.mpq",
-            "d2music.mpq",
-            "d2sfx.mpq",
-            "d2speech.mpq",
-            "d2video.mpq",
-            "d2xmusic.mpq",
-            "d2xtalk.mpq",
-            "d2xvideo.mpq",
-            "D2.LNG",
-            "Entries.json",
-            "LastRequiredFiles.json"
-        };
+            get
+            {
+                var protectedDocuments = new List<string>()
+                {
+                    "Platforms",
+                    "Saves",
+                    "Save",
+                    "d2char.mpq",
+                    "d2data.mpq",
+                    "d2music.mpq",
+                    "d2sfx.mpq",
+                    "d2speech.mpq",
+                    "d2video.mpq",
+                    "D2.LNG",
+                };
+
+                var expansionDocuments = ExpansionMpqs;
+                protectedDocuments.AddRange(expansionDocuments);
+
+                var cactusManagedFiles = _jsonManager.ManagedFiles;
+                protectedDocuments.AddRange(cactusManagedFiles);
+
+                return protectedDocuments;
+            }
+        }
+
+        public List<string> ExpansionMpqs
+        {
+            get
+            {
+                return new List<string>()
+                {
+                    "d2exp.mpq",
+                    "d2xmusic.mpq",
+                    "d2xvideo.mpq",
+                    "d2xtalk.mpq"
+                };
+            }
+        }
 
         public RequiredFilesModel GetRequiredFiles(EntryModel entry)
         {
@@ -134,7 +158,7 @@ namespace Cactus
         private bool IsProtected(string document)
         {
             // No files or directories that are within the protected list are allowed to be tracked/deleted.
-            foreach (var protectedDocument in _protectedDocuments)
+            foreach (var protectedDocument in ProtectedDocuments)
             {
                 if (document.EqualsIgnoreCase(protectedDocument))
                 {
@@ -143,20 +167,6 @@ namespace Cactus
                 }
             }
             return false;
-        }
-
-        public List<string> ExpansionMpqs
-        {
-            get
-            {
-                return new List<string>()
-                {
-                    "d2exp.mpq",
-                    "d2xmusic.mpq",
-                    "d2xvideo.mpq",
-                    "d2xtalk.mpq"
-                };
-            }
         }
     }
 }

@@ -41,6 +41,38 @@ namespace Cactus
             SettingsJsonPath = Path.Combine(_jsonDirectory, _settingsJsonFile);
         }
 
+        /// <summary>
+        /// Gets the list of files managed by this JsonManager.
+        /// </summary>
+        public List<string> ManagedFiles
+        {
+            get
+            {
+                return new List<string>()
+                {
+                    _entriesJsonFile,
+                    _lastRequiredJsonFile,
+                    _settingsJsonFile
+                };
+            }
+        }
+
+        /// <summary>
+        /// Gets the list of files (with Path) managed by this JsonManager.
+        /// </summary>
+        public List<string> ManagedFilesPath
+        {
+            get
+            {
+                return new List<string>()
+                {
+                    EntriesJsonPath,
+                    LastRequiredJsonPath,
+                    SettingsJsonPath
+                };
+            }
+        }
+
         public void ValidateCactusFiles()
         {
             // Kinda nasty right (index)? Haha.
@@ -134,6 +166,11 @@ namespace Cactus
             return File.Exists(SettingsJsonPath);
         }
 
+        public bool DoesEntriesFileExist()
+        {
+            return File.Exists(EntriesJsonPath);
+        }
+
         private void SaveToJsonFile(string serializedText, string outputFile)
         {
             File.WriteAllText(outputFile, serializedText);
@@ -158,23 +195,27 @@ namespace Cactus
 
         public void BackupCactusFiles()
         {
-            BackupCactusFile(EntriesJsonPath);
-            BackupCactusFile(LastRequiredJsonPath);
-            BackupCactusFile(SettingsJsonPath);
+            foreach (var file in ManagedFilesPath)
+            {
+                BackupCactusFile(file);
+            }
         }
 
         public void DeleteCactusBackupFiles()
         {
-            DeleteCactusFile(EntriesJsonPath + _backupExtension);
-            DeleteCactusFile(LastRequiredJsonPath + _backupExtension);
-            DeleteCactusFile(SettingsJsonPath + _backupExtension);
+            foreach (var file in ManagedFilesPath)
+            {
+                string targetFile = file + _backupExtension;
+                DeleteCactusFile(targetFile);
+            }
         }
 
         public void BackupAndDeleteCactusFiles()
         {
-            BackupAndDeleteCactusFile(EntriesJsonPath);
-            BackupAndDeleteCactusFile(LastRequiredJsonPath);
-            BackupAndDeleteCactusFile(SettingsJsonPath);
+            foreach (var file in ManagedFilesPath)
+            {
+                BackupAndDeleteCactusFile(file);
+            }
         }
 
         private void BackupAndDeleteCactusFile(string path)

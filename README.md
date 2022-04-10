@@ -1,4 +1,4 @@
-## Cactus - 2.4.1
+## Cactus - 2.4.2
 ##### By: Jonathan Vasquez (fearedbliss)
 
 ## Description
@@ -11,8 +11,8 @@ documentation, please check the main
 
 ## License
 
-Released under the [Apache License 2.0](LICENSE.txt).
+Released under the **[Apache License 2.0](LICENSE.txt)**.
 
 ## Requirements
 
-- .NET Framework 4.6.2 +
+- **.NET Framework 4.6.2 +**

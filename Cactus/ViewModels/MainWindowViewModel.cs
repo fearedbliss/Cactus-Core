@@ -46,7 +46,7 @@ namespace Cactus.ViewModels
         public RelayCommand LaunchCommand { get; private set; }
 
         private readonly string _appName = "Cactus";
-        private readonly string _version = "2.4.1";
+        private readonly string _version = "2.4.2";
 
         public MainWindowViewModel(IEntryManager entryManager, IFileSwitcher fileSwitcher,
             IAddWindowViewModel addWindowViewModel, IEditWindowViewModel editWindowViewModel,
