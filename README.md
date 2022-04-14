@@ -1,4 +1,4 @@
-## Cactus - 2.4.2
+## Cactus - 2.5.0
 ##### By: Jonathan Vasquez (fearedbliss)
 
 ## Description
@@ -11,7 +11,7 @@ documentation, please check the main
 
 ## License
 
-Released under the **[Apache License 2.0](LICENSE.txt)**.
+Released under the **[Simplified BSD License](LICENSE.txt)**.
 
 ## Requirements
 
