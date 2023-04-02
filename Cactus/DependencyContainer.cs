@@ -1,4 +1,4 @@
-// Copyright © 2018-2022 Jonathan Vasquez <jon@xyinn.org>
+// Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -58,6 +58,7 @@ namespace Cactus
             container.Register(Component.For<IFileGenerator>().ImplementedBy<FileGenerator>());
             container.Register(Component.For<IPathBuilder>().ImplementedBy<PathBuilder>());
             container.Register(Component.For<IJsonManager>().ImplementedBy<JsonManager>());
+            container.Register(Component.For<IBackupManager>().ImplementedBy<BackupManager>());
             return container;
         }
 
@@ -122,6 +123,14 @@ namespace Cactus
             get
             {
                 return _container.Resolve<IEntryManager>();
+            }
+        }
+
+        public IBackupManager BackupManager
+        {
+            get
+            {
+                return _container.Resolve<IBackupManager>();
             }
         }
     }

@@ -14,7 +14,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
 
-        Title="Settings" Height="503" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
+        Title="Settings" Height="575" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
         DataContext="{Binding SettingsWindow, Source={StaticResource Locator}}">
 
     <Grid Margin="10">
@@ -26,6 +26,10 @@
         <StackPanel Grid.ColumnSpan="3">
             <GroupBox Header="Diablo II Root Directory *" Margin="0 0 0 10">
                 <TextBox Text="{Binding RootDirectory}" materialDesign:HintAssist.Hint="C:\Games\Diablo II"/>
+            </GroupBox>
+
+            <GroupBox Header="Backups Directory" Margin="0 0 0 10">
+                <TextBox Text="{Binding BackupsDirectory}" materialDesign:HintAssist.Hint="(Default) Diablo II Root Directory\Backups"/>
             </GroupBox>
 
             <GroupBox Header="Options" Margin="0 0 0 10">

@@ -1,4 +1,4 @@
-﻿// Copyright © 2018-2022 Jonathan Vasquez <jon@xyinn.org>
+﻿// Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -26,6 +26,7 @@
 using Cactus.Models;
 using Cactus.Interfaces;
 using System.IO;
+using Castle.Core.Internal;
 
 namespace Cactus
 {
@@ -34,6 +35,23 @@ namespace Cactus
         private readonly ISettingsManager _settingsManager;
         private readonly string _platformDirectoryName = "Platforms";
         private readonly string _savesDirectoryName = "Saves";
+        private readonly string _backupDirectoryName = "Backups";
+
+        public string PlatformsDirectoryName
+        {
+            get
+            {
+                return _platformDirectoryName;
+            }
+        }
+
+        public string SavesDirectoryName
+        {
+            get
+            {
+                return _savesDirectoryName;
+            }
+        }
 
         public PathBuilder(ISettingsManager settingsManager)
         {
@@ -43,6 +61,11 @@ namespace Cactus
         public string GetRootDirectory()
         {
             return _settingsManager.RootDirectory;
+        }
+
+        public string GetBackupsDirectoryDirect()
+        {
+            return _settingsManager.BackupsDirectory;
         }
 
         public bool IsRootDirectorySet()
@@ -82,6 +105,15 @@ namespace Cactus
         }
 
         /// <summary>
+        /// Gets the backup directory path for a specific backup.
+        /// </summary>
+        public string GetBackupDirectory(string backupName)
+        {
+            string backupDirectory = GetBackupsDirectory();
+            return Path.Combine(backupDirectory, backupName);
+        }
+
+        /// <summary>
         /// Gets the path to where all of our Platforms are stored.
         /// </summary>
         public string GetPlatformsDirectory()
@@ -95,6 +127,18 @@ namespace Cactus
         public string GetSavesDirectory()
         {
             return Path.Combine(GetRootDirectory(), _savesDirectoryName);
+        }
+
+        /// <summary>
+        /// Gets the path to where all of our Backups are stored.
+        /// </summary>
+        public string GetBackupsDirectory()
+        {
+            string backupsDirectoryDirect = GetBackupsDirectoryDirect();
+            string backupsDirectory = backupsDirectoryDirect.IsNullOrEmpty() ?
+                                        Path.Combine(GetRootDirectory(), _backupDirectoryName) :
+                                        backupsDirectoryDirect;
+            return backupsDirectory;
         }
     }
 }

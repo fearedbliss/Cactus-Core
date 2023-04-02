@@ -1,4 +1,4 @@
-﻿// Copyright © 2018-2022 Jonathan Vasquez <jon@xyinn.org>
+﻿// Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -40,6 +40,7 @@ namespace Cactus.ViewModels
         private readonly IEntryManager _entryManager;
         private readonly IFileSwitcher _fileSwitcher;
         private readonly IPathBuilder _pathBuilder;
+        private readonly IBackupManager _backupManager;
 
         // Child View Models
         private readonly IAddWindowViewModel _addWindowViewModel;
@@ -56,18 +57,21 @@ namespace Cactus.ViewModels
         public RelayCommand SettingsCommand { get; private set; }
         public RelayCommand LaunchCommand { get; private set; }
 
+        public RelayCommand BackupCommand { get; private set; }
+
         private readonly string _appName = "Cactus";
-        private readonly string _version = "2.5.0";
+        private readonly string _version = "2.6.0";
 
         public MainWindowViewModel(IEntryManager entryManager, IFileSwitcher fileSwitcher,
             IAddWindowViewModel addWindowViewModel, IEditWindowViewModel editWindowViewModel,
-            IPathBuilder pathBuilder)
+            IPathBuilder pathBuilder, IBackupManager backupManager)
         {
             _entryManager = entryManager;
             _fileSwitcher = fileSwitcher;
             _addWindowViewModel = addWindowViewModel;
             _editWindowViewModel = editWindowViewModel;
             _pathBuilder = pathBuilder;
+            _backupManager = backupManager;
 
             AddCommand = new RelayCommand(Add);
             EditCommand = new RelayCommand(Edit);
@@ -77,6 +81,7 @@ namespace Cactus.ViewModels
             DownCommand = new RelayCommand(Down);
             ResetCommand = new RelayCommand(Reset);
             SettingsCommand = new RelayCommand(Settings);
+            BackupCommand = new RelayCommand(Backup);
             LaunchCommand = new RelayCommand(Launch);
 
             RefreshEntriesList();
@@ -270,6 +275,11 @@ namespace Cactus.ViewModels
             };
 
             settingsWindow.ShowDialog();
+        }
+
+        public void Backup()
+        {
+            _backupManager.CreateBackup();
         }
 
         public void Launch()

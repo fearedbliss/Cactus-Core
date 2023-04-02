@@ -54,6 +54,7 @@
             <Button Name="btnMoveDown" Content="Down" Command="{Binding DownCommand}" Margin="0 0 10 0"/>
             <Button Name="btnReset" Content="Reset" Command="{Binding ResetCommand}" Margin="0 0 10 0"/>
             <Button Name="btnSettings" Content="Settings" Command="{Binding SettingsCommand}" Margin="0 0 10 0"/>
+            <Button Name="btnBackup" Content="Backup" Command="{Binding BackupCommand}" Margin="0 0 10 0"/>
             <Button Name="btnLaunch" Content="Launch" Command="{Binding LaunchCommand}"/>
         </StackPanel>
     </StackPanel>

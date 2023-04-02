@@ -23,29 +23,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 
-using Newtonsoft.Json;
-
-namespace Cactus.Models
+namespace Cactus.Interfaces
 {
-    [JsonObject(MemberSerialization.OptIn)]
-    public class SettingsModel
+    public interface IBackupManager
     {
-        [JsonProperty("rootDirectory", Order = 1)]
-        public string RootDirectory { get; set; } = "";
-
-        [JsonProperty("backupsDirectory", Order = 2)]
-        public string BackupsDirectory { get; set; } = "";
-
-        [JsonProperty("shouldMinimizeToTray", Order = 3)]
-        public bool ShouldMinimizeToTray { get; set; }
-
-        [JsonProperty("shouldEnableDarkMode", Order = 4)]
-        public bool ShouldEnableDarkMode { get; set; }
-
-        [JsonProperty("preferredColor", Order = 5)]
-        public string PreferredColor { get; set; } = "Teal";
-
-        [JsonProperty("hasMigratedToNewFormat", Order = 6)]
-        public bool HasMigratedToNewFormat { get; set; }
+        void CreateBackup();
     }
 }

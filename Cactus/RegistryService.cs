@@ -1,4 +1,4 @@
-﻿// Copyright © 2018-2022 Jonathan Vasquez <jon@xyinn.org>
+﻿// Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -40,7 +40,18 @@ namespace Cactus
 
         public void Update(EntryModel entry)
         {
-            using (var key = Registry.CurrentUser.CreateSubKey(@"Software\Blizzard Entertainment\Diablo II"))
+            string diabloSubKey = @"Software\Blizzard Entertainment\Diablo II";
+
+            // This check will help us only apply our "Save Directory when Registry Subtree Doesn't Exist Fix"
+            // in this particular situation. If the user is in another type of weird state, then that most likely
+            // means that they have been messing with their registry, and thus they should fix those issues.
+            bool doesDiabloSubkeyExist;
+            using (var key = Registry.CurrentUser.OpenSubKey(diabloSubKey))
+            {
+                doesDiabloSubkeyExist = key != null;
+            }
+
+            using (var key = Registry.CurrentUser.CreateSubKey(diabloSubKey))
             {
                 string saveDirectory = _pathBuilder.GetSaveDirectory(entry);
                 string rootDirectory = _pathBuilder.GetRootDirectory();
@@ -48,6 +59,15 @@ namespace Cactus
                 key.SetValue("Save Path", saveDirectory);
                 key.SetValue("NewSavePath", saveDirectory);
                 key.SetValue("InstallPath", rootDirectory);
+
+                if (!doesDiabloSubkeyExist)
+                {
+                    // Prevent the Hireling UI from automatically showing up when you enter a game.
+                    // Whenever we are in this state, if the character has a Merc, the game will automatically
+                    // show the Hireling UI upon entering a game. This never happens. Thus we are only fixing
+                    // this registry key when we detect this situation.
+                    key.SetValue("PopupHireling", 1);
+                }
             }
         }
     }

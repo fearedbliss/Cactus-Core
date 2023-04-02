@@ -1,4 +1,4 @@
-﻿// Copyright © 2018-2022 Jonathan Vasquez <jon@xyinn.org>
+﻿// Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -28,6 +28,7 @@ namespace Cactus.Interfaces
     public interface IProcessManager
     {
         bool AreProcessesRunning { get; }
+        bool IsGameRunning();
         void Launch(string launcherPath, string launcherFlags, bool isAdmin);
     }
 }

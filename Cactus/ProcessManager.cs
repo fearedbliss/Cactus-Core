@@ -1,4 +1,4 @@
-﻿// Copyright © 2018-2022 Jonathan Vasquez <jon@xyinn.org>
+﻿// Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -39,6 +39,28 @@ namespace Cactus
             {
                 return _processCount > 0;
             }
+        }
+
+        /// <summary>
+        /// Shows a message box if the game is running. For internal automations,
+        /// use "AreProcessesRunning" instead.
+        /// </summary>
+        public bool IsGameRunning()
+        {
+            if (AreProcessesRunning)
+            {
+                CactusMessageBox.Show("Diablo II is still running!\n\n" +
+                    "Please close the game before attempting to:\n\n" +
+                    "- Switch to a different platform.\n" +
+                    "- Switch to the same platform but with a different label.\n" +
+                    "- Reset your directory.\n" +
+                    "- Create a backup.\n" +
+                    "- Change the Diablo II Root Directory.");
+
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

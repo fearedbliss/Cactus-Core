@@ -1,4 +1,4 @@
-## Cactus - 2.5.0
+## Cactus - 2.6.0
 ##### By: Jonathan Vasquez (fearedbliss)
 
 ## Description

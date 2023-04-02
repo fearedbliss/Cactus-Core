@@ -115,8 +115,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BackupManager.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interfaces\IAddWindowViewModel.cs" />
+    <Compile Include="Interfaces\IBackupManager.cs" />
     <Compile Include="Interfaces\IEditWindowViewModel.cs" />
     <Compile Include="Interfaces\IFileSwitcher.cs" />
     <Compile Include="Interfaces\IJsonManager.cs" />

@@ -1,4 +1,4 @@
-﻿// Copyright © 2018-2022 Jonathan Vasquez <jon@xyinn.org>
+﻿// Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -80,7 +80,7 @@ namespace Cactus
             }
 
             // Before we do anything, make sure that this platform exists in the first place.
-            if (IsPlatformDirectoryMissingThenAlert(entry))
+            if (IfPlatformDirectoryMissingThenAlert(entry))
             {
                 return;
             }
@@ -106,29 +106,32 @@ namespace Cactus
             {
                 _logger.LogInfo("Running the same platform.");
 
-                // Update the registry if we are launching the same platform but with a different label.
+                // Do not allow the user to launch the game if they are running the same platform but
+                // with different labels.
                 if (!_lastRanEntry.Label.EqualsIgnoreCase(_currentEntry.Label))
                 {
-                    _logger.LogInfo("Same platform but different labels. Updating.");
+                    _logger.LogInfo("Same platform but different labels.");
 
-                    // Do not allow the switch if the user has the game running but the labels are different.
-                    if (IsGameRunning())
+                    if (_processManager.IsGameRunning())
                     {
                         return;
                     }
-
-                    UpdateEntryAndRegistry();
                 }
                 else
                 {
                     _logger.LogInfo("Same platform and same label.");
-
-                    // We will be setting the _lastRanEntry to the CurrentEntry since
-                    // even though the platform and labels are the same, the flags may differ.
-                    _entries.SwapLastRan(_lastRanEntry, _currentEntry);
-                    _lastRanEntry = _currentEntry;
-                    _entries.SaveEntries();
                 }
+
+                // Always update the entry and the registry before launching the game. This also
+                // fixes a rare issue (not normally triggered) where if a person were to have
+                // launched the game before, then delete their D2 registry, and try to launch the
+                // game immediately after, Diablo II's default Save directory would be created upon
+                // launch since the game needs to create the default registry structure and keys.
+
+                // One of the reasons we are also setting the entry information is that the user could
+                // be using the same platform and labels, but the flags may differ. Setting the _lastRanEntry
+                // to the CurrentEntry fixes this.
+                UpdateEntryAndRegistry();
 
                 // The user can launch two different entries that are identical (Except for flags since
                 // you may have different flags for the same platform) without switching files completely.
@@ -139,7 +142,7 @@ namespace Cactus
                 _logger.LogInfo("A different version has been selected. Switching.");
 
                 // Do not allow the switch if the user has the game running but the platforms are different.
-                if (IsGameRunning())
+                if (_processManager.IsGameRunning())
                 {
                     return;
                 }
@@ -148,22 +151,6 @@ namespace Cactus
                 UpdateEntryAndRegistry();
                 LaunchGame();
             }
-        }
-
-        private bool IsGameRunning()
-        {
-            if (_processManager.AreProcessesRunning)
-            {
-                CactusMessageBox.Show("Diablo II is still running!\n\n" +
-                    "Please close the game before attempting to:\n\n" +
-                    "- Switch to a different platform.\n" +
-                    "- Switch to the same platform but with a different label.\n" +
-                    "- Resetting your directory.");
-
-                return true;
-            }
-
-            return false;
         }
 
         /// <summary>
@@ -272,7 +259,7 @@ namespace Cactus
         {
             _logger.LogWarning("Resetting Directory ...");
 
-            if (IsGameRunning())
+            if (_processManager.IsGameRunning())
             {
                 return;
             }
@@ -372,15 +359,22 @@ namespace Cactus
                 }
             }
         }
-        
+
+        /// <summary>
+        /// Creates the directory if it doesn't exist.
+        /// </summary>
+        public void CreateDirectory(string directory)
+        {
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+        }
+
         private void CreateSaveDirectory()
         {
             string saveDirectory = _pathBuilder.GetSaveDirectory(_lastRanEntry);
-
-            if (!Directory.Exists(saveDirectory))
-            {
-                Directory.CreateDirectory(saveDirectory);
-            }
+            CreateDirectory(saveDirectory);
         }
 
         private void UpdateEntryAndRegistry()
@@ -391,7 +385,7 @@ namespace Cactus
             _entries.SaveEntries();
         }
 
-        public bool IsPlatformDirectoryMissingThenAlert(EntryModel entry)
+        public bool IfPlatformDirectoryMissingThenAlert(EntryModel entry)
         {
             var platformDirectory = _pathBuilder.GetPlatformDirectory(entry);
 

@@ -1,4 +1,4 @@
-﻿// Copyright © 2018-2022 Jonathan Vasquez <jon@xyinn.org>
+﻿// Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -29,11 +29,15 @@ namespace Cactus.Interfaces
 {
     public interface IPathBuilder
     {
+        string PlatformsDirectoryName { get; }
+        string SavesDirectoryName { get; }
         string GetRootDirectory();
         string GetPlatformsDirectory();
         string GetSavesDirectory();
+        string GetBackupsDirectory();
         string GetPlatformDirectory(EntryModel entry);
         string GetSaveDirectory(EntryModel entry, bool excludeLabel = false);
+        string GetBackupDirectory(string backupName);
         string GetLauncherPath(EntryModel entry);
         bool IsRootDirectorySet();
     }

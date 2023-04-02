@@ -1,4 +1,4 @@
-﻿// Copyright © 2018-2022 Jonathan Vasquez <jon@xyinn.org>
+﻿// Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -35,8 +35,10 @@ namespace Cactus.ViewModels
     public class SettingsWindowViewModel : ViewModelBase, ISettingsWindowViewModel
     {
         private readonly ISettingsManager _settingsManager;
+        private readonly IProcessManager _processManager;
 
         public string RootDirectory { get; set; }
+        public string BackupsDirectory { get; set; }
         public bool ShouldMinimizeToTray { get; set; }
         public bool ShouldEnableDarkMode { get; set; }
         public bool HasMigratedToNewFormat { get; set; }
@@ -82,9 +84,10 @@ namespace Cactus.ViewModels
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand CancelCommand { get; private set; }
 
-        public SettingsWindowViewModel(ISettingsManager settingsManager)
+        public SettingsWindowViewModel(ISettingsManager settingsManager, IProcessManager processManager)
         {
             _settingsManager = settingsManager;
+            _processManager = processManager;
 
             SaveCommand = new RelayCommand(Save);
             CancelCommand = new RelayCommand(Cancel);
@@ -97,11 +100,19 @@ namespace Cactus.ViewModels
             var settings = new SettingsModel
             {
                 RootDirectory = RootDirectory,
+                BackupsDirectory = BackupsDirectory,
                 ShouldMinimizeToTray = ShouldMinimizeToTray,
                 ShouldEnableDarkMode = ShouldEnableDarkMode,
                 PreferredColor = PreferredColor,
                 HasMigratedToNewFormat = HasMigratedToNewFormat,
             };
+
+            // Prevent the root directory from being modified while the game is running.
+            if (!_settingsManager.RootDirectory.EqualsIgnoreCase(settings.RootDirectory) && _processManager.IsGameRunning())
+            {
+                LoadSettings();
+                return;
+            }
 
             // Verify that our Diablo II Root Directory exists.
             if (!string.IsNullOrWhiteSpace(settings.RootDirectory) && !Directory.Exists(settings.RootDirectory))
@@ -112,7 +123,6 @@ namespace Cactus.ViewModels
             }
 
             _settingsManager.SaveSettings(settings);
-
             ProcessTriggers();
         }
 
@@ -124,6 +134,7 @@ namespace Cactus.ViewModels
         private void LoadSettings()
         {
             RootDirectory = _settingsManager.RootDirectory;
+            BackupsDirectory = _settingsManager.BackupsDirectory;
             ShouldMinimizeToTray = _settingsManager.ShouldMinimizeToTray;
             ShouldEnableDarkMode = _settingsManager.ShouldEnableDarkMode;
             PreferredColor = _settingsManager.PreferredColor;
