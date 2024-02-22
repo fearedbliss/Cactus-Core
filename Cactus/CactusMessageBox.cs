@@ -1,4 +1,4 @@
-﻿// Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>
+﻿// Copyright © 2018-2024 Jonathan Vasquez <jon@xyinn.org>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -49,6 +49,14 @@ namespace Cactus
                 // still receive the message even if it looks uglier.
                 MessageBox.Show(message);
             }
+        }
+
+        public static void ShowGenericErrorMessage(Exception ex)
+        {
+            Show("A file is still being used and cannot be deleted or replaced at this time. " +
+                 "You may be switching too quickly, something is holding up the file, or an unknown exception has occurred. " +
+                 "If the game is still open, exit the game, wait a few seconds, click \"Reset\", " +
+                 $"and then try again.\n\nError\n--------\n{ex.Message}");
         }
     }
 }

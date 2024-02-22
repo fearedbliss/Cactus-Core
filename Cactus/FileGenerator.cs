@@ -1,4 +1,4 @@
-﻿// Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>
+﻿// Copyright © 2018-2024 Jonathan Vasquez <jon@xyinn.org>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -51,28 +51,59 @@ namespace Cactus
         {
             get
             {
-                var protectedDocuments = new List<string>()
+                var protectedDocuments = new List<string>();
+
+                protectedDocuments.AddRange(CactusCoreFiles);
+                protectedDocuments.AddRange(_jsonManager.ManagedFiles);
+                protectedDocuments.AddRange(DiabloIIClassicFiles);
+                protectedDocuments.AddRange(ExpansionMpqs);
+                protectedDocuments.AddRange(CncDdrawFiles);
+                protectedDocuments.AddRange(DsoalOpenAlFiles);
+
+                return protectedDocuments;
+            }
+        }
+
+        public List<string> CactusCoreFiles
+        {
+            get
+            {
+                return new List<string>()
                 {
                     "Platforms",
                     "Saves",
-                    "Save",
                     "Backups",
+                    "Cactus.exe",
+                    "Castle.Core.dll",
+                    "Castle.Windsor.dll",
+                    "CommonServiceLocator.dll",
+                    "GalaSoft.MvvmLight.dll",
+                    "GalaSoft.MvvmLight.Extras.dll",
+                    "GalaSoft.MvvmLight.Platform.dll",
+                    "GongSolutions.WPF.DragDrop.dll",
+                    "MaterialDesignColors.dll",
+                    "MaterialDesignThemes.Wpf.dll",
+                    "Newtonsoft.Json.dll",
+                    "System.Windows.Interactivity.dll",
+                };
+            }
+        }
+
+        public List<string> DiabloIIClassicFiles
+        {
+            get
+            {
+                return new List<string>()
+                {
+                    "save",
+                    "D2.LNG",
                     "d2char.mpq",
                     "d2data.mpq",
                     "d2music.mpq",
                     "d2sfx.mpq",
                     "d2speech.mpq",
                     "d2video.mpq",
-                    "D2.LNG",
                 };
-
-                var expansionDocuments = ExpansionMpqs;
-                protectedDocuments.AddRange(expansionDocuments);
-
-                var cactusManagedFiles = _jsonManager.ManagedFiles;
-                protectedDocuments.AddRange(cactusManagedFiles);
-
-                return protectedDocuments;
             }
         }
 
@@ -86,6 +117,31 @@ namespace Cactus
                     "d2xmusic.mpq",
                     "d2xvideo.mpq",
                     "d2xtalk.mpq"
+                };
+            }
+        }
+
+        public List<string> CncDdrawFiles
+        {
+            get
+            {
+                return new List<string>()
+                {
+                    "Shaders",
+                    "ddraw.dll",
+                    "ddraw.ini",
+                };
+            }
+        }
+
+        public List<string> DsoalOpenAlFiles
+        {
+            get
+            {
+                return new List<string>()
+                {
+                    "dsoal-aldrv.dll",
+                    "dsound.dll",
                 };
             }
         }

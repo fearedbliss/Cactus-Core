@@ -1,4 +1,4 @@
-﻿// Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>
+﻿// Copyright © 2018-2024 Jonathan Vasquez <jon@xyinn.org>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -98,14 +98,17 @@ namespace Cactus
                 // This is a brand new user to Cactus. Let's run out OOTB experience.
                 else
                 {
-                    CactusMessageBox.Show("Welcome to Cactus!\n\n" +
-                        "A Modern Diablo II Version Switcher & Character Isolator\n\n" +
-                        "Please set your \"Diablo II Root Directory\" by clicking the \"Settings\" button before launching Diablo II! " +
-                        "You can then click the \"Add\" button to add an entry.\n\n" +
-                        "Please also make sure that you are running Cactus within your Diablo II Root Directory.\n\n" +
-                        "Example: C:\\Games\\Diablo II\\Cactus.exe\n\n" +
-                        "https://github.com/fearedbliss/Cactus"
-                    );
+                    CactusMessageBox.Show("Welcome to Cactus\n\n" +
+                       "A Modern Version Switcher, Character Isolator, and Mod Manager for Diablo II (Original, Not Resurrected)\n\n" +
+                       "Please follow the steps below to set up Cactus:\n\n"+
+                       "1. Set your \"Diablo II Root Directory\" by clicking the \"Settings\" button, and pointing it to the correct location.\n\n" +
+                       "2. Place your desired platforms into your Platforms folder.\n\n" +
+                       "3. Add each platform by clicking the \"Add\" button, and filling out the required details.\n\n" +
+                       "4. Click \"Launch\", and Enjoy <3.\n\n" +
+                       "Lastly, please ensure that you are running Cactus from your Diablo II Root Directory.\n\n" +
+                       "Example: C:\\Games\\Diablo II\\Cactus.exe\n\n" +
+                       "https://github.com/fearedbliss/Cactus"
+                   );
 
                     // Save a clean copy of our settings in order to "mark" this as
                     // proof that we have displayed this message. We are also marking

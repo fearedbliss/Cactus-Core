@@ -1,4 +1,4 @@
-﻿// Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>
+﻿// Copyright © 2018-2024 Jonathan Vasquez <jon@xyinn.org>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -94,13 +94,21 @@ namespace Cactus
                 _logger.LogInfo("No version was ever ran. Running this and setting it as main version.");
 
                 _lastRanEntry = _currentEntry;
-                SwitchFiles();
 
-                _entries.MarkLastRan(_currentEntry);
-                _registryService.Update(_currentEntry);
-                _entries.SaveEntries();
+                try
+                {
+                    SwitchFiles();
 
-                LaunchGame();
+                    _entries.MarkLastRan(_currentEntry);
+                    _registryService.Update(_currentEntry);
+                    _entries.SaveEntries();
+
+                    LaunchGame();
+                }
+                catch (Exception ex)
+                {
+                    CactusMessageBox.ShowGenericErrorMessage(ex);
+                }
             }
             else if (_lastRanEntry.Platform.EqualsIgnoreCase(_currentEntry.Platform))
             {
@@ -147,9 +155,16 @@ namespace Cactus
                     return;
                 }
 
-                SwitchFiles();
-                UpdateEntryAndRegistry();
-                LaunchGame();
+                try
+                {
+                    SwitchFiles();
+                    UpdateEntryAndRegistry();
+                    LaunchGame();
+                }
+                catch (Exception ex)
+                {
+                    CactusMessageBox.ShowGenericErrorMessage(ex);
+                }
             }
         }
 
@@ -158,38 +173,25 @@ namespace Cactus
         /// </summary>
         private void SwitchFiles()
         {
-            try
+            string rootDirectory = _pathBuilder.GetRootDirectory();
+            string platformDirectory = _pathBuilder.GetPlatformDirectory(_currentEntry);
+
+            // Retrieve the old required files so we can clean them up when we switch entries.
+            var lastRequiredFiles = _jsonManager.GetLastRequiredFiles();
+
+            if (lastRequiredFiles == null)
             {
-                string rootDirectory = _pathBuilder.GetRootDirectory();
-                string platformDirectory = _pathBuilder.GetPlatformDirectory(_currentEntry);
-
-                // Retrieve the old required files so we can clean them up when we switch entries.
-                var lastRequiredFiles = _jsonManager.GetLastRequiredFiles();
-
-                if (lastRequiredFiles == null)
-                {
-                    _logger.LogWarning("The last required files file doesn't exist. Using current version as a bases.");
-                    lastRequiredFiles = _fileGenerator.GetRequiredFiles(_lastRanEntry);
-                }
-
-                var targetVersionRequiredFiles = _fileGenerator.GetRequiredFiles(_currentEntry);
-
-                DeleteRequiredFiles(rootDirectory, lastRequiredFiles);
-                InstallRequiredFiles(platformDirectory, rootDirectory, targetVersionRequiredFiles);
-
-                // Save the required files for the target since we will use these to clean up when we switch.
-                _jsonManager.SaveLastRequiredFiles(targetVersionRequiredFiles);
+                _logger.LogWarning("The last required files file doesn't exist. Using current version as a bases.");
+                lastRequiredFiles = _fileGenerator.GetRequiredFiles(_lastRanEntry);
             }
-            catch (UnauthorizedAccessException ex)
-            {
-                CactusMessageBox.Show("A file is still being used (You are probably switching entries too fast?). " +
-                                "Switch back to the previous version and wait a few seconds after you exit the game " +
-                               $"so that Windows stops using the file.\n\nError\n--------\n{ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-            }
+
+            var targetVersionRequiredFiles = _fileGenerator.GetRequiredFiles(_currentEntry);
+
+            DeleteRequiredFiles(rootDirectory, lastRequiredFiles);
+            InstallRequiredFiles(platformDirectory, rootDirectory, targetVersionRequiredFiles);
+
+            // Save the required files for the target since we will use these to clean up when we switch.
+            _jsonManager.SaveLastRequiredFiles(targetVersionRequiredFiles);
         }
 
         /// <summary>

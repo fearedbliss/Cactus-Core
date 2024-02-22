@@ -8,11 +8,11 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Cactus")]
-[assembly: AssemblyDescription("A Modern Diablo II Version Switcher & Character Isolator")]
+[assembly: AssemblyDescription("A Modern Version Switcher, Character Isolator, and Mod Manager for Diablo II (Original, Not Resurrected)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Cactus")]
-[assembly: AssemblyCopyright("Copyright © 2018-2023 Jonathan Vasquez <jon@xyinn.org>")]
+[assembly: AssemblyCopyright("Copyright © 2018-2024 Jonathan Vasquez <jon@xyinn.org>")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +51,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.6.0.0")]
-[assembly: AssemblyFileVersion("2.6.0.0")]
+[assembly: AssemblyVersion("2.6.1.0")]
+[assembly: AssemblyFileVersion("2.6.1.0")]
