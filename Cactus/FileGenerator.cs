@@ -55,7 +55,7 @@ namespace Cactus
 
                 protectedDocuments.AddRange(CactusCoreFiles);
                 protectedDocuments.AddRange(_jsonManager.ManagedFiles);
-                protectedDocuments.AddRange(DiabloIIClassicFiles);
+                protectedDocuments.AddRange(DiabloIIBaseFiles);
                 protectedDocuments.AddRange(ExpansionMpqs);
                 protectedDocuments.AddRange(CncDdrawFiles);
                 protectedDocuments.AddRange(DsoalOpenAlFiles);
@@ -89,13 +89,14 @@ namespace Cactus
             }
         }
 
-        public List<string> DiabloIIClassicFiles
+        public List<string> DiabloIIBaseFiles
         {
             get
             {
                 return new List<string>()
                 {
                     "save",
+                    "default.key",
                     "D2.LNG",
                     "d2char.mpq",
                     "d2data.mpq",

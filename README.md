@@ -1,4 +1,4 @@
-## Cactus - 2.6.1
+## Cactus - 2.6.2
 
 ***A Modern Version Switcher, Character Isolator, and Mod Manager for Diablo II (Original, Not Resurrected)***
 
@@ -7,9 +7,17 @@
 ## Description
 
 This repository contains the core code for Cactus. If you are looking for the
-full bundle that contains **`Cactus`**, **`Singling`**, **`All Versions`**,
-**`cnc-ddraw`**, **`3D Sound`**, and all of the documentation, please check the
-main [Cactus](https://github.com/fearedbliss/Cactus) repository.
+full bundle that contains:
+
+- ***Cactus***
+- ***Singling***
+- ***All Versions (1.00 - 1.14d)***
+- ***cnc-ddraw (DirectDraw)***
+- ***DSOAL w/ OpenAL (3D Sound, Environmental Effects)***
+- ***Mod Database Index***
+- ***Documentation***
+
+Please check the main [Cactus](https://github.com/fearedbliss/Cactus) repository.
 
 ## License
 
