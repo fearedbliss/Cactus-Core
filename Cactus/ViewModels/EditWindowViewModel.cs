@@ -178,37 +178,78 @@ namespace Cactus.ViewModels
                             }
                         }
 
-                        // No need to rename if the Platform directories are the same.
-                        if (!oldPlatformDirectory.EqualsIgnoreCase(newPlatformDirectory))
+                        try
                         {
-                            if (Directory.Exists(oldPlatformDirectory))
+                            // No need to rename if the Platform directories are the same.
+                            if (!oldPlatformDirectory.EqualsIgnoreCase(newPlatformDirectory))
                             {
-                                Directory.Move(oldPlatformDirectory, newPlatformDirectory);
+                                if (Directory.Exists(oldPlatformDirectory))
+                                {
+                                    Directory.Move(oldPlatformDirectory, newPlatformDirectory);
+                                }
+
+                                // We need to rename the Saves directory root as well (with platform name but without label).
+                                var oldSavesDirectoryWithoutLabel = _pathBuilder.GetSaveDirectory(_oldEntry, true);
+                                var newSavesDirectoryWithoutLabel = _pathBuilder.GetSaveDirectory(CurrentEntry, true);
+
+                                if (Directory.Exists(oldSavesDirectoryWithoutLabel))
+                                {
+                                    try
+                                    {
+                                        Directory.Move(oldSavesDirectoryWithoutLabel, newSavesDirectoryWithoutLabel);
+
+                                        // Since we updated the old Save Directory Root, we need to make sure
+                                        // we update the appropriate reference since the person may have also
+                                        // requested to rename their label as well within the same operation.
+                                        // If the entry didn't have a label, then it's just a platform rename,
+                                        // so we can adjust the old path accordingly and allow the next if to
+                                        // be skipped.
+                                        oldSavesDirectory = string.IsNullOrWhiteSpace(_oldEntry.Label)
+                                            ? newSavesDirectoryWithoutLabel
+                                            : _pathBuilder.GetNewSaveDirectoryButWithOldLabel(CurrentEntry, _oldEntry);
+                                    }
+                                    catch (IOException)
+                                    {
+                                        // Revert the platform name change.
+                                        Directory.Move(newPlatformDirectory, oldPlatformDirectory);
+                                        throw;
+                                    }
+                                }
+
+                                // Rename any identically named platforms
+                                _entryManager.RenamePlatform(_oldEntry.Platform, CurrentEntry.Platform);
                             }
 
-                            // We need to rename the Saves directory root as well (with platform name but without label).
-                            var oldSavesDirectoryWithoutLabel = _pathBuilder.GetSaveDirectory(_oldEntry, true);
-                            var newSavesDirectoryWithoutLabel = _pathBuilder.GetSaveDirectory(CurrentEntry, true);
-
-                            if (Directory.Exists(oldSavesDirectoryWithoutLabel))
+                            // No need to rename if the Saves directories are the same.
+                            if (!oldSavesDirectory.EqualsIgnoreCase(newSavesDirectory))
                             {
-                                Directory.Move(oldSavesDirectoryWithoutLabel, newSavesDirectoryWithoutLabel);
-                            }
+                                if (Directory.Exists(oldSavesDirectory))
+                                {
+                                    // If a person tries to just rename the Label for this Platform,
+                                    // and that Child Save directory has a file being used, the catch
+                                    // below will cover it properly.
+                                    //
+                                    // If the person tries to rename the name of a Platform, and the Label, the
+                                    // if condition above will catch it because we won't be able to rename
+                                    // the root of the Saves directory for this platform, given that the Child
+                                    // save is locking up the operation. This is thus a subset of the above
+                                    // if condition and we will also be safely protected.
+                                    Directory.Move(oldSavesDirectory, newSavesDirectory);
+                                }
 
-                            // Rename any identically named platforms
-                            _entryManager.RenamePlatform(_oldEntry.Platform, CurrentEntry.Platform);
+                                // Rename any identically named platforms with the same label name
+                                _entryManager.RenameLabel(CurrentEntry.Platform, _oldEntry.Label, CurrentEntry.Label);
+                            }
                         }
-
-                        // No need to rename if the Saves directories are the same.
-                        else if (!oldSavesDirectory.EqualsIgnoreCase(newSavesDirectory))
+                        catch (IOException)
                         {
-                            if (Directory.Exists(oldSavesDirectory))
-                            {
-                                Directory.Move(oldSavesDirectory, newSavesDirectory);
-                            }
-
-                            // Rename any identically named platforms with the same label name
-                            _entryManager.RenameLabel(CurrentEntry.Platform, _oldEntry.Label, CurrentEntry.Label);
+                            CactusMessageBox.Show($"Unable to rename this platform since there is a file in either the Platforms or " +
+                                $"Saves folder that is being used.\n\n" +
+                                $"Cactus has reverted the names to their previous state, but please verify that the Platform and Saves directories " +
+                                $"for this platform still match, to ensure there are no inconsistencies.\n\n" +
+                                $"Afterwards, make sure to close any applications that are using files in these directories, and try again.");
+                            ReverseChanges();
+                            return;
                         }
                     }
                 }
@@ -264,6 +305,7 @@ namespace Cactus.ViewModels
 
         private void ReverseChanges()
         {
+            // NOTE: This function only reverses UI level changes, not filesystem modifications.
             CurrentEntry.Platform = _oldEntry.Platform;
             CurrentEntry.Label = _oldEntry.Label;
             CurrentEntry.Launcher = _oldEntry.Launcher;

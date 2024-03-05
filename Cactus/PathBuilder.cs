@@ -105,6 +105,19 @@ namespace Cactus
         }
 
         /// <summary>
+        /// Gets the new save directory location but with the old entry label.
+        /// </summary>
+        /// <remarks>
+        /// This is mainly used if the person wants to rename the platform and label at the same time.
+        /// </remarks>
+        public string GetNewSaveDirectoryButWithOldLabel(EntryModel newEntry, EntryModel oldEntry)
+        {
+            string newSaveDirectory = GetSaveDirectory(newEntry, true);
+            string adjustedOldSaveDirectory = Path.Combine(newSaveDirectory, oldEntry.Label);
+            return adjustedOldSaveDirectory;
+        }
+
+        /// <summary>
         /// Gets the backup directory path for a specific backup.
         /// </summary>
         public string GetBackupDirectory(string backupName)

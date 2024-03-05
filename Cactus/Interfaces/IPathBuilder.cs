@@ -37,6 +37,7 @@ namespace Cactus.Interfaces
         string GetBackupsDirectory();
         string GetPlatformDirectory(EntryModel entry);
         string GetSaveDirectory(EntryModel entry, bool excludeLabel = false);
+        string GetNewSaveDirectoryButWithOldLabel(EntryModel newEntry, EntryModel oldEntry);
         string GetBackupDirectory(string backupName);
         string GetLauncherPath(EntryModel entry);
         bool IsRootDirectorySet();
