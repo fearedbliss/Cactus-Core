@@ -1,4 +1,4 @@
-## Cactus - 2.6.3
+## Cactus - 2.6.4
 
 ***A Modern Version Switcher, Character Isolator, and Mod Manager for Diablo II (Original, Not Resurrected)***
 
@@ -25,4 +25,5 @@ Released under the **[Simplified BSD License](LICENSE.txt)**.
 
 ## Requirements
 
+- **Windows 7 or 10 Only. [11+ will not be supported.](https://github.com/fearedbliss/Cactus/?tab=readme-ov-file#windows-11-will-not-be-supported)**
 - **.NET Framework 4.6.2 +**

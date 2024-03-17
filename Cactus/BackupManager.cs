@@ -42,7 +42,6 @@ namespace Cactus
         private readonly IPathBuilder _pathBuilder;
         private readonly IJsonManager _jsonManager;
         private readonly IFileSwitcher _fileSwitcher;
-        private readonly string _rootDirectory;
 
         public BackupManager(IProcessManager processManager, IPathBuilder pathBuilder, IJsonManager jsonManager, IFileSwitcher fileSwitcher)
         {
@@ -50,7 +49,6 @@ namespace Cactus
             _pathBuilder = pathBuilder;
             _jsonManager = jsonManager;
             _fileSwitcher = fileSwitcher;
-            _rootDirectory = _pathBuilder.GetRootDirectory();
         }
 
         public void CreateBackup()
@@ -127,7 +125,7 @@ namespace Cactus
 
             foreach (var file in jsonFiles)
             {
-                var targetFile = Path.Combine(_rootDirectory, file);
+                var targetFile = Path.Combine(_pathBuilder.GetRootDirectory(), file);
                 if (!File.Exists(targetFile))
                 {
                     CactusMessageBox.Show("The following required file is missing: " + targetFile + ". Aborting backup.");
@@ -150,7 +148,7 @@ namespace Cactus
             // Copy the json files.
             foreach(var file in jsonFiles)
             {
-                var sourceFile = Path.Combine(_rootDirectory, file);
+                var sourceFile = Path.Combine(_pathBuilder.GetRootDirectory(), file);
                 var targetFile = Path.Combine(backupDirectoryName, file);
                 File.Copy(sourceFile, targetFile);
             }
